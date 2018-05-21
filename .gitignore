@@ -1,3 +1,13 @@
 
 *.xml
 use cases/.DS_Store
+*.lck
+*.bak_000f
+*.bak_002d
+*.bak_001d
+*.bak_003d
+*.bak_004d
+*.bak_005d
+*.bak_006d
+*.bak_007d
+.DS_Store
