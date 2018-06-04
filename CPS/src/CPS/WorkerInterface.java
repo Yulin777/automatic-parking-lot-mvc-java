@@ -3,6 +3,9 @@ package CPS;
 public class WorkerInterface {
 	WorkerInterfaceController wIC;
 	
+	public WorkerInterface(WorkerInterfaceController wIC) {
+		this.wIC = wIC;
+	}
 	public void setup(){
 		
 	}
@@ -21,12 +24,13 @@ public class WorkerInterface {
 	
 	//TODO Snir
 	public boolean login(String email, String password){
-		
+		return false;
 	}
 	
 	//TODO Snir
 	public void logout(){
-		
+
 	}
+
 
 }

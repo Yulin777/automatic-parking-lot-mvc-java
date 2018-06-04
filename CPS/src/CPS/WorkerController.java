@@ -3,7 +3,7 @@ package CPS;
 public class WorkerController {
 	
 	//TODO Evgeny
-	 public Worker getWorker(){
+	 public static Worker getWorker(String email, String password){
 		 
 	 }
 }
