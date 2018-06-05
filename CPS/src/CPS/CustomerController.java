@@ -21,7 +21,8 @@ public class CustomerController {
 	}
 	
 	public boolean removeCar(int customerPid, int CarNumber){
-		return false;
+		return true;
+		//test
 	}
 	
 
