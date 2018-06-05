@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.WorkerInterface">
+   <children>
+      <Button fx:id="loginBtn" layoutX="172.0" layoutY="138.0" mnemonicParsing="false" onAction="#login" text="Log in" />
+      <TextField fx:id="emailTf" layoutX="100.0" layoutY="29.0" prefHeight="25.0" prefWidth="192.0" promptText="email" />
+      <TextField fx:id="passwordTf" layoutX="100.0" layoutY="66.0" prefHeight="25.0" prefWidth="192.0" promptText="password" />
+   </children>
+   <effect>
+      <DropShadow height="23.97" radius="11.485" spread="0.31" width="23.97" />
+   </effect>
+</AnchorPane>
