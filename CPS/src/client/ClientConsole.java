@@ -1,3 +1,4 @@
+package client;
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
@@ -75,9 +76,10 @@ try {
 	    name = fromConsole.readLine();
 	   System.out.println("Enter your id: ");
 	  	id = fromConsole.readLine();
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	}
+	catch (IOException e) 
+	{
+			e.printStackTrace();
 	}
 	   this.name=name;
 	   this.id=id;
