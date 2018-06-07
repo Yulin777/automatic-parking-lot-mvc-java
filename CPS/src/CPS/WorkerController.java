@@ -33,7 +33,7 @@ public class WorkerController {
 		 				CPS.Worker.WorkerType wtype= CPS.Worker.WorkerType.values()[rs.getInt(7)]; //convert to enum value
 		 				String workerName=rs.getString(2)+" "+rs.getString(3);//merge two name fields into one
 		 				
-		 				return (new Worker(rs.getInt(1),workerName,rs.getString(4),rs.getString(5),rs.getString(6),wtype));
+		 				return (new Worker(rs.getInt(1),workerName,rs.getString(4),rs.getString(5),rs.getString(6),wtype));//returning new worker
 		 			}
 		 			else //incorrect password;
 		 			{
@@ -54,9 +54,7 @@ public class WorkerController {
 		 	   
 			} catch (SQLException e) {e.printStackTrace();}
 			
-		 
-		return null;
-		 
+		 return null;
 	 }
 	 
 	  static String sha1(String input) throws NoSuchAlgorithmException {
