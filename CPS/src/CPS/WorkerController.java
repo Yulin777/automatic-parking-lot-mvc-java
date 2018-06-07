@@ -8,31 +8,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class WorkerController {
-	
-	private String worker_Fname;
-	private String worker_Lname;
-	private String worker_email;
-	private String worker_password;
-	private String worker_phone;
-	private String worker_access_level;
+import CPS.Worker.WorkerType;
 
+public class WorkerController {
 	
 	//TODO Evgeny
 	 public static Worker getWorker(Connection con,String email, String password) throws GeneralSecurityException
 	 {
-		 String sha_pass=sha1(password);
+		 String sha_pass=sha1(password);//generating sha1 from user provided pass string
 		 Statement stmt;
-			String return_res = null;
+		 
 			try 
 			{
-				stmt = con.createStatement();
+				stmt = con.createStatement();//sql
 			
-				ResultSet rs = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
-		 		while(rs.next())
+				ResultSet rs = stmt.executeQuery("SELECT * FROM workers WHERE worker_email=" + email + ";");
+				
+				if(rs.next()) //we have atleast one result
 		 		{
-		 			return_res=(rs.getString(1)+"  " +rs.getString(2)+" " +rs.getString(3)+" , " +rs.getString(4)
-			 			+" , " +rs.getString(5)+" , " +rs.getString(6));
+		 			if(rs.getString(5).equals(sha_pass))//check if this is the correct password
+		 			{
+		 				System.out.println("correct password");
+
+		 				CPS.Worker.WorkerType wtype= CPS.Worker.WorkerType.values()[rs.getInt(7)]; //convert to enum value
+		 				String workerName=rs.getString(2)+" "+rs.getString(3);//merge two name fields into one
+		 				
+		 				return (new Worker(rs.getInt(1),workerName,rs.getString(4),rs.getString(5),rs.getString(6),wtype));
+		 			}
+		 			else //incorrect password;
+		 			{
+		 				System.out.println("incorrect pssword");
+		 				return null;
+		 			}
+
 				} 
 		 		
 		 	
