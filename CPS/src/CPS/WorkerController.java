@@ -1,7 +1,12 @@
 package CPS;
 
+import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class WorkerController {
 	
@@ -14,9 +19,33 @@ public class WorkerController {
 
 	
 	//TODO Evgeny
-	 public static Worker getWorker(String email, String password)
+	 public static Worker getWorker(Connection con,String email, String password) throws GeneralSecurityException
 	 {
-		 
+		 String sha_pass=sha1(password);
+		 Statement stmt;
+			String return_res = null;
+			try 
+			{
+				stmt = con.createStatement();
+			
+				ResultSet rs = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
+		 		while(rs.next())
+		 		{
+		 			return_res=(rs.getString(1)+"  " +rs.getString(2)+" " +rs.getString(3)+" , " +rs.getString(4)
+			 			+" , " +rs.getString(5)+" , " +rs.getString(6));
+				} 
+		 		
+		 	
+		 	    if (stmt != null) {
+		 	        try {
+		 	        	
+		 	            stmt.close();
+		 	        } 
+		 	        catch (SQLException e) { }
+		 	    }
+		 	   
+			} catch (SQLException e) {e.printStackTrace();}
+			
 		 
 		return null;
 		 
@@ -33,6 +62,10 @@ public class WorkerController {
 	        return sb.toString();
 	    }
 	 
-	 
+	  public static void main(String[] args) throws GeneralSecurityException 
+	  {
+		  System.out.println(sha1("password"));
+		  System.out.println(sha1("password1"));
+	  }
 	 
 }

@@ -58,11 +58,7 @@ public class ClientConsole implements ChatIF
                 + " Terminating client.");
       System.exit(1);
     }
-	
-	/*TODO: add fields as needed in class*/
-	/*TODO: extend the constructor to receive the needed info (user name, user id)*/
-	/*TODO:check out AbstractClient API(NOTE ChatClient extends AbstractClient), to find out how to get the address of the client*/
-  }
+ }
 
   
   //Instance methods ************************************************
