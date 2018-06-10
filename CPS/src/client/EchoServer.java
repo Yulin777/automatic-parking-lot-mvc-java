@@ -397,6 +397,7 @@ public class EchoServer extends AbstractServer {
 
 			ResultSet c = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + cliendID + ";");
 			if (!c.next()) {
+				System.err.println("no client with such id");
 				return ("no client with such id");
 			}
 			ResultSet client = stmt.executeQuery("SELECT * FROM subscriptions WHERE client_ID=" + cliendID + ";");

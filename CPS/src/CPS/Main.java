@@ -9,7 +9,7 @@ public class Main {
 //		Person a = new Worker("1234", "ab", "cd", "5", "6");
 //		Car c = new Car("0101", "1");
 //		System.out.println(c.getOwner());
-		int myYear = 2014;
+		int myYear = 2019;
 		int myMonth = 3;
 		int myDay = 24;
 		java.sql.Timestamp ts = java.sql.Timestamp.valueOf(
