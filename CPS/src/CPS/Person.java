@@ -23,54 +23,10 @@ public class Person {
 		this.pid = id;
 
 		if (this.getClass().getName().equals("CPS.Customer"))
-			Person.addNewClient(id, firstName, lastName, password, type, email, telephone);
+			CustomerController.addNewClient(id, firstName, lastName, password, type, email, telephone);
 		else
 			Person.addNewWorker(id, firstName, lastName, password, type, email, telephone);
 
-	}
-
-	public static String addNewClient(String id, String firstName, String lastName, String password, String type, String email,
-			String telephone) {
-		Statement stmt;
-		try {
-			stmt = EchoServer.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet client = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
-			if (!client.next()) {
-				ResultSet uprs = stmt.executeQuery("SELECT * FROM clients");
-				uprs.moveToInsertRow();
-				uprs.updateString("client_ID", id);
-				uprs.updateString("client_first_name", firstName);
-				uprs.updateString("client_last_name", lastName);
-				uprs.updateString("client_type", type);
-				uprs.updateString("client_email", email);
-				uprs.updateString("client_telephone", telephone);
-				uprs.updateString("client_password", password);
-
-				uprs.insertRow();
-
-				System.out.println("New client was added succsfully");
-
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-			} else {
-				System.out.println("Client already exists");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return ("New client was added succsfully");
 	}
 
 	public static String addNewWorker(String id, String firstName, String lastName, String password, String type, String email,
