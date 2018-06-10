@@ -95,6 +95,12 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(addNewCarToClient(cmd[2], cmd[3]));
 		}
 
+		if (cmd[0].equals("get") && cmd[1].equals("car") && cmd[2].equals("owner")) {
+			this.sendToAllClients(getCarOwnerByCarId(conn,cmd[3]));
+		}
+		else {
+			System.out.println("wrong input");
+		}
 	}
 
 	/**
@@ -145,7 +151,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("ERROR - Could not listen for clients!");
 			System.out.println("ex:" + ex.toString());
 		}
-		
+
 	}
 
 	private static String getClientById(Connection con, String id) {
@@ -159,6 +165,38 @@ public class EchoServer extends AbstractServer {
 				// Print out the values
 				return_res = (rs.getString(1) + "  " + rs.getString(2) + " " + rs.getString(3) + " , " + rs.getString(4)
 						+ " , " + rs.getString(5) + " , " + rs.getString(6));
+			}
+
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					/* ignored */}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					/* ignored */}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return return_res;
+	}
+
+	private static String getCarOwnerByCarId(Connection con, String id) {
+		Statement stmt;
+		String return_res = null;
+		try {
+			stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM cars WHERE car_ID=" + id + ";");
+			while (rs.next()) {
+				// Print out the values
+				return_res = (rs.getString(2)); // client id
 			}
 
 			if (rs != null) {
