@@ -44,7 +44,7 @@ public class EchoServer extends AbstractServer {
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 		} catch (Exception ex) {
-		/* handle the error */}
+			/* handle the error */}
 
 		String url = "jdbc:mysql://cs.telhai.ac.il/Group_1";
 
@@ -89,6 +89,10 @@ public class EchoServer extends AbstractServer {
 		}
 		if (cmd[0].equals("add") && cmd[1].equals("client")) {
 			this.sendToAllClients(addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
+		}
+
+		if (cmd[0].equals("add") && cmd[1].equals("car")) {
+			this.sendToAllClients(addNewCarToClient(cmd[2], cmd[3]));
 		}
 
 	}
@@ -141,6 +145,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("ERROR - Could not listen for clients!");
 			System.out.println("ex:" + ex.toString());
 		}
+		
 	}
 
 	private static String getClientById(Connection con, String id) {
@@ -153,20 +158,20 @@ public class EchoServer extends AbstractServer {
 			while (rs.next()) {
 				// Print out the values
 				return_res = (rs.getString(1) + "  " + rs.getString(2) + " " + rs.getString(3) + " , " + rs.getString(4)
-				+ " , " + rs.getString(5) + " , " + rs.getString(6));
+						+ " , " + rs.getString(5) + " , " + rs.getString(6));
 			}
 
 			if (rs != null) {
 				try {
 					rs.close();
 				} catch (SQLException e) {
-				/* ignored */}
+					/* ignored */}
 			}
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-				/* ignored */}
+					/* ignored */}
 			}
 
 		} catch (SQLException e) {
@@ -176,13 +181,14 @@ public class EchoServer extends AbstractServer {
 		return return_res;
 	}
 
-	public String addNewClient(String id, String firstName, String lastName, String password, String type, String email, String telephone) {
+	public String addNewClient(String id, String firstName, String lastName, String password, String type, String email,
+			String telephone) {
 		Statement stmt;
 		try {
 			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet client = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
-			if(!client.next()) {
+			if (!client.next()) {
 				ResultSet uprs = stmt.executeQuery("SELECT * FROM clients");
 				uprs.moveToInsertRow();
 				uprs.updateString("client_ID", id);
@@ -201,16 +207,15 @@ public class EchoServer extends AbstractServer {
 					try {
 						uprs.close();
 					} catch (SQLException e) {
-					/* ignored */}
+						/* ignored */}
 				}
 				if (stmt != null) {
 					try {
 						stmt.close();
 					} catch (SQLException e) {
-					/* ignored */}
+						/* ignored */}
 				}
-			}
-			else {
+			} else {
 				System.out.println("Client already exists");
 			}
 		} catch (SQLException e) {
@@ -220,13 +225,52 @@ public class EchoServer extends AbstractServer {
 		return ("New client was added succsfully");
 	}
 
-	public String addNewWorker(String id, String firstName, String lastName, String password, String type, String email, String telephone) {
+	public String addNewCarToClient(String clientID, String carID) {
+		Statement stmt;
+		try {
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+			ResultSet client = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + clientID + ";");
+			if (client.next()) {
+				ResultSet uprs = stmt.executeQuery("SELECT * FROM cars");
+				uprs.moveToInsertRow();
+				uprs.updateString("client_ID", clientID);
+				uprs.updateString("car_ID", carID);
+
+				uprs.insertRow();
+
+				System.out.println("New car was added succsfully");
+
+				if (uprs != null) {
+					try {
+						uprs.close();
+					} catch (SQLException e) {
+						/* ignored */}
+				}
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						/* ignored */}
+				}
+			} else {
+				System.out.println("Client does not exist");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ("New car was added succsfully");
+	}
+
+	public String addNewWorker(String id, String firstName, String lastName, String password, String type, String email,
+			String telephone) {
 		Statement stmt;
 		try {
 			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet worker = stmt.executeQuery("SELECT * FROM workers WHERE worker_ID=" + id + ";");
-			if(!worker.next()) {
+			if (!worker.next()) {
 				ResultSet uprs = stmt.executeQuery("SELECT * FROM workers");
 				uprs.moveToInsertRow();
 				uprs.updateString("worker_ID", id);
@@ -245,16 +289,15 @@ public class EchoServer extends AbstractServer {
 					try {
 						uprs.close();
 					} catch (SQLException e) {
-					/* ignored */}
+						/* ignored */}
 				}
 				if (stmt != null) {
 					try {
 						stmt.close();
 					} catch (SQLException e) {
-					/* ignored */}
+						/* ignored */}
 				}
-			}
-			else {
+			} else {
 				System.out.println("Worker already exists");
 			}
 		} catch (SQLException e) {
