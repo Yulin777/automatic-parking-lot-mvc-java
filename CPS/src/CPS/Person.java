@@ -13,34 +13,25 @@ public class Person {
 	 * @param panme
 	 *            the name of the person
 	 */
-	public Person(String id, String firstName, String lastName, String password, String type, String email, String telephone) {
+	public Person(String id, String firstName, String lastName, String password, String type, String email,
+			String telephone) {
 		if (echoServer == null)
 			echoServer = new EchoServer(DEFAULT_PORT);
 		this.pid = id;
-//		switch (this.getClass().getName()) {
-//		case "DirectorOfCPS":
-//			
-//			break;
-//		
-//		}
-		if(this.getClass().getName().equals("CPS.Customer"))
+
+		if (this.getClass().getName().equals("CPS.Customer"))
 			echoServer.addNewClient(id, firstName, lastName, password, type, email, telephone);
 		else
 			echoServer.addNewWorker(id, firstName, lastName, password, type, email, telephone);
 
-				
 	}
-	
-
 
 	public String getPid() {
 		return this.pid;
 	}
 
-
 	public boolean login() {
 		return false;
 	}
-
 
 }

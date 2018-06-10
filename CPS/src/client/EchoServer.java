@@ -30,7 +30,7 @@ public class EchoServer extends AbstractServer {
 	 * The default port to listen on.
 	 */
 	final public static int DEFAULT_PORT = 5555;
-	public Connection conn;
+	public static Connection conn;
 	// Constructors ****************************************************
 
 	/**
@@ -84,12 +84,12 @@ public class EchoServer extends AbstractServer {
 		}
 
 		if (cmd[0].equals("get") && cmd[1].equals("client") && cmd[2].equals("cars")) {
-			this.sendToAllClients(getClientCarsById(conn, cmd[3]));
+			this.sendToAllClients(getClientCarsById(cmd[3]));
 		}
 
 		else if (cmd[0].equals("get") && cmd[1].equals("client")) {
 
-			this.sendToAllClients(getClientById(conn, cmd[2]));
+			this.sendToAllClients(getClientById(cmd[2]));
 		} else if (cmd[0].equals("add") && cmd[1].equals("client")) {
 			this.sendToAllClients(addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
 		}
@@ -99,7 +99,7 @@ public class EchoServer extends AbstractServer {
 		}
 
 		else if (cmd[0].equals("get") && cmd[1].equals("car") && cmd[2].equals("owner")) {
-			this.sendToAllClients(getCarOwnerByCarId(conn, cmd[3]));
+			this.sendToAllClients(getCarOwnerByCarId(cmd[3]));
 		}
 
 	}
@@ -155,11 +155,11 @@ public class EchoServer extends AbstractServer {
 
 	}
 
-	private static String getClientById(Connection con, String id) {
+	public static String getClientById(String id) {
 		Statement stmt;
 		String return_res = null;
 		try {
-			stmt = con.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
 			while (rs.next()) {
@@ -188,11 +188,11 @@ public class EchoServer extends AbstractServer {
 		return return_res;
 	}
 
-	private static String getCarOwnerByCarId(Connection con, String id) {
+	public String getCarOwnerByCarId(String id) {
 		Statement stmt;
 		String return_res = null;
 		try {
-			stmt = con.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM cars WHERE car_ID=" + id + ";");
 			while (rs.next()) {
@@ -220,11 +220,11 @@ public class EchoServer extends AbstractServer {
 		return return_res;
 	}
 
-	private static String getClientCarsById(Connection con, String id) {
+	public String getClientCarsById(String id) {
 		Statement stmt;
 		String return_res = "";
 		try {
-			stmt = con.createStatement();
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + id + ";");
 			while (rs.next()) {
@@ -301,6 +301,10 @@ public class EchoServer extends AbstractServer {
 		try {
 			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
+			ResultSet car = stmt.executeQuery("SELECT * FROM cars WHERE car_ID=" + carID + ";");
+			if (car.next()) {
+				return ("car already exists");
+			}
 			ResultSet client = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + clientID + ";");
 			if (client.next()) {
 				ResultSet uprs = stmt.executeQuery("SELECT * FROM cars");
