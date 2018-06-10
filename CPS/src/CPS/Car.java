@@ -1,9 +1,12 @@
 package CPS;
 
 public class Car {
-	int cnumber;
-	int ownerId;
+	String cnumber;
+	String ownerId;
 	
+	public Car(String cnumber, String owner) {
+		
+	}
 	public int getCnumber() {
 		return cnumber;
 	}

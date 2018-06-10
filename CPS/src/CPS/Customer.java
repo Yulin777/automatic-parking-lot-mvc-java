@@ -1,72 +1,38 @@
 package CPS;
 
-public class Customer implements Person {
+import java.util.ArrayList;
 
-	
-	int pid;
-	String pname;
-	String email;
-	Car[] cars;
+public class Customer extends Person {
+	ArrayList<Car> cars;
 
-	
-	public String getEmail() {
-		return email;
+	public Customer(String id, String firstName, String lastName, String password, String type, String email,
+			String telephone) {
+		super(id, firstName, lastName, password, type, email, telephone);
+		cars = new ArrayList<Car>();
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	
-	@Override
-	public int getPid() {
+	public int orderParking() {
 		return 0;
 	}
 
-	@Override
-	public void setPid(int pid) {
-
-	}
-
-	@Override
-	public String getPname() {
-		return null;
-	}
-
-	@Override
-	public void setPname(String pname) {
-		// 
-
-	}
-
-	@Override
-	public boolean login() {
-		// 
+	public boolean subscribe() {
 		return false;
 	}
-	
-	public int orderParking(){
-		return 0;
+
+	// TODO: return type is Unknown
+	public void trackOrder() {
+
 	}
-	
-	public boolean subscribe(){
-		return false;
+
+	public ArrayList<Car> getCars() {
+		return cars;
 	}
-	
-	//TODO: return type is Unknown
-	public void trackOrder(){
-		
+
+	public void addCar(Car car) {
+		cars.add(car);
 	}
-	
-	public Car[] getCars(){
-		return null;
-	}
-	
-	public void setCars(Car[] cars){
-		
-	}
-	
-	public boolean placeOrder(){
+
+	public boolean placeOrder() {
 		return false;
 	}
 
