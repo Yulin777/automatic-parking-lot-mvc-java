@@ -83,24 +83,25 @@ public class EchoServer extends AbstractServer {
 			System.out.println("too few arguments,at least 3 are needed");
 		}
 
-		if (cmd[0].equals("get") && cmd[1].equals("client")) {
+		if (cmd[0].equals("get") && cmd[1].equals("client") && cmd[2].equals("cars")) {
+			this.sendToAllClients(getClientCarsById(conn, cmd[3]));
+		}
+
+		else if (cmd[0].equals("get") && cmd[1].equals("client")) {
 
 			this.sendToAllClients(getClientById(conn, cmd[2]));
-		}
-		if (cmd[0].equals("add") && cmd[1].equals("client")) {
+		} else if (cmd[0].equals("add") && cmd[1].equals("client")) {
 			this.sendToAllClients(addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
 		}
 
-		if (cmd[0].equals("add") && cmd[1].equals("car")) {
+		else if (cmd[0].equals("add") && cmd[1].equals("car")) {
 			this.sendToAllClients(addNewCarToClient(cmd[2], cmd[3]));
 		}
 
-		if (cmd[0].equals("get") && cmd[1].equals("car") && cmd[2].equals("owner")) {
-			this.sendToAllClients(getCarOwnerByCarId(conn,cmd[3]));
+		else if (cmd[0].equals("get") && cmd[1].equals("car") && cmd[2].equals("owner")) {
+			this.sendToAllClients(getCarOwnerByCarId(conn, cmd[3]));
 		}
-		else {
-			System.out.println("wrong input");
-		}
+
 	}
 
 	/**
@@ -197,6 +198,38 @@ public class EchoServer extends AbstractServer {
 			while (rs.next()) {
 				// Print out the values
 				return_res = (rs.getString(2)); // client id
+			}
+
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					/* ignored */}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					/* ignored */}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return return_res;
+	}
+
+	private static String getClientCarsById(Connection con, String id) {
+		Statement stmt;
+		String return_res = "";
+		try {
+			stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + id + ";");
+			while (rs.next()) {
+				// Print out the values
+				return_res += (rs.getString(1)) + " "; // client id
 			}
 
 			if (rs != null) {
