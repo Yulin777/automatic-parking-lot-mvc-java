@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -102,6 +103,13 @@ public class EchoServer extends AbstractServer {
 			this.sendToAllClients(getCarOwnerByCarId(cmd[3]));
 		}
 
+		else if (cmd[0].equals("add") && cmd[1].equals("subscription")) {
+			this.addNewSubscription(cmd[2], cmd[3], 
+					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[4]), Integer.parseInt(cmd[5]), Integer.parseInt(cmd[6])).atStartOfDay()), 
+					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[7]), Integer.parseInt(cmd[8]), Integer.parseInt(cmd[9])).atStartOfDay())
+					);
+		}
+		// add subscription [client_id] [car_id] [start_year] [start_month] [start day] [end_year] [end_month] [end_day]
 	}
 
 	/**
@@ -380,6 +388,50 @@ public class EchoServer extends AbstractServer {
 		}
 
 		return ("New worker was added succsfully");
+	}
+
+	public String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate, java.sql.Timestamp endDate) {
+		Statement stmt;
+		try {
+			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+			ResultSet c = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + cliendID + ";");
+			if (!c.next()) {
+				return ("no client with such id");
+			}
+			ResultSet client = stmt.executeQuery("SELECT * FROM subscriptions WHERE client_ID=" + cliendID + ";");
+			if (!client.next()) {
+				ResultSet uprs = stmt.executeQuery("SELECT * FROM subscriptions");
+				uprs.moveToInsertRow();
+				uprs.updateString("client_ID", cliendID);
+				uprs.updateString("car_ID", carID);
+				uprs.updateTimestamp("start_date",  startDate);
+				uprs.updateTimestamp("end_date",  endDate);
+
+				uprs.insertRow();
+
+				System.out.println("New subscription was added succsfully");
+
+				if (uprs != null) {
+					try {
+						uprs.close();
+					} catch (SQLException e) {
+						/* ignored */}
+				}
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+						/* ignored */}
+				}
+			} else {
+				return ("client already has subscription");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ("New subscription was added succsfully");
 	}
 
 }

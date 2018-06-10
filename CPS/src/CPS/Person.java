@@ -3,7 +3,6 @@ package CPS;
 import client.EchoServer;
 
 public class Person {
-	final public static int DEFAULT_PORT = 5555;
 	EchoServer echoServer;
 	String pid;
 
@@ -16,7 +15,7 @@ public class Person {
 	public Person(String id, String firstName, String lastName, String password, String type, String email,
 			String telephone) {
 		if (echoServer == null)
-			echoServer = new EchoServer(DEFAULT_PORT);
+			echoServer = new EchoServer(EchoServer.DEFAULT_PORT);
 		this.pid = id;
 
 		if (this.getClass().getName().equals("CPS.Customer"))
