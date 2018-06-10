@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
+import CPS.Car;
+import CPS.Customer;
+import CPS.Person;
+import CPS.Subscription;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -85,18 +89,18 @@ public class EchoServer extends AbstractServer {
 		}
 
 		if (cmd[0].equals("get") && cmd[1].equals("client") && cmd[2].equals("cars")) {
-			this.sendToAllClients(getClientCarsById(cmd[3]));
+			this.sendToAllClients(Car.getClientCarsById(cmd[3]));
 		}
 
 		else if (cmd[0].equals("get") && cmd[1].equals("client")) {
 
-			this.sendToAllClients(getClientById(cmd[2]));
+			this.sendToAllClients(Customer.getClientById(cmd[2]));
 		} else if (cmd[0].equals("add") && cmd[1].equals("client")) {
-			this.sendToAllClients(addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
+			this.sendToAllClients(Person.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
 		}
 
 		else if (cmd[0].equals("add") && cmd[1].equals("car")) {
-			this.sendToAllClients(addNewCarToClient(cmd[2], cmd[3]));
+			this.sendToAllClients(Car.addNewCarToClient(cmd[2], cmd[3]));
 		}
 
 		else if (cmd[0].equals("get") && cmd[1].equals("car") && cmd[2].equals("owner")) {
@@ -104,7 +108,7 @@ public class EchoServer extends AbstractServer {
 		}
 
 		else if (cmd[0].equals("add") && cmd[1].equals("subscription")) {
-			this.addNewSubscription(cmd[2], cmd[3], 
+			Subscription.addNewSubscription(cmd[2], cmd[3], 
 					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[4]), Integer.parseInt(cmd[5]), Integer.parseInt(cmd[6])).atStartOfDay()), 
 					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[7]), Integer.parseInt(cmd[8]), Integer.parseInt(cmd[9])).atStartOfDay())
 					);
@@ -163,39 +167,6 @@ public class EchoServer extends AbstractServer {
 
 	}
 
-	public static String getClientById(String id) {
-		Statement stmt;
-		String return_res = null;
-		try {
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet rs = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
-			while (rs.next()) {
-				// Print out the values
-				return_res = (rs.getString(1) + "  " + rs.getString(2) + " " + rs.getString(3) + " , " + rs.getString(4)
-						+ " , " + rs.getString(5) + " , " + rs.getString(6));
-			}
-
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					/* ignored */}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					/* ignored */}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return return_res;
-	}
-
 	public String getCarOwnerByCarId(String id) {
 		Statement stmt;
 		String return_res = null;
@@ -226,213 +197,6 @@ public class EchoServer extends AbstractServer {
 		}
 
 		return return_res;
-	}
-
-	public String getClientCarsById(String id) {
-		Statement stmt;
-		String return_res = "";
-		try {
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet rs = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + id + ";");
-			while (rs.next()) {
-				// Print out the values
-				return_res += (rs.getString(1)) + " "; // client id
-			}
-
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					/* ignored */}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					/* ignored */}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return return_res;
-	}
-
-	public String addNewClient(String id, String firstName, String lastName, String password, String type, String email,
-			String telephone) {
-		Statement stmt;
-		try {
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet client = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
-			if (!client.next()) {
-				ResultSet uprs = stmt.executeQuery("SELECT * FROM clients");
-				uprs.moveToInsertRow();
-				uprs.updateString("client_ID", id);
-				uprs.updateString("client_first_name", firstName);
-				uprs.updateString("client_last_name", lastName);
-				uprs.updateString("client_type", type);
-				uprs.updateString("client_email", email);
-				uprs.updateString("client_telephone", telephone);
-				uprs.updateString("client_password", password);
-
-				uprs.insertRow();
-
-				System.out.println("New client was added succsfully");
-
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-			} else {
-				System.out.println("Client already exists");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return ("New client was added succsfully");
-	}
-
-	public String addNewCarToClient(String clientID, String carID) {
-		Statement stmt;
-		try {
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet car = stmt.executeQuery("SELECT * FROM cars WHERE car_ID=" + carID + ";");
-			if (car.next()) {
-				return ("car already exists");
-			}
-			ResultSet client = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + clientID + ";");
-			if (client.next()) {
-				ResultSet uprs = stmt.executeQuery("SELECT * FROM cars");
-				uprs.moveToInsertRow();
-				uprs.updateString("client_ID", clientID);
-				uprs.updateString("car_ID", carID);
-
-				uprs.insertRow();
-
-				System.out.println("New car was added succsfully");
-
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-			} else {
-				System.out.println("Client does not exist");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return ("New car was added succsfully");
-	}
-
-	public String addNewWorker(String id, String firstName, String lastName, String password, String type, String email,
-			String telephone) {
-		Statement stmt;
-		try {
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet worker = stmt.executeQuery("SELECT * FROM workers WHERE worker_ID=" + id + ";");
-			if (!worker.next()) {
-				ResultSet uprs = stmt.executeQuery("SELECT * FROM workers");
-				uprs.moveToInsertRow();
-				uprs.updateString("worker_ID", id);
-				uprs.updateString("worker_Fname", firstName);
-				uprs.updateString("worker_Lname", lastName);
-				uprs.updateString("worker_type", type);
-				uprs.updateString("worker_email", email);
-				uprs.updateString("worker_phone", telephone);
-				uprs.updateString("worker_password", password);
-
-				uprs.insertRow();
-
-				System.out.println("New worker was added succsfully");
-
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-			} else {
-				System.out.println("Worker already exists");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return ("New worker was added succsfully");
-	}
-
-	public String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate, java.sql.Timestamp endDate) {
-		Statement stmt;
-		try {
-			stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet c = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + cliendID + ";");
-			if (!c.next()) {
-				System.err.println("no client with such id");
-				return ("no client with such id");
-			}
-			ResultSet client = stmt.executeQuery("SELECT * FROM subscriptions WHERE client_ID=" + cliendID + ";");
-			if (!client.next()) {
-				ResultSet uprs = stmt.executeQuery("SELECT * FROM subscriptions");
-				uprs.moveToInsertRow();
-				uprs.updateString("client_ID", cliendID);
-				uprs.updateString("car_ID", carID);
-				uprs.updateTimestamp("start_date",  startDate);
-				uprs.updateTimestamp("end_date",  endDate);
-
-				uprs.insertRow();
-
-				System.out.println("New subscription was added succsfully");
-
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */}
-				}
-			} else {
-				return ("client already has subscription");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return ("New subscription was added succsfully");
 	}
 
 }
