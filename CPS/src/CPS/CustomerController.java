@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
 
 import client.EchoServer;
 
@@ -67,6 +69,9 @@ public class CustomerController {
 			stmt = EchoServer.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + id + ";");
+			if (!rs.next()) {
+				return "no client with such id";
+			}
 			while (rs.next()) {
 				// Print out the values
 				return_res = (rs.getString(1) + "  " + rs.getString(2) + " " + rs.getString(3) + " , " + rs.getString(4)
@@ -137,6 +142,20 @@ public class CustomerController {
 		}
 
 		return ("New subscription was added succsfully");
+	}
+
+	public List<String> login(String id, String password) {
+		String client = getClientById(id);
+
+		if (client.equals("no client with such id")) {
+			return null;
+		}
+
+		List<String> items = Arrays.asList(client.split("\\s*,\\s*"));
+		if (password.equals(items.get(4))) {
+			return items;
+		}
+		return null;
 	}
 
 	public boolean addCarToCustomer(int sid, int carNumber, int customerPid) {
