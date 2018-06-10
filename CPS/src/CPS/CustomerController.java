@@ -12,7 +12,7 @@ public class CustomerController {
 		return false;
 	}
 	
-	public boolean Addsubcription(Customer customer, int carNumber, Date date){
+	public boolean addSubcription(Customer customer, int carNumber, Date date){
 		return false;
 	}
 	
