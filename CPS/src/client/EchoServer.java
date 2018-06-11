@@ -15,6 +15,8 @@ import CPS.Car;
 import CPS.Customer;
 import CPS.Person;
 import CPS.Subscription;
+import CPS.Worker;
+import CPS.WorkerController;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -112,6 +114,10 @@ public class EchoServer extends AbstractServer {
 					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[4]), Integer.parseInt(cmd[5]), Integer.parseInt(cmd[6])).atStartOfDay()), 
 					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[7]), Integer.parseInt(cmd[8]), Integer.parseInt(cmd[9])).atStartOfDay())
 					);
+			
+			
+		else if (cmd[0].equals("login") && cmd[1].equals("worker")) {
+			this.sendToAllClients(WorkerController.getWorker(conn, cmd[2], cmd[3]));
 		}
 		// add subscription [client_id] [car_id] [start_year] [start_month] [start day] [end_year] [end_month] [end_day]
 	}
@@ -198,6 +204,6 @@ public class EchoServer extends AbstractServer {
 
 		return return_res;
 	}
-
 }
+
 // End of EchoServer class
