@@ -1,6 +1,8 @@
 package client;
 // This file contains material supporting section 3.7 of the textbook:
 
+import java.security.GeneralSecurityException;
+
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
@@ -13,6 +15,7 @@ import java.sql.Timestamp;
 
 import CPS.Car;
 import CPS.Customer;
+import CPS.CustomerController;
 import CPS.Person;
 import CPS.Subscription;
 import CPS.Worker;
@@ -96,9 +99,9 @@ public class EchoServer extends AbstractServer {
 
 		else if (cmd[0].equals("get") && cmd[1].equals("client")) {
 
-			this.sendToAllClients(Customer.getClientById(cmd[2]));
+			this.sendToAllClients(CustomerController.getClientById(cmd[2]));
 		} else if (cmd[0].equals("add") && cmd[1].equals("client")) {
-			this.sendToAllClients(Person.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
+			this.sendToAllClients(CustomerController.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]));
 		}
 
 		else if (cmd[0].equals("add") && cmd[1].equals("car")) {
@@ -110,14 +113,20 @@ public class EchoServer extends AbstractServer {
 		}
 
 		else if (cmd[0].equals("add") && cmd[1].equals("subscription")) {
-			Subscription.addNewSubscription(cmd[2], cmd[3], 
+			CustomerController.addNewSubscription(cmd[2], cmd[3], 
 					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[4]), Integer.parseInt(cmd[5]), Integer.parseInt(cmd[6])).atStartOfDay()), 
 					Timestamp.valueOf(java.time.LocalDate.of(Integer.parseInt(cmd[7]), Integer.parseInt(cmd[8]), Integer.parseInt(cmd[9])).atStartOfDay())
 					);
+		}
 			
 			
 		else if (cmd[0].equals("login") && cmd[1].equals("worker")) {
-			this.sendToAllClients(WorkerController.getWorker(conn, cmd[2], cmd[3]));
+			try {
+				this.sendToAllClients(WorkerController.getWorker(conn, cmd[2], cmd[3]));
+			} catch (GeneralSecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		// add subscription [client_id] [car_id] [start_year] [start_month] [start day] [end_year] [end_month] [end_day]
 	}

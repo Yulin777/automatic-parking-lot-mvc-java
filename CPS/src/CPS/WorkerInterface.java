@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.ChatClient;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -80,14 +81,16 @@ public class WorkerInterface extends Application {
     @FXML
     void login(ActionEvent event) 
     {
-    	//TODO create error window
-    	if( !wIC.Login(emailTf.getText(),emailTf.getText()))
-    	{
-    		emailTf.clear();
-    		emailTf.clear();
-    	}
-    	else
     	
+    	//System.out.println("recevied msg "+response);
+    	//TODO create error window
+    	//if( !wIC.Login(emailTf.getText(),emailTf.getText()))
+    	//{
+    	//	emailTf.clear();
+    	//	emailTf.clear();
+    	//}
+    	//else
+    		WorkerInterfaceController.login(emailTf.getText(),emailTf.getText());
     		setInterface(1,"Work Station");
     		window.show();
     	

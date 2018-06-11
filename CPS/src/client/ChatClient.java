@@ -8,6 +8,8 @@ import ocsf.client.*;
 import common.*;
 import java.io.*;
 
+import CPS.WorkerInterfaceController;
+
 /**
  * This class overrides some of the methods defined in the abstract
  * superclass in order to give more functionality to the client.
@@ -26,7 +28,19 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
-
+  final public static int DEFAULT_PORT = 5555;
+  private static ChatClient instance;
+  
+  public static ChatClient getInstance( ) {
+	  if(instance==null)
+		try {
+			instance = new ChatClient();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+      return instance;
+   }
   
   //Constructors ****************************************************
   
@@ -47,7 +61,12 @@ public class ChatClient extends AbstractClient
     this.id=ID;
     openConnection();
   }
-
+  public ChatClient() 
+			throws IOException 
+	{
+		super("", DEFAULT_PORT); //Call the superclass constructor	   
+		openConnection();
+	}
   
   //Instance methods ************************************************
     
@@ -58,7 +77,10 @@ public class ChatClient extends AbstractClient
    */
   public void handleMessageFromServer(Object msg) 
   {
-    clientUI.display(msg.toString());
+	   //clientUI.display(msg.toString());
+	  System.out.println("message recive");
+	  WorkerInterfaceController.response = (String)msg;
+	  
   }
 
   /**
