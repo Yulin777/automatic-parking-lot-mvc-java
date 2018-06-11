@@ -10,7 +10,7 @@ public class ParkingStation {
 	ParkingSlot[] parkingSlots;
 	
 	public ParkingStation(int number, String address, DirectorOfParkingStation director, int[] workers,
-			ParkingStationSize size, ParkingSlot[] parkingSlots) {
+			int size, ParkingSlot[] parkingSlots) {
 		this.number = number;
 		this.address = address;
 		this.director = director;

@@ -12,7 +12,11 @@ public class Worker extends Person {
 		super(id, firstName, lastName, password, type, email, telephone);
 	}
 
-
+	enum WorkerType
+	{
+		ParkingWorker, MasterManger, CustomerService;
+	}
+	
 	public boolean setup() {
 		return false;
 	}
