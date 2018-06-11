@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane minHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.LoginViewController">
+   <children>
+      <Button fx:id="login_btn" layoutX="214.0" layoutY="214.0" mnemonicParsing="false" onAction="#login" text="Log in" />
+      <RadioButton fx:id="manager_radio" layoutX="81.0" layoutY="134.0" mnemonicParsing="false" text="log as manager ">
+         <toggleGroup>
+            <ToggleGroup fx:id="type" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="worker_radio" layoutX="223.0" layoutY="134.0" mnemonicParsing="false" text="log as worker" toggleGroup="$type" />
+      <RadioButton fx:id="customer_radio" layoutX="346.0" layoutY="134.0" mnemonicParsing="false" text="log as customer" toggleGroup="$type" />
+      <TextField fx:id="email_bar" layoutX="127.0" layoutY="29.0" prefHeight="25.0" prefWidth="251.0" promptText="email:" />
+      <TextField fx:id="password_bar" layoutX="127.0" layoutY="75.0" prefHeight="25.0" prefWidth="251.0" promptText="password:" />
+      <Label fx:id="error_msg_info" layoutX="191.0" layoutY="1.0" text="error_msg_info" textFill="#ae0f0f">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="error_msg_btn" layoutX="193.0" layoutY="100.0" text="error_msg_btn" textFill="#ae0f0f">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
