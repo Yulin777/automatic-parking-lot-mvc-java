@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.WorkerViewController">
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.PersonViewController">
    <children>
       <Label fx:id="worker_name_label" layoutX="50.0" layoutY="48.0" text="worker name" />
       <Button fx:id="worker_report_btn" layoutX="391.0" layoutY="48.0" mnemonicParsing="false" onAction="#worker_report" prefHeight="35.0" prefWidth="120.0" text="Show Report" />

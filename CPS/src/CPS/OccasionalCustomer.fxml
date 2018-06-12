@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.media.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Button layoutX="13.0" layoutY="252.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="63.0" text="back" />
+      <Button layoutX="401.0" layoutY="150.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="427.0" layoutY="75.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="427.0" layoutY="44.0" mnemonicParsing="false" text="Button" />
+      <Label layoutX="111.0" layoutY="6.0" text="please enter the following requirements" />
+      <TextField layoutX="148.0" layoutY="111.0" text="car number:" />
+      <TextField layoutX="134.0" layoutY="69.0" text="id:" />
+      <TextField layoutX="142.0" layoutY="156.0" text="car park:" />
+      <TextField layoutX="142.0" layoutY="212.0" text="email:" />
+      <TextField layoutX="148.0" layoutY="187.0" text="end date and time:" />
+      <DatePicker layoutX="103.0" layoutY="199.0" />
+      <Label layoutX="76.0" layoutY="36.0" />
+      <Label layoutX="53.0" layoutY="107.0" text="hello_msg" />
+      <Label layoutX="60.0" layoutY="103.0" text="hello_msg" />
+      <Label layoutX="53.0" layoutY="115.0" text="hello_msg" />
+      <Label layoutX="60.0" layoutY="142.0" text="hello_msg" />
+   </children>
+</AnchorPane>

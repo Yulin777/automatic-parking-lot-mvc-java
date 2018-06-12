@@ -39,7 +39,6 @@ public class mainView extends Application
 		url = getClass().getResource(loginStr);
 	    pane = FXMLLoader.load( url );
 	    loginScene = new Scene( pane );
-	    
 	    url = getClass().getResource(workStationStr);
 	    pane = FXMLLoader.load( url );
 	    workStationScene = new Scene(pane);
@@ -49,6 +48,7 @@ public class mainView extends Application
 	   
 	    window.setScene( loginScene );
 	    window.setTitle( "login page" );
+	    
 	    window.show();
 		
 	  }
