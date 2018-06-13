@@ -17,7 +17,6 @@
       <RadioButton fx:id="worker_radio" layoutX="223.0" layoutY="134.0" mnemonicParsing="false" text="log as worker" toggleGroup="$type" />
       <RadioButton fx:id="customer_radio" layoutX="346.0" layoutY="134.0" mnemonicParsing="false" text="log as customer" toggleGroup="$type" />
       <TextField fx:id="email_bar" layoutX="127.0" layoutY="29.0" prefHeight="25.0" prefWidth="251.0" promptText="email:" />
-      <TextField fx:id="password_bar" layoutX="127.0" layoutY="75.0" prefHeight="25.0" prefWidth="251.0" promptText="password:" />
       <Label fx:id="error_msg_info" layoutX="191.0" layoutY="1.0" text="error_msg_info" textFill="#ae0f0f">
          <font>
             <Font size="18.0" />
@@ -28,5 +27,6 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <PasswordField fx:id="password_bar" layoutX="127.0" layoutY="65.0" prefHeight="25.0" prefWidth="251.0" promptText="password:" />
    </children>
 </AnchorPane>
