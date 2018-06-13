@@ -2,11 +2,12 @@
  * Sample Skeleton for 'LoginView.fxml' Controller Class
  */
 
-package CPS;
+package CPS.View;
 
 
 import java.io.IOException;
 
+import CPS.WorkerInterfaceController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

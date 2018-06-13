@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane minHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.LoginViewController">
+<AnchorPane minHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.LoginViewController">
    <children>
       <Button fx:id="login_btn" layoutX="214.0" layoutY="214.0" mnemonicParsing="false" onAction="#login" text="Log in" />
       <RadioButton fx:id="manager_radio" layoutX="81.0" layoutY="134.0" mnemonicParsing="false" text="log as manager ">
