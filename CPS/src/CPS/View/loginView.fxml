@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -9,7 +10,7 @@
 
 <AnchorPane minHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.LoginViewController">
    <children>
-      <Button fx:id="login_btn" layoutX="214.0" layoutY="214.0" mnemonicParsing="false" onAction="#login" text="Log in" />
+      <Button fx:id="login_btn" layoutX="191.0" layoutY="227.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="106.0" text="Log in" />
       <RadioButton fx:id="manager_radio" layoutX="81.0" layoutY="134.0" mnemonicParsing="false" text="log as manager ">
          <toggleGroup>
             <ToggleGroup fx:id="type" />
@@ -28,5 +29,7 @@
          </font>
       </Label>
       <PasswordField fx:id="password_bar" layoutX="127.0" layoutY="65.0" prefHeight="25.0" prefWidth="251.0" promptText="password:" />
+      <Button fx:id="log_as_occasional_customer_btn" layoutX="308.0" layoutY="189.0" mnemonicParsing="false" onAction="#log_as_occasional_customer" prefHeight="25.0" prefWidth="178.0" text="Log as occasional customer" />
+      <Button fx:id="log_as_in_advance_customer_btn" layoutX="308.0" layoutY="227.0" mnemonicParsing="false" onAction="#log_as_in_advance_customer" prefHeight="25.0" prefWidth="178.0" text="I ordered in advance" />
    </children>
 </AnchorPane>

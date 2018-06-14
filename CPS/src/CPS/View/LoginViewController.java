@@ -46,9 +46,25 @@ public class LoginViewController {
     @FXML // fx:id="error_msg_info"
     private Label error_msg_info; // Value injected by FXMLLoader
 
-    
-   
-    
+    @FXML
+    private Button log_as_in_advance_customer_btn;
+
+    @FXML
+    private Button log_as_occasional_customer_btn;
+
+    @FXML
+    void log_as_occasional_customer(ActionEvent event) throws IOException {
+        String url = "OccasionalCustomer.fxml";
+        switchWindow(url);
+        switchScene(event);
+    }
+
+    @FXML
+    void log_as_in_advance_customer(ActionEvent event) throws IOException {
+
+
+    }
+
     
     @FXML
     void login(ActionEvent event) throws IOException 
@@ -137,8 +153,13 @@ public class LoginViewController {
         tableViewScene = new Scene(tableViewParent);
     	
     }
-    
-    
+
+    void switchScene(ActionEvent event)
+    {
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(tableViewScene);
+        window.show();
+    }
     
     
 
