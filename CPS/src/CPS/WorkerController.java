@@ -24,7 +24,7 @@ public class WorkerController {
 			
 				ResultSet rs = stmt.executeQuery("SELECT * FROM workers WHERE worker_email=" + email + ";");
 				
-				if(rs.next()) //we have atleast one result
+				if(rs.next()) //we have at least one result
 		 		{
 		 			if(rs.getString(5).equals(sha_pass))//check if this is the correct password
 		 			{

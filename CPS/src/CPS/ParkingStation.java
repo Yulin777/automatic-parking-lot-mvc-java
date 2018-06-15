@@ -6,7 +6,8 @@ public class ParkingStation {
 	String address;
 	DirectorOfParkingStation director;
 	int[] workers; 
-	ParkingStationSize size; 
+	/*ParkingStationSize size;*/ 
+	int size; 
 	ParkingSlot[] parkingSlots;
 	
 	public ParkingStation(int number, String address, DirectorOfParkingStation director, int[] workers,
@@ -44,10 +45,17 @@ public class ParkingStation {
 	public void setWorkers(int[] workers) {
 		this.workers = workers;
 	}
-	public ParkingStationSize getSize() {
+//	public ParkingStationSize getSize() {
+//		return size;
+//	}
+//	public void setSize(ParkingStationSize size) {
+//		this.size = size;
+//	}
+	
+	public int getSize() {
 		return size;
 	}
-	public void setSize(ParkingStationSize size) {
+	public void setSize(int size) {
 		this.size = size;
 	}
 	public ParkingSlot[] getParkingSlots() {
