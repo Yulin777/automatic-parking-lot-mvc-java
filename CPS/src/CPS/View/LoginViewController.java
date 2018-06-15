@@ -7,6 +7,7 @@ package CPS.View;
 
 import java.io.IOException;
 
+import javafx.scene.control.ProgressIndicator;
 import CPS.WorkerInterfaceController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +22,16 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LoginViewController {
+
+
+
+
+
+
+
+
+
+
 
     @FXML // fx:id="manager_radio"
     private RadioButton manager_radio; // Value injected by FXMLLoader
@@ -53,15 +64,26 @@ public class LoginViewController {
     private Button log_as_occasional_customer_btn;
 
     @FXML
+    private Button login_view_customer_sign_in_btn;
+
+    @FXML
+    private ProgressIndicator login_view_progress_bar;
+
+
+
+
+    @FXML
     void log_as_occasional_customer(ActionEvent event) throws IOException {
         String url = "OccasionalCustomer.fxml";
         switchWindow(url);
-        switchScene(event);
+        switchScene(event,"occasional customer");
     }
 
     @FXML
     void log_as_in_advance_customer(ActionEvent event) throws IOException {
-
+        String url = "InAdvanceCustomer.fxml";
+        switchWindow(url);
+        switchScene(event, "order in advance");
 
     }
 
@@ -69,57 +91,79 @@ public class LoginViewController {
     @FXML
     void login(ActionEvent event) throws IOException 
     {
-    	String url="";
+        login_view_progress_bar.setVisible(true);
+
+        String url="";
     	String title="";
-    	//TODO create error window
-    	if( !WorkerInterfaceController.login(email_bar.getText(),password_bar.getText()))
-    	{
+    	String err_msg="";
+    	//TODO need to consider what kind of login
+
+       //     Client c = new Client();
+    	/*if( !WorkerInterfaceController.login(email_bar.getText(),password_bar.getText()))
+
+        {
     		email_bar.clear();
     		password_bar.clear();
-    		error_msg_info.setVisible(true);
-    		error_msg_info.setText("Wrong Parameters ! ");
+    		//error_msg_info.setVisible(true);
+    		//error_msg_info.setText("Wrong Parameters ! ");
+            err_msg = err_msg + "Wrong Parameters\n";
+           // createErrMsg(event, "Wrong Parameters ! ");
     		
-    	}
-    		
-    	
-    	
+    	}*/
+
+
     	if(worker_radio.isSelected())
     	{
-        WorkerInterfaceController.login(email_bar.getText(),password_bar.getText());
+       /*   if( !c.loginAsWorker(email_bar.getText(),password_bar.getText()))
+            {
+                err_msg = err_msg + "You are not a worker\n";
+                return;
+            }*/
+
+        //WorkerInterfaceController.login(email_bar.getText(),password_bar.getText());
     	url = "workerView.fxml";
     	switchWindow(url);
         PersonViewController controller = loader.getController();
         controller.setWorkerName(email_bar.getText());
         controller.setWorkerInterfaceController(wIC);
-        error_msg_info.setVisible(false);
-        error_msg_btn.setVisible(false);
         title = "Worker Interface";
     	}
     	
     	else
     		if(manager_radio.isSelected())
         	{
-            WorkerInterfaceController.login(email_bar.getText(),password_bar.getText());
+             /*   if( !c.loginAsManager(email_bar.getText(),password_bar.getText()))
+                {
+                    err_msg = err_msg + "You are not a worker\n";
+                    return;
+                }*/
+
+            //WorkerInterfaceController.login(email_bar.getText(),password_bar.getText());
         	url = "ManagerView.fxml";
         	switchWindow(url);
             PersonViewController controller = loader.getController();
             controller.setManagerName(email_bar.getText());
             title = "Manager Interface";
           //  controller.setWorkerInterfaceController(wIC);
-          //  error_msg_info.setVisible(false);
-           // error_msg_btn.setVisible(false);
         	}
         	
         
     	else
     	{
-            error_msg_btn.setVisible(true);
-    		System.out.println("no button clicked");
-    		return;
+            err_msg = err_msg + "no button clicked\n";
+
     	}
+if (!err_msg.isEmpty()) {
+    createErrMsg(event, "no button clicked");
+    login_view_progress_bar.setVisible(false);
+
+    return;
+}
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
 	    window.setTitle( title );
+        login_view_progress_bar.setVisible(false);
+
         window.show();
     }
     
@@ -129,6 +173,7 @@ public class LoginViewController {
     private Parent tableViewParent;
     private Scene tableViewScene;
 	WorkerInterfaceController wIC;
+
 
 	public LoginViewController()
     {
@@ -154,13 +199,51 @@ public class LoginViewController {
     	
     }
 
-    void switchScene(ActionEvent event)
+    void switchScene(ActionEvent event, String pageTitle)
     {
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
+        window.setTitle(pageTitle);
         window.show();
     }
     
-    
 
+    void createErrMsg(ActionEvent event,String errMsg) throws IOException {
+        Stage err_win;
+        switchWindow("ErrorMsg.fxml");
+
+        PersonViewController controller = loader.getController();
+        controller.setErrLabel(errMsg);
+
+        err_win =  new Stage();
+        err_win.setScene(tableViewScene);
+        err_win.setTitle("error window");
+        err_win.show();
+
+
+    }
+
+
+    @FXML
+    void login_view_customer_sign_in(ActionEvent event) throws IOException {
+        String url = "CustomerSignIn.fxml";
+        switchWindow(url);
+        switchScene(event,"sign in");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
 }

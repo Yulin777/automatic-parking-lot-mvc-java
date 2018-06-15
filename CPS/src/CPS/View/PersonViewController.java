@@ -28,8 +28,120 @@ import javafx.scene.control.TextField;
 
 public class PersonViewController {
 
-	
-	 //------------------------------WORKER------------------------------------------
+
+
+
+
+
+
+    //-----------------------Customer Sign In---------------------------------
+
+
+
+
+    @FXML
+    private DatePicker Customer_Sign_In_Sign_In_date_picker_btn;
+
+    @FXML
+    private Button Customer_Sign_In_Sign_In_back_btn;
+
+    @FXML
+    private TextField Customer_Sign_In_Sign_In_car_number_btn;
+
+    @FXML
+    private TextField Customer_Sign_In_Sign_In_email_btn;
+
+    @FXML
+    private TextField Customer_Sign_In_Sign_In_id_btn;
+
+    @FXML
+    private Button Customer_Sign_In_Sign_In_btn;
+
+    @FXML
+    void Customer_Sign_In_Sign_In(ActionEvent event) throws IOException {
+        String id=Customer_Sign_In_Sign_In_id_btn.getText();
+        String car_number = Customer_Sign_In_Sign_In_car_number_btn.getText();
+        String email = Customer_Sign_In_Sign_In_email_btn.getText();
+        LocalDate start_date = Customer_Sign_In_Sign_In_date_picker_btn.getValue();
+        String err_msg = Customer_Sign_In_InputIsValid(id,car_number,email,start_date );
+
+        if(!err_msg.isEmpty())
+        {
+            //TODO error msg
+            createErrMsg(event, err_msg);
+
+            return;
+        }
+
+    }
+
+
+
+    private String Customer_Sign_In_InputIsValid(String id, String car_number, String email,LocalDate end_date )
+    {
+        String msg = "";
+        if(id.isEmpty())
+            msg = msg + "id is empty\n";
+        if(car_number.isEmpty())
+            msg = msg + "car_number is empty\n";
+        if(email.isEmpty())
+            msg = msg + "email is empty\n";
+        if( end_date != null)
+        {
+            LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date))
+                msg = msg + "choose only future dates\n";
+        }
+        else
+            msg = msg + "date is empty\n";
+
+        return msg;
+    }
+
+
+
+
+    @FXML
+    void Customer_Sign_In_Sign_In_back(ActionEvent event) throws IOException {
+        String url = "LoginView.fxml";
+        switchWindow(url);
+        switchScene(event,"login page");
+    }
+
+
+
+
+
+    //------------------------^^^^Customer Sign In^^^----------------------------------
+
+
+    //--------------------error msg-----------------------------------
+    @FXML
+    private Label err_msg_label;
+
+    @FXML
+    private Button err_msg_ok_btn;
+
+    @FXML
+    void err_msg_ok(ActionEvent event) {
+
+        Stage stage = (Stage) err_msg_ok_btn.getScene().getWindow();
+        stage.close();
+    }
+
+    void setErrLabel(String str)
+    {
+        err_msg_label.setText(str);
+    }
+
+    //--------------------^^error msg ^^-----------------------------------
+
+
+
+
+
+
+    //------------------------------WORKER------------------------------------------
     @FXML // fx:id="worker_log_out_btn"
     private Button worker_log_out_btn; // Value injected by FXMLLoader
 
@@ -67,7 +179,7 @@ return;
     	
     	String url = "LoginView.fxml";
     	switchWindow(url);
-        switchScene(event);
+        switchScene(event, "login page");
        /* Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();*/
@@ -108,7 +220,7 @@ return;
     {
     	String url = "LoginView.fxml";
     	switchWindow(url);
-        switchScene(event);
+        switchScene(event, "login page");
     	/*Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();*/
@@ -149,11 +261,20 @@ return;
         @FXML // fx:id="Occasional_Customer_end_time"
         private TextField Occasional_Customer_end_time; // Value injected by FXMLLoader
 
+    void createErrMsg(ActionEvent event,String errMsg) throws IOException {
+        switchWindow("ErrorMsg.fxml");
+        Stage err_win_instance;
+        PersonViewController controller = loader.getController();
+        controller.setErrLabel(errMsg);
+        err_win_instance = new Stage();
+        err_win_instance.setScene(tableViewScene);
+        err_win_instance.setTitle("error window");
+        err_win_instance.show();
+    }
 
 
     @FXML
-    void Occasional_Customer_Order(ActionEvent event)
-    {
+    void Occasional_Customer_Order(ActionEvent event) throws IOException {
 
         String id=Occasional_Customer_id.getText();
         String car_number = Occasional_Customer_car_number.getText();
@@ -166,7 +287,8 @@ return;
         if(!err_msg.isEmpty())
         {
             //TODO error msg
-            System.out.println(err_msg);
+            //System.out.println(err_msg);
+            createErrMsg(event, err_msg);
 
 
             return;
@@ -200,7 +322,7 @@ return;
         }
         //TODO checck also time and hour
         if(end_time.isEmpty())
-            msg = msg + "email is empty\n";
+            msg = msg + "end time is empty\n";
 
     return msg;
     }
@@ -209,21 +331,129 @@ return;
     void Occasional_Customer_back(ActionEvent event) throws IOException {
         String url = "LoginView.fxml";
         switchWindow(url);
-        switchScene(event);
+        switchScene(event,"login page");
     }
 
 
-    @FXML
-    void DatePicked(ActionEvent event) {
 
-    }
+
         //---------------------------^^Occasional Customer^^----------------------------------
 
 
 
 
+//------------------------------------In Advance Customer ----------------------------
+    @FXML // fx:id="In_Advance_Customer_back_btn"
+    private Button In_Advance_Customer_back_btn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_end_time"
+    private TextField In_Advance_Customer_end_time; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_email"
+    private TextField In_Advance_Customer_email; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_order"
+    private Button In_Advance_Customer_order; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_car_park"
+    private TextField In_Advance_Customer_car_park; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_start_date"
+    private DatePicker In_Advance_Customer_start_date; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_id"
+    private TextField In_Advance_Customer_id; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_end_date"
+    private DatePicker In_Advance_Customer_end_date; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_start_time"
+    private TextField In_Advance_Customer_start_time; // Value injected by FXMLLoader
+
+    @FXML // fx:id="In_Advance_Customer_car_number"
+    private TextField In_Advance_Customer_car_number; // Value injected by FXMLLoader
+
+    @FXML
+    void DatePicked(ActionEvent event) {
+
+    }
+
+    @FXML
+    void In_Advance_Customer_back(ActionEvent event) throws IOException {
+        String url = "LoginView.fxml";
+        switchWindow(url);
+        switchScene(event, "login page");
+    }
+
+    @FXML
+    void In_Advance_Customer__Order(ActionEvent event) throws IOException {
+        String id=In_Advance_Customer_id.getText();
+        String car_number = In_Advance_Customer_car_number.getText();
+        String car_park = In_Advance_Customer_car_park.getText();
+        String email = In_Advance_Customer_email.getText();
+        LocalDate start_date = In_Advance_Customer_start_date.getValue();
+        String start_time = In_Advance_Customer_start_time.getText();
+        LocalDate end_date = In_Advance_Customer_end_date.getValue();
+        String end_time = In_Advance_Customer_end_time.getText();
+        String err_msg = In_Advance_Customer_inputIsValid(id,car_number,car_park,email,start_date,start_time, end_date,end_time );
+
+        if(!err_msg.isEmpty())
+        {
+            //TODO error msg
+            //System.out.println(err_msg);
+            createErrMsg(event, err_msg);
 
 
+            return;
+        }
+
+    }
+
+
+    private String In_Advance_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate start_date,String start_time,LocalDate end_date,String end_time )
+    {
+        String msg = "";
+
+        if(id.isEmpty())
+            msg = msg + "id is empty\n";
+        if(car_number.isEmpty())
+            msg = msg + "car_number is empty\n";
+        if(car_park.isEmpty())
+            msg = msg + "car_park is empty\n";
+        if(email.isEmpty())
+            msg = msg + "email is empty\n";
+
+        if( start_date != null && end_date != null)
+        {
+            LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date) || today.isAfter(start_date))
+                msg = msg + "choose only future dates\n";
+            if(start_date.isAfter(end_date))
+                msg = msg + "starting date must be prior to ending date\n";
+        }
+        else
+        {
+            msg = msg + "fill all the dates please\n";
+        }
+        //TODO check also time and hour
+        if(start_time.isEmpty())
+            msg = msg + "start time is empty\n";
+        if(end_time.isEmpty())
+            msg = msg + "end time is empty\n";
+
+        return msg;
+    }
+
+
+
+
+
+
+   /* @FXML
+    void DatePicked(ActionEvent event) {
+
+    }*/
+    //--------------------------------^^^^^In Advance Customer^^^^--------------------------
 
 
 
@@ -267,10 +497,11 @@ return;
     }
     
 
-    void switchScene(ActionEvent event)
+    void switchScene(ActionEvent event,String pageTitle)
     {
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
+        window.setTitle(pageTitle);
         window.show();
     }
    //---------------------------------------------------------- 
