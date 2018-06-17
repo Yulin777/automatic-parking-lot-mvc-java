@@ -1,4 +1,4 @@
-package temp;
+package temp_test_example;
 
 public class LinkedList<E> {
     Node<E> head;

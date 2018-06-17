@@ -1,4 +1,4 @@
-package temp;
+package temp_test_example;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class LinkedListTest {
     @Test
     void checkIndex() {
         ll.append(2);
-        assertTrue(ll.checkIndex(2));
+        assertTrue(ll.checkIndex(1));
     }
 
 }
