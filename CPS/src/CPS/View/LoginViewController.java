@@ -69,21 +69,43 @@ public class LoginViewController {
     @FXML
     private ProgressIndicator login_view_progress_bar;
 
+    @FXML
+    private Button login_view_finished_parking_btn;
+
+
+    @FXML
+    void login_view_finished_parking(ActionEvent event) throws IOException {
+        String url = "FinishedParking.fxml";
+        switchWindow(url);
+        switchScene(event,"Finish Parking");
+    }
 
 
 
     @FXML
     void log_as_occasional_customer(ActionEvent event) throws IOException {
-        String url = "OccasionalCustomer.fxml";
-        switchWindow(url);
-        switchScene(event,"occasional customer");
+
+        changeViewWithDates(event,"OccasionalCustomer.fxml","occasional customer");
+
+        //String url = "OccasionalCustomer.fxml";
+       // switchWindow(url);
+        PersonViewController controller = loader.getController();
+        controller.Occasional_Customer_loadDates();
+       // switchScene(event,"occasional customer");
     }
 
     @FXML
     void log_as_in_advance_customer(ActionEvent event) throws IOException {
-        String url = "InAdvanceCustomer.fxml";
-        switchWindow(url);
-        switchScene(event, "order in advance");
+
+        changeViewWithDates(event,"InAdvanceCustomer.fxml","order in advance");
+
+        //String url = "InAdvanceCustomer.fxml";
+        //switchWindow(url);
+        PersonViewController controller = loader.getController();
+        controller.In_Advance_Customer_loadDates();
+        //switchScene(event, "order in advance");
+
+
 
     }
 
@@ -146,7 +168,26 @@ public class LoginViewController {
             title = "Manager Interface";
           //  controller.setWorkerInterfaceController(wIC);
         	}
-        	
+
+        if(customer_radio.isSelected())
+        {
+             /*   if( !c.loginAsManager(email_bar.getText(),password_bar.getText()))
+                {
+                    err_msg = err_msg + "You are not a worker\n";
+                    return;
+                }*/
+
+            //WorkerInterfaceController.login(email_bar.getText(),password_bar.getText());
+            url = "CustomerView.fxml";
+            switchWindow(url);
+            PersonViewController controller = loader.getController();
+            controller.setCustomerName(email_bar.getText());
+            title = "Customer Interface";
+            //  controller.setWorkerInterfaceController(wIC);
+        }
+
+
+
         
     	else
     	{
@@ -226,14 +267,22 @@ if (!err_msg.isEmpty()) {
 
     @FXML
     void login_view_customer_sign_in(ActionEvent event) throws IOException {
-        String url = "CustomerSignIn.fxml";
-        switchWindow(url);
-        switchScene(event,"sign in");
+       // String url = "CustomerSignIn.fxml";
+        //switchWindow(url);
+        changeViewWithDates(event,"CustomerSignIn.fxml","sign in");
+        PersonViewController controller = loader.getController();
+        controller.Customer_Sign_In_Sign_In_loadDates();
+       // switchScene(event,"sign in");
+
     }
 
 
 
+void changeViewWithDates(ActionEvent event,String url, String title) throws IOException {
+    switchWindow(url);
+    switchScene(event,title);
 
+}
 
 
 

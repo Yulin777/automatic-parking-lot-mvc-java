@@ -8,12 +8,12 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysql.jdbc.PreparedStatement;
+//import com.mysql.jdbc.PreparedStatement;
 
 
 public class CustomerController {
 	
-	private static sqlConnection sql = sqlConnection.getInstant();
+	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 	public CustomerController() {
 
 	}
