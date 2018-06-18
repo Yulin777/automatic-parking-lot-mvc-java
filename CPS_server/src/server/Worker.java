@@ -10,7 +10,7 @@ public class Worker extends Person {
 		super(id, firstName, lastName, password, type, email, telephone);
 	}
 
-	enum WorkerType
+	public enum WorkerType
 	{
 		ParkingWorker, MasterManger, CustomerService;
 	}

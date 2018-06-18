@@ -26,7 +26,11 @@ public class Client {
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			c = (Customer)ois.readObject();
-			//System.out.println(c.getPid());
+			if(c!=null)
+				System.out.println("[response] customer "+c.getFirstName()+" "+c.getLastName()+" login Succeed");
+			else
+				System.out.println("[response] customer not found");
+			
 			socket.close();
 		}
 
@@ -38,14 +42,14 @@ public class Client {
 		}
 		return c;
 	}
-	public Worker workerLogin(String email,String password){
+	public Worker workerLogin(String email,String password,Worker.WorkerType type){
 		Worker w = null; 
 
 		try{
 			Socket socket = new Socket("localhost",8080);
 			OutputStreamWriter osw  = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("login worker "+email+" "+password);
+			pw.println("login worker "+email+" "+password+" "+type.name());
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());

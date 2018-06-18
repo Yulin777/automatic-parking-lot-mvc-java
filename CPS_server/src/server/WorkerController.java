@@ -11,13 +11,15 @@ import java.sql.Statement;
 public class WorkerController {
 	private static sqlConnection sql = sqlConnection.getInstant();
 
-	public Worker login(String email, String password) {
+	public Worker login(String email, String password,String type) {
 		java.sql.PreparedStatement stmt;
 		Worker return_res = null;
 		try {
-			stmt =  sql.conn.prepareStatement("SELECT * FROM workers WHERE worker_email = ? AND worker_password = ?");
+			stmt =  sql.conn.prepareStatement("SELECT * FROM workers WHERE worker_email = ? AND worker_password = ? AND worker_type = ?");
 			stmt.setString(1, email);    
-			stmt.setString(2, password);    
+			stmt.setString(2, password);
+			if (type.equals("ParkingWorker"))stmt.setString(3, "0");
+			else stmt.setString(3, "1");
 
 			
 			ResultSet rs = stmt.executeQuery();
