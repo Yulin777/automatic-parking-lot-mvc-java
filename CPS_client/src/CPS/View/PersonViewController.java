@@ -29,6 +29,91 @@ public class PersonViewController {
 
 
 
+
+
+
+
+    //-----------------------Customer Sign In---------------------------------
+
+
+
+
+    @FXML
+    private DatePicker Customer_Sign_In_Sign_In_date_picker_btn;
+
+    @FXML
+    private Button Customer_Sign_In_Sign_In_back_btn;
+
+    @FXML
+    private TextField Customer_Sign_In_Sign_In_car_number_btn;
+
+    @FXML
+    private TextField Customer_Sign_In_Sign_In_email_btn;
+
+    @FXML
+    private TextField Customer_Sign_In_Sign_In_id_btn;
+
+    @FXML
+    private Button Customer_Sign_In_Sign_In_btn;
+
+    @FXML
+    void Customer_Sign_In_Sign_In(ActionEvent event) throws IOException {
+        String id=Customer_Sign_In_Sign_In_id_btn.getText();
+        String car_number = Customer_Sign_In_Sign_In_car_number_btn.getText();
+        String email = Customer_Sign_In_Sign_In_email_btn.getText();
+        LocalDate start_date = Customer_Sign_In_Sign_In_date_picker_btn.getValue();
+        String err_msg = Customer_Sign_In_InputIsValid(id,car_number,email,start_date );
+
+        if(!err_msg.isEmpty())
+        {
+            //TODO error msg
+            createErrMsg(event, err_msg);
+
+            return;
+        }
+
+    }
+
+
+
+    private String Customer_Sign_In_InputIsValid(String id, String car_number, String email,LocalDate end_date )
+    {
+        String msg = "";
+        if(id.isEmpty())
+            msg = msg + "id is empty\n";
+        if(car_number.isEmpty())
+            msg = msg + "car_number is empty\n";
+        if(email.isEmpty())
+            msg = msg + "email is empty\n";
+        if( end_date != null)
+        {
+            LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date))
+                msg = msg + "choose only future dates\n";
+        }
+        else
+            msg = msg + "date is empty\n";
+
+        return msg;
+    }
+
+
+
+
+    @FXML
+    void Customer_Sign_In_Sign_In_back(ActionEvent event) throws IOException {
+        String url = "LoginView.fxml";
+        switchWindow(url);
+        switchScene(event,"login page");
+    }
+
+
+
+
+
+    //------------------------^^^^Customer Sign In^^^----------------------------------
+
+
     //--------------------error msg-----------------------------------
     @FXML
     private Label err_msg_label;
@@ -93,7 +178,7 @@ return;
     	
     	String url = "LoginView.fxml";
     	switchWindow(url);
-        switchScene(event);
+        switchScene(event, "login page");
        /* Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();*/
@@ -134,7 +219,7 @@ return;
     {
     	String url = "LoginView.fxml";
     	switchWindow(url);
-        switchScene(event);
+        switchScene(event, "login page");
     	/*Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();*/
@@ -182,6 +267,7 @@ return;
         controller.setErrLabel(errMsg);
         err_win_instance = new Stage();
         err_win_instance.setScene(tableViewScene);
+        err_win_instance.setTitle("error window");
         err_win_instance.show();
     }
 
@@ -235,7 +321,7 @@ return;
         }
         //TODO checck also time and hour
         if(end_time.isEmpty())
-            msg = msg + "email is empty\n";
+            msg = msg + "end time is empty\n";
 
     return msg;
     }
@@ -244,7 +330,7 @@ return;
     void Occasional_Customer_back(ActionEvent event) throws IOException {
         String url = "LoginView.fxml";
         switchWindow(url);
-        switchScene(event);
+        switchScene(event,"login page");
     }
 
 
@@ -292,8 +378,10 @@ return;
     }
 
     @FXML
-    void In_Advance_Customer_back(ActionEvent event) {
-
+    void In_Advance_Customer_back(ActionEvent event) throws IOException {
+        String url = "LoginView.fxml";
+        switchWindow(url);
+        switchScene(event, "login page");
     }
 
     @FXML
@@ -324,7 +412,7 @@ return;
     private String In_Advance_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate start_date,String start_time,LocalDate end_date,String end_time )
     {
         String msg = "";
-/*
+
         if(id.isEmpty())
             msg = msg + "id is empty\n";
         if(car_number.isEmpty())
@@ -337,17 +425,21 @@ return;
         if( start_date != null && end_date != null)
         {
             LocalDate today = LocalDate.now();
-            if(today.isAfter(end_date))
+            if(today.isAfter(end_date) || today.isAfter(start_date))
                 msg = msg + "choose only future dates\n";
+            if(start_date.isAfter(end_date))
+                msg = msg + "starting date must be prior to ending date\n";
         }
         else
         {
-            msg = msg + "date is empty\n";
+            msg = msg + "fill all the dates please\n";
         }
-        //TODO checck also time and hour
+        //TODO check also time and hour
+        if(start_time.isEmpty())
+            msg = msg + "start time is empty\n";
         if(end_time.isEmpty())
-            msg = msg + "email is empty\n";
-*/
+            msg = msg + "end time is empty\n";
+
         return msg;
     }
 
@@ -404,10 +496,11 @@ return;
     }
     
 
-    void switchScene(ActionEvent event)
+    void switchScene(ActionEvent event,String pageTitle)
     {
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
+        window.setTitle(pageTitle);
         window.show();
     }
    //---------------------------------------------------------- 

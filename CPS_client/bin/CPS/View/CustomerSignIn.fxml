@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
+   <children>
+      <Label layoutX="141.0" layoutY="165.0" prefHeight="17.0" prefWidth="75.0" text="starting date:" />
+      <Label layoutX="142.0" layoutY="132.0" prefHeight="17.0" prefWidth="52.0" text="email:" />
+      <Label layoutX="145.0" layoutY="69.0" text="id:" />
+      <Label layoutX="140.0" layoutY="100.0" text="car number:" />
+      <TextField fx:id="Customer_Sign_In_Sign_In_email_btn" layoutX="223.0" layoutY="128.0" promptText="email:" />
+      <TextField fx:id="Customer_Sign_In_Sign_In_id_btn" layoutX="223.0" layoutY="65.0" promptText="id:" />
+      <TextField fx:id="Customer_Sign_In_Sign_In_car_number_btn" layoutX="223.0" layoutY="96.0" promptText="car number:" />
+      <Button fx:id="Customer_Sign_In_Sign_In_btn" layoutX="223.0" layoutY="201.0" mnemonicParsing="false" onAction="#Customer_Sign_In_Sign_In" prefHeight="25.0" prefWidth="149.0" text="Sign in" />
+      <Button fx:id="Customer_Sign_In_Sign_In_back_btn" layoutX="16.0" layoutY="258.0" mnemonicParsing="false" onAction="#Customer_Sign_In_Sign_In_back" prefHeight="25.0" prefWidth="63.0" text="&lt;&lt; back" />
+      <DatePicker fx:id="Customer_Sign_In_Sign_In_date_picker_btn" layoutX="223.0" layoutY="161.0" prefHeight="25.0" prefWidth="149.0" />
+      <Label layoutX="87.0" layoutY="19.0" text="please provide the following requirements:" underline="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
