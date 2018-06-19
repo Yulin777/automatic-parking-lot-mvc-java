@@ -5,8 +5,9 @@
 package CPS.View;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-
+import java.util.Arrays;
 import java.util.Date;
 
 import client.Client;
@@ -14,7 +15,8 @@ import client.Client;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.text.Text;
+
 public class PersonViewController {
 
 
@@ -440,9 +443,6 @@ return;
             return;
         }
 
-        System.out.println("all good");
-
-
     }
 
     private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate end_date,String end_time )
@@ -552,7 +552,9 @@ return;
         LocalDate end_date = In_Advance_Customer_end_date.getValue();
         String end_time = In_Advance_Customer_end_time.getText();
         String err_msg = In_Advance_Customer_inputIsValid(id,car_number,car_park,email,start_date,start_time, end_date,end_time );
+        int status = client.AdvanceOneTimeOrder(id,car_number,car_park,email,start_date,start_time,end_date,end_time);
 
+        
         if(!err_msg.isEmpty())
         {
             //TODO error msg
@@ -562,14 +564,18 @@ return;
 
             return;
         }
-        client.AdvanceOneTimeOrder(id,car_number,car_park,email,start_date,start_time,end_date,end_time);
 
     }
 
 
     private String In_Advance_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate start_date,String start_time,LocalDate end_date,String end_time )
     {
-        String msg = "";
+        
+    	 
+          
+    	
+    	
+    	String msg = "";
 
         if(id.isEmpty())
             msg = msg + "id is empty\n";
@@ -580,6 +586,29 @@ return;
         if(email.isEmpty())
             msg = msg + "email is empty\n";
 
+        
+        
+        
+		/*SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //parse start and end time
+		String start = start_date.toString()+" "+start_time;
+		String end = end_date.toString()+" "+end_time;
+		
+			Date s = df.parse(start);
+			Date e = df.parse(end);
+			s.before(e)*/
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         if( start_date != null && end_date != null)
         {
             LocalDate today = LocalDate.now();
@@ -595,11 +624,38 @@ return;
         //TODO check also time and hour
         if(start_time.isEmpty())
             msg = msg + "start time is empty\n";
+        else
+        	if(!check_hour_minute(start_time))
+        	msg=msg + "fix hour and minute\n";
+        
+        
         if(end_time.isEmpty())
             msg = msg + "end time is empty\n";
+        else
+        	if(!check_hour_minute(end_time))
+        	msg=msg + "fix hour and minute\n";
 
         return msg;
     }
+    
+    
+    boolean check_hour_minute(String hour_minute)
+    {
+    	
+    	 Pattern pattern;
+         Matcher matcher;
+         String TIME12HOURS_PATTERN = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
+    	 pattern = Pattern.compile(TIME12HOURS_PATTERN);
+         matcher = pattern.matcher(hour_minute);
+         return (matcher.matches());  		
+    }
+    
+    
+    
+    
+    
+    
+    
 //TODO copy for all buttons
      public void In_Advance_Customer_loadDates() {
          In_Advance_Customer_start_date.setDayCellFactory(picker -> new DateCell() {
@@ -698,4 +754,41 @@ void setManagerName(String name)
 	
 }
 
+
+
+
+
+
+
+
 }
+
+/*
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+public class Time24hFormatValidator
+{
+      private Pattern pattern;
+      private Matcher matcher;
+      private static final String TIME12HOURS_PATTERN = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
+      public Time24hFormatValidator(){
+          pattern = Pattern.compile(TIME12HOURS_PATTERN);
+      }
+      public boolean validate(final String time){        
+          matcher = pattern.matcher(time);
+          return matcher.matches();            
+      }
+}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
