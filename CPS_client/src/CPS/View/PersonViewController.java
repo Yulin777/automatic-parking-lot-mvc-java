@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import server.Customer;
+
 public class PersonViewController {
 
 	Client client = new Client();
@@ -426,9 +428,9 @@ public class PersonViewController {
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
 		String end_time = Occasional_Customer_end_time.getText();
 		String err_msg = Occasional_Customer_inputIsValid(id,car_number,car_park,email,end_date,end_time );
-		String first_name="";
-		String last_name="";
-		String phone="";
+		String first_name="Occasional";
+		String last_name="Occasional";
+		String phone="Occasional";
 
 		if(!err_msg.isEmpty())
 		{
@@ -439,7 +441,7 @@ public class PersonViewController {
 		}
 
 		//      System.out.println("all good");
-		client.addNewCustomer(id, first_name, last_name, "", "1", email, phone);
+		client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone);
 		client.addNewCar(id, car_number);
 		
 	}

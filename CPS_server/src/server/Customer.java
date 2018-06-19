@@ -5,31 +5,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 public class Customer extends Person implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	//ArrayList<Car> cars;
+    public static enum type {
+        OCCASIONAL, SUBSCRIBED
+    }
 
-	public Customer(String id, String firstName, String lastName, String password, String type, String email,
-			String telephone) {
-		super(id, firstName, lastName, password, type, email, telephone);
-		//cars = new ArrayList<Car>();
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    //ArrayList<Car> cars;
 
-	public int orderParking() {
-		return 0;
-	}
+    public Customer(String id, String firstName, String lastName, String password, String type, String email,
+                    String telephone) {
+        super(id, firstName, lastName, password, type, email, telephone);
+    }
 
-	public boolean subscribe() {
-		return false;
-	}
+    public int orderParking() {
+        return 0;
+    }
 
-	// TODO: return type is Unknown
-	public void trackOrder() {
+    public boolean subscribe() {
+        return false;
+    }
 
-	}
+    // TODO: return type is Unknown
+    public void trackOrder() {
+
+    }
 
 	/*public ArrayList<Car> getCars() {
 		return cars;
@@ -39,8 +43,8 @@ public class Customer extends Person implements Serializable {
 		cars.add(car);
 	}*/
 
-	public boolean placeOrder() {
-		return false;
-	}
+    public boolean placeOrder() {
+        return false;
+    }
 
 }
