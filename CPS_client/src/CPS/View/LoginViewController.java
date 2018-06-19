@@ -253,7 +253,7 @@ public class LoginViewController {
 		//switchWindow(url);
 		changeViewWithDates(event,"CustomerSignIn.fxml","sign in");
 		PersonViewController controller = loader.getController();
-		controller.Customer_Sign_In_Sign_In_loadDates();
+		controller.Customer_Sign_Up_loadDates();
 		// switchScene(event,"sign in");
 	}
 

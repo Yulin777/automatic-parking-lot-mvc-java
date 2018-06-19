@@ -255,7 +255,7 @@ public class PersonViewController {
 
     }
 
-    public void Customer_Sign_Up_Sign_In_loadDates() {
+    public void Customer_Sign_Up_loadDates() {
     	customer_sign_up_date_picker.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
