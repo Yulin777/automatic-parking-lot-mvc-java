@@ -7,27 +7,20 @@ package CPS.View;
 import java.io.IOException;
 import java.time.LocalDate;
 
-import java.util.Date;
-
 import client.Client;
-
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import server.Car;
-import server.Customer;
-import server.Person;
+import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 public class PersonViewController {
 
 	Client client = new Client();
