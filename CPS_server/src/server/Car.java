@@ -10,10 +10,10 @@ public class Car {
 
 	public Car(String carID, String ownerID) {
 		this.carID = carID;
-		Car.addNewCarToClient(ownerID, carID);
+		addNewCarToClient(ownerID, carID);
 	}
 
-	public static String addNewCarToClient(String clientID, String carID) {
+	private String addNewCarToClient(String clientID, String carID) {
 		Statement stmt;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);

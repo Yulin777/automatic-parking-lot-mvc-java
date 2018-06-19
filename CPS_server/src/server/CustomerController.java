@@ -1,12 +1,8 @@
 package server;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.List;
 
 //import com.mysql.jdbc.PreparedStatement;
 
@@ -18,9 +14,10 @@ public class CustomerController {
 
 	}
 
-	public static String addNewClient(String id, String firstName, String lastName, String password, String type,
+	public Customer addNewClient(String id, String firstName, String lastName, String password, String type,
 			String email, String telephone) {
 		Statement stmt;
+		
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
@@ -58,8 +55,8 @@ public class CustomerController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return ("New client was added succsfully");
+		System.out.println("Client added successfully");
+		return new Customer(id, firstName, lastName, password, type, email, telephone);
 	}
 
 	public static Customer getClientById(String id) {
