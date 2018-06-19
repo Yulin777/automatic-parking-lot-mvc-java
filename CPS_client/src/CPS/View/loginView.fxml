@@ -21,13 +21,14 @@
       <TextField fx:id="email_bar" layoutX="17.0" layoutY="14.0" prefHeight="25.0" prefWidth="460.0" promptText="email:" />
       <PasswordField fx:id="password_bar" layoutX="17.0" layoutY="50.0" prefHeight="25.0" prefWidth="460.0" promptText="password:" />
       <Button fx:id="log_as_occasional_customer_btn" layoutX="310.0" layoutY="162.0" mnemonicParsing="false" onAction="#log_as_occasional_customer" prefHeight="25.0" prefWidth="178.0" text="Log as occasional customer" />
-      <Button fx:id="log_as_in_advance_customer_btn" layoutX="310.0" layoutY="127.0" mnemonicParsing="false" onAction="#log_as_in_advance_customer" prefHeight="25.0" prefWidth="178.0" text="I ordered in advance" />
-      <Button fx:id="login_view_customer_sign_in_btn" layoutX="310.0" layoutY="93.0" mnemonicParsing="false" onAction="#login_view_customer_sign_in" prefHeight="25.0" prefWidth="178.0" text="Sign in for customers" />
+      <Button fx:id="log_as_in_advance_customer_btn" layoutX="310.0" layoutY="127.0" mnemonicParsing="false" onAction="#log_as_in_advance_customer" prefHeight="25.0" prefWidth="178.0" text="ordered in advance" />
+      <Button fx:id="login_view_customer_sign_in_btn" layoutX="310.0" layoutY="93.0" mnemonicParsing="false" onAction="#login_view_customer_sign_in" prefHeight="25.0" prefWidth="178.0" text="Sign up for customers" />
       <ProgressIndicator fx:id="login_view_progress_bar" layoutX="208.0" layoutY="206.0" prefHeight="34.0" prefWidth="39.0" visible="false">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </ProgressIndicator>
+      <Button fx:id="login_view_finished_parking_btn" layoutX="310.0" layoutY="194.0" mnemonicParsing="false" onAction="#login_view_finished_parking" prefHeight="25.0" prefWidth="178.0" text="Finished parking" />
    </children>
    <opaqueInsets>
       <Insets />

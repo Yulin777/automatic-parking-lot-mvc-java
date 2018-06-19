@@ -76,6 +76,14 @@ public class Server {
 			catch(IOException ioe){
 
 			}	
+		} 
+		else if (cmd[0].equals("order") && cmd[1].equals("temporery")) {
+			try{
+				currentSocket.close();
+			}
+			catch(IOException ioe){
+
+			}	
 		}
 
 

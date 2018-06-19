@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import java.util.Date;
+
+import client.Client;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
@@ -19,21 +22,150 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-
+import javafx.scene.text.Text;
 public class PersonViewController {
 
 
 
 
+    //----------------Customer View-------------------------------------
+
+
+    @FXML // fx:id="customer_view_label"
+    private Label customer_view_label; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_view_leave_parking_btn"
+    private Button customer_view_leave_parking_btn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_view_log_out"
+    private Button customer_view_log_out; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_view_enter_parking_btn"
+    private Button customer_view_enter_parking_btn; // Value injected by FXMLLoader
+
+    @FXML
+    void customer_view_log_out(ActionEvent event) throws IOException {
+        log_out(event);
+
+    }
+
+    @FXML
+    void customer_view_enter_parking(ActionEvent event) {
+
+    }
+
+    @FXML
+    void customer_view_leave_parking(ActionEvent event) {
+
+    }
+
+    void setCustomerName(String name)
+    {
+        customer_view_label.setText("Hello " + name);
+    }
 
 
 
-    //-----------------------Customer Sign In---------------------------------
+
+
+
+
+    //-------------------^^^-Customer View^^^-----------------------------------
+
+
+
+
+
+
+    //-----------------Display Bill------------------
+
+    @FXML
+    private Button display_bill_ok_btn;
+
+    @FXML
+    private Text display_bill_bill_txt;
+
+    @FXML
+    void display_bill_ok(ActionEvent event) throws IOException {
+        Stage stage = (Stage) display_bill_ok_btn.getScene().getWindow();
+        stage.close();
+
+    }
+    void createBillMsg(ActionEvent event,String billMsg) throws IOException {
+        switchWindow("DisplayBill.fxml");
+        Stage bill_win_instance;
+        PersonViewController controller = loader.getController();
+        controller.setBillLabel(billMsg);
+        bill_win_instance = new Stage();
+        bill_win_instance.setScene(tableViewScene);
+        bill_win_instance.setTitle("bill window");
+        bill_win_instance.show();
+    }
+
+    void setBillLabel(String str)
+    {
+        display_bill_bill_txt.setText(str);
+    }
+
+
+    //------------------^^^^^^Display Bill^^^^^----------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //----------------------Finished Parking--------------------------
+
+    @FXML
+    private TextField finished_parking_id_bar;
+
+    @FXML
+    private Button finish_parking_back_btn;
+
+    @FXML
+    private TextField finished_parking_car_number_bar;
+
+    @FXML
+    void finish_parking_back(ActionEvent event) throws IOException {
+        String url = "LoginView.fxml";
+        switchWindow(url);
+        switchScene(event,"login page");
+
+    }
+
+    @FXML
+    void finish_parking_pay(ActionEvent event) throws IOException {
+// TODO calculate the price
+        createBillMsg(event, "0");
+    }
+
+
+
+
+
+
+    //---------------------^^^Finished Parking^^----------------------------
+
+
+
+
+
+
+
+
+    //-----------------------Customer Sign up---------------------------------
 
 
 
@@ -72,8 +204,20 @@ public class PersonViewController {
             return;
         }
 
-    }
 
+
+
+    }
+    public void Customer_Sign_In_Sign_In_loadDates() {
+        Customer_Sign_In_Sign_In_date_picker_btn.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+    }
 
 
     private String Customer_Sign_In_InputIsValid(String id, String car_number, String email,LocalDate end_date )
@@ -176,9 +320,11 @@ return;
     void worker_log_out(ActionEvent event) throws IOException 
     {   
     	
-    	String url = "LoginView.fxml";
-    	switchWindow(url);
-        switchScene(event, "login page");
+    	//String url = "LoginView.fxml";
+    	//switchWindow(url);
+        //switchScene(event, "login page");
+
+        log_out(event);
        /* Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();*/
@@ -217,9 +363,10 @@ return;
     @FXML
     void manager_log_out(ActionEvent event) throws IOException 
     {
-    	String url = "LoginView.fxml";
-    	switchWindow(url);
-        switchScene(event, "login page");
+    	//String url = "LoginView.fxml";
+    	//switchWindow(url);
+        //switchScene(event, "login page");
+        log_out( event);
     	/*Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();*/
@@ -333,7 +480,16 @@ return;
         switchScene(event,"login page");
     }
 
+    public void Occasional_Customer_loadDates() {
+        Occasional_Customer_end_date.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
 
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+    }
 
 
         //---------------------------^^Occasional Customer^^----------------------------------
@@ -386,6 +542,7 @@ return;
 
     @FXML
     void In_Advance_Customer__Order(ActionEvent event) throws IOException {
+		Client client = new Client();
         String id=In_Advance_Customer_id.getText();
         String car_number = In_Advance_Customer_car_number.getText();
         String car_park = In_Advance_Customer_car_park.getText();
@@ -405,6 +562,7 @@ return;
 
             return;
         }
+        client.AdvanceOneTimeOrder(id,car_number,car_park,email,start_date,start_time,end_date,end_time);
 
     }
 
@@ -442,6 +600,26 @@ return;
 
         return msg;
     }
+//TODO copy for all buttons
+     public void In_Advance_Customer_loadDates() {
+         In_Advance_Customer_start_date.setDayCellFactory(picker -> new DateCell() {
+             public void updateItem(LocalDate date, boolean empty) {
+                 super.updateItem(date, empty);
+                 LocalDate today = LocalDate.now();
+
+                 setDisable(empty || date.compareTo(today) < 0);
+             }
+         });
+
+         In_Advance_Customer_end_date.setDayCellFactory(picker -> new DateCell() {
+             public void updateItem(LocalDate date, boolean empty) {
+                 super.updateItem(date, empty);
+                 LocalDate today = LocalDate.now();
+
+                 setDisable(empty || date.compareTo(today) < 0 );
+             }
+         });
+     }
 
 
 
@@ -461,10 +639,12 @@ return;
 
 
 
+void log_out(ActionEvent event ) throws IOException {
+    String url = "LoginView.fxml";
+    switchWindow(url);
+    switchScene(event, "login page");
 
-
-
-
+}
 
 
 

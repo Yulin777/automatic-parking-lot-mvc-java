@@ -62,21 +62,43 @@ public class LoginViewController {
 	@FXML
 	private ProgressIndicator login_view_progress_bar;
 
+	@FXML
+	private Button login_view_finished_parking_btn;
+
+
+	@FXML
+	void login_view_finished_parking(ActionEvent event) throws IOException {
+		String url = "FinishedParking.fxml";
+		switchWindow(url);
+		switchScene(event,"Finish Parking");
+	}
 
 
 
 	@FXML
 	void log_as_occasional_customer(ActionEvent event) throws IOException {
-		String url = "OccasionalCustomer.fxml";
-		switchWindow(url);
-		switchScene(event,"occasional customer");
+
+		changeViewWithDates(event,"OccasionalCustomer.fxml","occasional customer");
+
+		//String url = "OccasionalCustomer.fxml";
+		// switchWindow(url);
+		PersonViewController controller = loader.getController();
+		controller.Occasional_Customer_loadDates();
+		// switchScene(event,"occasional customer");
 	}
 
 	@FXML
 	void log_as_in_advance_customer(ActionEvent event) throws IOException {
-		String url = "InAdvanceCustomer.fxml";
-		switchWindow(url);
-		switchScene(event, "order in advance");
+
+		changeViewWithDates(event,"InAdvanceCustomer.fxml","order in advance");
+
+		//String url = "InAdvanceCustomer.fxml";
+		//switchWindow(url);
+		PersonViewController controller = loader.getController();
+		controller.In_Advance_Customer_loadDates();
+		//switchScene(event, "order in advance");
+
+
 
 	}
 
@@ -96,18 +118,21 @@ public class LoginViewController {
 		//worker login
 		if(worker_radio.isSelected())
 		{
-			Worker w = client.workerLogin(email_bar.getText(),password_bar.getText(),WorkerType.ParkingWorker);
-			if(w==null)
+			if(worker_radio.isSelected())
 			{
-				err_msg = err_msg + "You are not a worker\n";
-			}
-			else{
-				url = "workerView.fxml";
-				switchWindow(url);
-				PersonViewController controller = loader.getController();
-				controller.setWorkerName(email_bar.getText());
-				controller.setWorkerInterfaceController(wIC);
-				title = "Worker Interface";
+				Worker w = client.workerLogin(email_bar.getText(),password_bar.getText(),WorkerType.ParkingWorker);
+				if(w==null)
+				{
+					err_msg = err_msg + "You are not a worker\n";
+				}
+				else{
+					url = "workerView.fxml";
+					switchWindow(url);
+					PersonViewController controller = loader.getController();
+					controller.setWorkerName(email_bar.getText());
+					controller.setWorkerInterfaceController(wIC);
+					title = "Worker Interface";
+				}
 			}
 		}
 
@@ -126,10 +151,6 @@ public class LoginViewController {
 				controller.setManagerName(email_bar.getText());
 				title = "Manager Interface";
 			}
-			
-
-
-			//  controller.setWorkerInterfaceController(wIC);
 		}
 
 		//customer login
@@ -140,17 +161,23 @@ public class LoginViewController {
 			{
 				err_msg = err_msg + "You are not a customer\n";
 			}
-			//TODO: trigger customer interface
+			else{
+				url = "CustomerView.fxml";
+				switchWindow(url);
+				PersonViewController controller = loader.getController();
+				controller.setCustomerName(email_bar.getText());
+				title = "Customer Interface";
+			}
 
+			//  controller.setWorkerInterfaceController(wIC);
 		}
-		//default no type selected
 		else
 		{
 			err_msg = err_msg + "no button clicked\n";
 
 		}
 		if (!err_msg.isEmpty()) {
-			createErrMsg(event, err_msg);
+			createErrMsg(event, "no button clicked");
 			login_view_progress_bar.setVisible(false);
 
 			return;
@@ -222,24 +249,17 @@ public class LoginViewController {
 
 	@FXML
 	void login_view_customer_sign_in(ActionEvent event) throws IOException {
-		String url = "CustomerSignIn.fxml";
-		switchWindow(url);
-		switchScene(event,"sign in");
+		// String url = "CustomerSignIn.fxml";
+		//switchWindow(url);
+		changeViewWithDates(event,"CustomerSignIn.fxml","sign in");
+		PersonViewController controller = loader.getController();
+		controller.Customer_Sign_In_Sign_In_loadDates();
+		// switchScene(event,"sign in");
 	}
 
+	void changeViewWithDates(ActionEvent event,String url, String title) throws IOException {
+		switchWindow(url);
+		switchScene(event,title);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//
+	}
 }

@@ -7,6 +7,11 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 
 import server.Customer;
 import server.Worker;
@@ -69,8 +74,36 @@ public class Client {
 			e.printStackTrace();
 		}
 		return w;
+	}
+	public int AdvanceOneTimeOrder(String id,String car_number,String car_park,String email,LocalDate start_date,String start_time,LocalDate end_date,String end_time){
+		int result;
+		
+		//TODO: input validation
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //parse start and end time
+		String start = start_date.toString()+" "+start_time;
+		String end = end_date.toString()+" "+end_time;
+		try{
+			Date s = df.parse(start);
+			Date e = df.parse(end);
 
+			Timestamp startTime = new Timestamp(s.getTime());
+			Timestamp endTime = new Timestamp(e.getTime());
+			
+			
+			Socket socket = new Socket("localhost",8080);
+			OutputStreamWriter osw  = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("order temporery "+id+" "+car_number+" "+car_park+" "+email+" "+startTime+" "+endTime);
+			pw.flush();
+			socket.close();
 
+		}
+		catch(Exception e){
+			System.out.println("time convert fail");
+		}
+
+		return 0;
+		
 	}
 }
 
