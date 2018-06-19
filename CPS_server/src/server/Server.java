@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -85,6 +83,33 @@ public class Server {
 			}
 			catch(IOException ioe){
 
+			}	
+		}
+		else if (cmd[0].equals("add") && cmd[1].equals("client")) {
+			try{
+				CustomerController cc = new CustomerController();
+				Customer c = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
+				ObjectOutputStream osw  = new ObjectOutputStream(currentSocket.getOutputStream());
+				//PrintWriter pw = new PrintWriter(osw);
+				osw.writeObject(c);
+				osw.flush();
+				currentSocket.close();
+			}
+			catch(Exception ioe){
+				System.out.println(ioe.getMessage());
+			}	
+		}
+		else if (cmd[0].equals("add") && cmd[1].equals("car")) {
+			try{
+				Car c = new Car(cmd[2], cmd[3]);
+				ObjectOutputStream osw  = new ObjectOutputStream(currentSocket.getOutputStream());
+				//PrintWriter pw = new PrintWriter(osw);
+				osw.writeObject(c);
+				osw.flush();
+				currentSocket.close();
+			}
+			catch(Exception ioe){
+				System.out.println(ioe.getMessage());
 			}	
 		}
 
