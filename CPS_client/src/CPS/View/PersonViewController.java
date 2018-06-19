@@ -5,22 +5,30 @@
 package CPS.View;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Date;
 
 import client.Client;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.scene.text.Text;
+
 import server.Customer;
 
 public class PersonViewController {
@@ -167,10 +175,105 @@ public class PersonViewController {
 	//-----------------------Customer Sign up---------------------------------
 
 
+    @FXML // fx:id="customer_sign_up_id"
+    private TextField customer_sign_up_id; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_email"
+    private TextField customer_sign_up_email; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_sign_up_btn"
+    private Button customer_sign_up_sign_up_btn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_last_name"
+    private TextField customer_sign_up_last_name; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_car_number"
+    private TextField customer_sign_up_car_number; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_back_btn"
+    private Button customer_sign_up_back_btn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_date_picker"
+    private DatePicker customer_sign_up_date_picker; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_first_name"
+    private TextField customer_sign_up_first_name; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customer_sign_up_phone_number"
+    private TextField customer_sign_up_phone_number; // Value injected by FXMLLoader
+
+    @FXML
+    void Customer_Sign_up_Sign_up(ActionEvent event) throws IOException {
 
 
-	@FXML
-	private DatePicker Customer_Sign_In_Sign_In_date_picker_btn;
+
+    	//TODO ceck extra parameters
+    	String id=customer_sign_up_id.getText();
+        String car_number = customer_sign_up_car_number.getText();
+        String email = customer_sign_up_email.getText();
+        LocalDate start_date = customer_sign_up_date_picker.getValue();
+        String err_msg = Customer_Sign_Up_InputIsValid(id,car_number,email,start_date );
+
+        if(!err_msg.isEmpty())
+        {
+            //TODO error msg
+            createErrMsg(event, err_msg);
+
+            return;
+        }
+    }
+
+    private String Customer_Sign_Up_InputIsValid(String id, String car_number, String email,LocalDate end_date )
+    {
+        String msg = "";
+        if(id.isEmpty())
+            msg = msg + "id is empty\n";
+        if(car_number.isEmpty())
+            msg = msg + "car_number is empty\n";
+        if(email.isEmpty())
+            msg = msg + "email is empty\n";
+        if( end_date != null)
+        {
+            LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date))
+                msg = msg + "choose only future dates\n";
+        }
+        else
+            msg = msg + "date is empty\n";
+
+        return msg;
+    }
+
+
+
+
+    @FXML
+    void Customer_Sign_up_Sign_up_back(ActionEvent event) throws IOException {
+    	String url = "LoginView.fxml";
+        switchWindow(url);
+        switchScene(event,"login page");
+
+    }
+
+    public void Customer_Sign_Up_Sign_In_loadDates() {
+    	customer_sign_up_date_picker.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+    }
+
+
+
+
+
+
+/*
+    @FXML
+    private DatePicker Customer_Sign_In_Sign_In_date_picker_btn;
 
 	@FXML
 	private Button Customer_Sign_In_Sign_In_back_btn;
@@ -251,6 +354,7 @@ public class PersonViewController {
 	}
 
 
+*/
 
 
 
@@ -418,8 +522,8 @@ public class PersonViewController {
 	}
 
 
-	@FXML
-	void Occasional_Customer_Order(ActionEvent event) throws IOException {
+    @FXML
+    void Occasional_Customer_Order(ActionEvent event) throws IOException, ParseException {
 
 		String id=Occasional_Customer_id.getText();
 		String car_number = Occasional_Customer_car_number.getText();
@@ -446,33 +550,74 @@ public class PersonViewController {
 		
 	}
 
-	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate end_date,String end_time )
-	{
-		String msg = "";
-		if(id.isEmpty())
-			msg = msg + "id is empty\n";
-		if(car_number.isEmpty())
-			msg = msg + "car_number is empty\n";
-		if(car_park.isEmpty())
-			msg = msg + "car_park is empty\n";
-		if(email.isEmpty())
-			msg = msg + "email is empty\n";
-		if( end_date != null)
-		{
-			LocalDate today = LocalDate.now();
-			if(today.isAfter(end_date))
-				msg = msg + "choose only future dates\n";
-		}
-		else
-		{
-			msg = msg + "date is empty\n";
-		}
-		//TODO checck also time and hour
-		if(end_time.isEmpty())
-			msg = msg + "end time is empty\n";
+    private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate end_date,String end_time ) throws ParseException
+    {
+       String msg = "";
+       int dateFlag=1;
+	   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //parse start and end time
 
-		return msg;
-	}
+        if(id.isEmpty())
+            msg = msg + "id is empty\n";
+        if(car_number.isEmpty())
+            msg = msg + "car_number is empty\n";
+        if(car_park.isEmpty())
+            msg = msg + "car_park is empty\n";
+        if(email.isEmpty())
+            msg = msg + "email is empty\n";
+       /* if( end_date != null)
+        {
+            LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date))
+                msg = msg + "choose only future dates\n";
+        }
+        else
+        {
+            msg = msg + "date is empty\n";
+        }*/
+        //TODO checck also time and hour
+        if(end_time.isEmpty())
+            msg = msg + "end time is empty\n";
+
+
+
+        if(end_time.isEmpty())
+            msg = msg + "start time is empty\n";
+        else
+        	if(!check_hour_minute(end_time))
+        	{
+        	msg=msg + "fix starting hour and minute \n";
+        	dateFlag = 0;
+        	}
+
+
+        if(end_date != null && dateFlag == 1)
+        {
+    		String end = end_date.toString()+" "+end_time;
+
+    			Date e = df.parse(end);
+    			Date now = new Date();
+
+    			if(e.before(now))
+    				msg = msg + "ending date must be in the future\n";
+
+
+            /*LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date) || today.isAfter(start_date))
+                msg = msg + "choose only future dates\n";
+            if(start_date.isAfter(end_date))
+                msg = msg + "starting date must be prior to ending date\n";
+
+                */
+        }
+
+        else if( end_date == null)
+        {
+            msg = msg + "fill the date please\n";
+        }
+
+
+    return msg;
+    }
 
 	@FXML
 	void Occasional_Customer_back(ActionEvent event) throws IOException {
@@ -498,9 +643,21 @@ public class PersonViewController {
 
 
 
-	//------------------------------------In Advance Customer ----------------------------
-	@FXML // fx:id="In_Advance_Customer_back_btn"
-	private Button In_Advance_Customer_back_btn; // Value injected by FXMLLoader
+//------------------------------------In Advance Customer ----------------------------
+
+
+
+    @FXML
+    private TextField In_Advance_Customer_id1;
+
+    @FXML
+    private TextField In_Advance_Customer_id2;
+
+    @FXML
+    private TextField In_Advance_Customer_id3;
+
+    @FXML // fx:id="In_Advance_Customer_back_btn"
+    private Button In_Advance_Customer_back_btn; // Value injected by FXMLLoader
 
 	@FXML // fx:id="In_Advance_Customer_end_time"
 	private TextField In_Advance_Customer_end_time; // Value injected by FXMLLoader
@@ -541,71 +698,130 @@ public class PersonViewController {
 		switchScene(event, "login page");
 	}
 
-	@FXML
-	void In_Advance_Customer__Order(ActionEvent event) throws IOException {
-		String id=In_Advance_Customer_id.getText();
-		String car_number = In_Advance_Customer_car_number.getText();
-		String car_park = In_Advance_Customer_car_park.getText();
-		String email = In_Advance_Customer_email.getText();
-		LocalDate start_date = In_Advance_Customer_start_date.getValue();
-		String start_time = In_Advance_Customer_start_time.getText();
-		LocalDate end_date = In_Advance_Customer_end_date.getValue();
-		String end_time = In_Advance_Customer_end_time.getText();
-		String err_msg = In_Advance_Customer_inputIsValid(id,car_number,car_park,email,start_date,start_time, end_date,end_time );
-
-		if(!err_msg.isEmpty())
-		{
-			//TODO error msg
-			//System.out.println(err_msg);
-			createErrMsg(event, err_msg);
+    @FXML
+    void In_Advance_Customer__Order(ActionEvent event) throws IOException, ParseException {
+		Client client = new Client();
+        String id=In_Advance_Customer_id.getText();
+        String car_number = In_Advance_Customer_car_number.getText();
+        String car_park = In_Advance_Customer_car_park.getText();
+        String email = In_Advance_Customer_email.getText();
+        LocalDate start_date = In_Advance_Customer_start_date.getValue();
+        String start_time = In_Advance_Customer_start_time.getText();
+        LocalDate end_date = In_Advance_Customer_end_date.getValue();
+        String end_time = In_Advance_Customer_end_time.getText();
+        String err_msg = In_Advance_Customer_inputIsValid(id,car_number,car_park,email,start_date,start_time, end_date,end_time );
+        int status = client.AdvanceOneTimeOrder(id,car_number,car_park,email,start_date,start_time,end_date,end_time);
 
 
-			return;
-		}
-		client.AdvanceOneTimeOrder(id,car_number,car_park,email,start_date,start_time,end_date,end_time);
+        if(!err_msg.isEmpty())
+        {
+            //TODO error msg
+            //System.out.println(err_msg);
+            createErrMsg(event, err_msg);
+
+
+            return;
+        }
 
 	}
 
 
-	private String In_Advance_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate start_date,String start_time,LocalDate end_date,String end_time )
-	{
-		String msg = "";
+    private String In_Advance_Customer_inputIsValid(String id, String car_number, String car_park, String email,LocalDate start_date,String start_time,LocalDate end_date,String end_time ) throws ParseException
+    {
 
-		if(id.isEmpty())
-			msg = msg + "id is empty\n";
-		if(car_number.isEmpty())
-			msg = msg + "car_number is empty\n";
-		if(car_park.isEmpty())
-			msg = msg + "car_park is empty\n";
-		if(email.isEmpty())
-			msg = msg + "email is empty\n";
 
-		if( start_date != null && end_date != null)
-		{
-			LocalDate today = LocalDate.now();
-			if(today.isAfter(end_date) || today.isAfter(start_date))
-				msg = msg + "choose only future dates\n";
-			if(start_date.isAfter(end_date))
-				msg = msg + "starting date must be prior to ending date\n";
-		}
-		else
-		{
-			msg = msg + "fill all the dates please\n";
-		}
-		//TODO check also time and hour
-		if(start_time.isEmpty())
-			msg = msg + "start time is empty\n";
-		if(end_time.isEmpty())
-			msg = msg + "end time is empty\n";
 
-		return msg;
-	}
-	//TODO copy for all buttons
-	public void In_Advance_Customer_loadDates() {
-		In_Advance_Customer_start_date.setDayCellFactory(picker -> new DateCell() {
-			public void updateItem(LocalDate date, boolean empty) {
-				super.updateItem(date, empty);
-				LocalDate today = LocalDate.now();
+
+
+    	String msg = "";
+    	int dateFlag = 1;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //parse start and end time
+
+
+        if(id.isEmpty())
+            msg = msg + "id is empty\n";
+        if(car_number.isEmpty())
+            msg = msg + "car_number is empty\n";
+        if(car_park.isEmpty())
+            msg = msg + "car_park is empty\n";
+        if(email.isEmpty())
+            msg = msg + "email is empty\n";
+
+        if(start_time.isEmpty())
+            msg = msg + "start time is empty\n";
+        else
+        	if(!check_hour_minute(start_time))
+        	{
+        	msg=msg + "fix starting hour and minute \n";
+        	dateFlag = 0;
+        	}
+
+
+        if(end_time.isEmpty())
+            msg = msg + "end time is empty\n";
+        else
+        	if(!check_hour_minute(end_time))
+        	{
+        	msg=msg + "fix ending hour and minute\n";
+        	dateFlag = 0;
+        	}
+
+
+
+        if( start_date != null && end_date != null && dateFlag == 1)
+        {
+        	String start = start_date.toString()+" "+start_time;
+    		String end = end_date.toString()+" "+end_time;
+
+    			Date s = df.parse(start);
+    			Date e = df.parse(end);
+
+    			if(e.before(s))
+    				msg = msg + "starting date must be prior to ending date\n";
+
+
+            /*LocalDate today = LocalDate.now();
+            if(today.isAfter(end_date) || today.isAfter(start_date))
+                msg = msg + "choose only future dates\n";
+            if(start_date.isAfter(end_date))
+                msg = msg + "starting date must be prior to ending date\n";
+
+                */
+        }
+
+        else if(start_date == null && end_date == null)
+        {
+            msg = msg + "fill all the dates please\n";
+        }
+
+
+        return msg;
+    }
+
+
+    boolean check_hour_minute(String hour_minute)
+    {
+
+    	 Pattern pattern;
+         Matcher matcher;
+         String TIME12HOURS_PATTERN = "([01]?[0-9]|2[0-3]):[0-5][0-9]";
+    	 pattern = Pattern.compile(TIME12HOURS_PATTERN);
+         matcher = pattern.matcher(hour_minute);
+         return (matcher.matches());
+    }
+
+
+
+
+
+
+
+//TODO copy for all buttons
+     public void In_Advance_Customer_loadDates() {
+         In_Advance_Customer_start_date.setDayCellFactory(picker -> new DateCell() {
+             public void updateItem(LocalDate date, boolean empty) {
+                 super.updateItem(date, empty);
+                 LocalDate today = LocalDate.now();
 
 				setDisable(empty || date.compareTo(today) < 0);
 			}
@@ -639,10 +855,10 @@ public class PersonViewController {
 
 
 
-	void log_out(ActionEvent event ) throws IOException {
-		String url = "LoginView.fxml";
-		switchWindow(url);
-		switchScene(event, "login page");
+void log_out(ActionEvent event ) throws IOException {
+    String url = "LoginView.fxml";
+    switchWindow(url);
+    switchScene(event, "login page");
 
 	}
 
