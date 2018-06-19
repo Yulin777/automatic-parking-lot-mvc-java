@@ -13,7 +13,7 @@ import java.net.Socket;
 public class Server {
 	public static void main(String[] args) {
 		ParkingStationController psc = new ParkingStationController();
-		psc.addParkingStaion("Haifa",null,3);
+		psc.setResevedSlot(0,1,1,1);
 		ServerSocket socket = null;
 		try{
 			socket = new ServerSocket(8080);
