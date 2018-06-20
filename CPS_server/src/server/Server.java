@@ -8,7 +8,7 @@ import java.net.Socket;
 public class Server {
     public static void main(String[] args) {
         ParkingStationController psc = new ParkingStationController();
-        psc.setResevedSlot(0, 1, 1, 1);
+        psc.insertCar(0,null,123);
         ServerSocket socket = null;
         try {
             socket = new ServerSocket(8080);

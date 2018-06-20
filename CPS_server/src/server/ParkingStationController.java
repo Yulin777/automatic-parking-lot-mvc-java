@@ -3,6 +3,7 @@ package server;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 public class ParkingStationController {
 	int currentId = 0;
@@ -19,6 +20,40 @@ public class ParkingStationController {
 		return 0;
 	}
 
+	/**
+	 * insert Car to available Slot
+	 * @param parkId
+	 * @param endTime
+	 * @param carId
+	 * @return true if there is available Slot
+	 */
+	public boolean insertCar(int parkId,LocalDate endTime,int carId){
+		java.sql.PreparedStatement stmt =null,updatestmt = null;
+		int availableSlot = 0;
+			try {
+				stmt =  sql.conn.prepareStatement("SELECT count(*) FROM ParkingStationSlots WHERE parking_id = ? AND ParkingStationSlot_status = 0");
+			stmt.setInt(1,parkId);
+			
+			ResultSet rs = stmt.executeQuery();
+		      if (rs.next()) {
+		    	  availableSlot = rs.getInt(1);
+		      }
+		      
+		    //TODO: check for orders
+			if(availableSlot>0){
+				updatestmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 1, car_ID = ? WHERE parking_id = ? AND ParkingStationSlot_status = 0 LIMIT 1");
+				updatestmt.setInt(1, carId);
+				updatestmt.setInt(2, parkId);
+				updatestmt.executeUpdate();
+				return true;
+			}
+			}
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
+	}
 	/**
 	 * Reseve Parking staion slot 
 	 * @param parkId
