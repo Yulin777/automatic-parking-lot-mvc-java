@@ -7,12 +7,12 @@ import java.util.Date;
 
 public class OrderController {
 	public enum OrderStatus {
-		PENDING, CANCELED, COMPLETE;
+		PENDING, PRESENT, COMPLETE, CANCELED;
 	}
 
 	public enum OrderType {
 		//todo edit more statuses
-		OCCASIONAL;
+		OCCASIONAL, IN_ADVANCE;
 	}
 
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
@@ -125,7 +125,7 @@ public class OrderController {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
 				uprs.moveToInsertRow();
-				uprs.updateString("order_status", OrderStatus.PENDING.toString());
+				uprs.updateString("order_status", OrderStatus.PRESENT.toString());
 				uprs.updateString("order_car_id", carID);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("due_date", (new Timestamp((new Date()).getTime())).toString());
@@ -145,7 +145,7 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean addDueOrder(String carID, Timestamp dueDate) {
+	public static boolean addInAdvanceOrder(String carID, Timestamp dueDate) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -158,7 +158,7 @@ public class OrderController {
 				uprs.moveToInsertRow();
 				uprs.updateString("order_status", OrderStatus.PENDING.toString());
 				uprs.updateString("order_car_id", carID);
-				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
+				uprs.updateString("order_type", OrderType.IN_ADVANCE.toString());
 				uprs.updateString("due_date", dueDate.toString());
 				uprs.insertRow();
 
