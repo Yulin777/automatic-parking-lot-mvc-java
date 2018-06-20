@@ -482,9 +482,11 @@ public class PersonViewController {
 			return;
 		}
 
-		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)
-				&& client.addNewCar(id, car_number)) {
-			//TODO add success message to gui
+		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
+			if (client.addNewCar(id, car_number)) {
+
+				//TODO add success message to gui
+			}
 		} else {
 			//TODO error msg
 			createErrMsg(event, "could not add order.");

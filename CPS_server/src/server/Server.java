@@ -80,10 +80,10 @@ public class Server {
 				if (cmd.length < 9) {
 					throw new Exception("not enough arguments fo add client");
 				}
-				Customer c = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
+				boolean flag = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
 				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 				//PrintWriter pw = new PrintWriter(osw);
-				osw.writeObject(c);
+				osw.writeObject(flag);
 				osw.flush();
 				currentSocket.close();
 			} catch (Exception ioe) {

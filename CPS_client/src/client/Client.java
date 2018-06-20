@@ -101,7 +101,6 @@ public class Client {
 
 	public boolean addNewCustomer(String id, String firstName, String lastName, String password, Customer.type type,
 								  String email, String phone) {
-		Customer c = null;
 		boolean flag = false;
 
 		try {
@@ -113,23 +112,20 @@ public class Client {
 			pw.flush();
 			InputStream is = socket.getInputStream();
 			ObjectInputStream ois = new ObjectInputStream(is);
-			c = (Customer) ois.readObject();
-			if (c != null) {
-				System.out.println("[response] customer " + c.getFirstName() + " " + c.getLastName() + " login Succeed");
-				flag = true;
+			flag = (boolean) ois.readObject();
+			if (flag) {
+				System.out.println("[response] customer " + firstName + " " + lastName + " creation Succeed");
 			} else
 				System.out.println("[response] customer not found");
 
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
 		return flag;
 	}
 
 	public boolean addNewCar(String customerId, String carId) {
-//		Car c = null;
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -143,14 +139,12 @@ public class Client {
 
 			if (flag) {
 				System.out.println("[response] car " + carId + " was added successfully");
-				flag = true;
 			} else
 				System.out.println("[response] car was not found");
 
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
 		}
 		return flag;
 	}
