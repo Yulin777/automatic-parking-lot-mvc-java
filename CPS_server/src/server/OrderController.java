@@ -144,4 +144,36 @@ public class OrderController {
 		}
 		return flag;
 	}
+
+	public static boolean addDueOrder(String carID, Timestamp dueDate) {
+		boolean flag = false;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id=?");
+			stmt.setString(1, carID);
+			ResultSet client = stmt.executeQuery();
+			if (!client.next()) {
+				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
+				uprs.moveToInsertRow();
+				uprs.updateString("order_status", OrderStatus.PENDING.toString());
+				uprs.updateString("order_car_id", carID);
+				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
+				uprs.updateString("due_date", dueDate.toString());
+				uprs.insertRow();
+
+				System.out.println("New order was added succsfully");
+				flag = true;
+
+				uprs.close();
+				stmt.close();
+			} else {
+				System.out.println("order already exists for current car");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
+
 }
