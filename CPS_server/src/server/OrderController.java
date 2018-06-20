@@ -2,12 +2,11 @@ package server;
 
 import java.sql.*;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OrderController {
 	public enum OrderStatus {
-		PENDING, PRESENT, COMPLETE, CANCELED;
+		PENDING, ONGOING, COMPLETE, CANCELED;
 	}
 
 	public enum OrderType {
@@ -125,7 +124,7 @@ public class OrderController {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
 				uprs.moveToInsertRow();
-				uprs.updateString("order_status", OrderStatus.PRESENT.toString());
+				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
 				uprs.updateString("order_car_id", carID);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("due_date", (new Timestamp((new Date()).getTime())).toString());
