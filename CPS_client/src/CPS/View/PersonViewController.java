@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import server.Customer;
+import server.OrderController;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -484,8 +485,10 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(id, car_number)) {
+				if (OrderController.addOccasionalOrder(car_number)){
 
-				//TODO add success message to gui
+					//TODO add success message to gui
+				}
 			}
 		} else {
 			//TODO error msg
