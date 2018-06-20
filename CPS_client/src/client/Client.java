@@ -129,7 +129,7 @@ public class Client {
 	}
 
 	public boolean addNewCar(String customerId, String carId) {
-		Car c = null;
+//		Car c = null;
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -139,10 +139,10 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			c = (Car) ois.readObject();
+			flag = (boolean) ois.readObject();
 
-			if (c != null) {
-				System.out.println("[response] car " + c.carID + " was added successfully");
+			if (flag) {
+				System.out.println("[response] car " + carId + " was added successfully");
 				flag = true;
 			} else
 				System.out.println("[response] car was not found");
