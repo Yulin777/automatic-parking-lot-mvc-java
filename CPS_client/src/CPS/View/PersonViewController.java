@@ -25,6 +25,8 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import server.Customer.type;
+
 
 public class PersonViewController {
 
@@ -162,6 +164,10 @@ public class PersonViewController {
 
 	@FXML // fx:id="customer_sign_up_phone_number"
 	private TextField customer_sign_up_phone_number; // Value injected by FXMLLoader
+	
+	@FXML
+    private TextField customer_sign_up_password;
+
 
 	@FXML
 	void Customer_Sign_up_Sign_up(ActionEvent event) throws IOException {
@@ -172,17 +178,40 @@ public class PersonViewController {
 		String car_number = customer_sign_up_car_number.getText();
 		String email = customer_sign_up_email.getText();
 		LocalDate start_date = customer_sign_up_date_picker.getValue();
-		String err_msg = Customer_Sign_Up_InputIsValid(id, car_number, email, start_date);
+		
+		String firstName = customer_sign_up_first_name.getText();
+		String lastName = customer_sign_up_last_name.getText();
+		String password = customer_sign_up_password.getText();
+		String phone = customer_sign_up_phone_number.getText();
+		
+		String err_msg = Customer_Sign_Up_InputIsValid(firstName,lastName,password,phone, id, car_number, email, start_date);
 
+		
+		//TODO check also this new parameters
+		
+		
+		
+		
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			createErrMsg(event, err_msg);
-
 			return;
 		}
+		Client c = new Client();
+		if(!c.addNewCustomer( id,  firstName,  lastName,  password,  type.SUBSCRIBED, email,  phone))
+		{
+			err_msg = "Somthing went wrong during sign up customer\n";
+			createErrMsg(event, err_msg);
+			return;
+		}
+		
+		err_msg = "Sign up succed\n";
+		createErrMsg(event, err_msg);
+		return;
+		
 	}
 
-	private String Customer_Sign_Up_InputIsValid(String id, String car_number, String email, LocalDate end_date) {
+	private String Customer_Sign_Up_InputIsValid(String firstName,String lastName,String password,String phone,String id, String car_number, String email, LocalDate end_date) {
 		String msg = "";
 		if (id.isEmpty())
 			msg = msg + "id is empty\n";
@@ -190,6 +219,16 @@ public class PersonViewController {
 			msg = msg + "car_number is empty\n";
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
+		
+		if(firstName.isEmpty())
+			msg = msg + "first name is empty\n";
+		if(lastName.isEmpty())
+			msg = msg + "last name is empty\n";
+		if(password.isEmpty())
+			msg = msg + "password is empty\n";
+		if(phone.isEmpty())
+			msg = msg + "phone is empty\n";
+		
 		if (end_date != null) {
 			LocalDate today = LocalDate.now();
 			if (today.isAfter(end_date))
@@ -656,13 +695,27 @@ public class PersonViewController {
 		String email = In_Advance_Customer_email.getText();
 		LocalDate start_date = In_Advance_Customer_start_date.getValue();
 		LocalDate end_date = In_Advance_Customer_end_date.getValue();
-		String start_date_string = start_date.toString();// In_Advance_Customer_start_date.getValue();
-		String end_date_string = end_date.toString();// In_Advance_Customer_end_date.getValue();
+		
+		
 		String start_time = In_Advance_Customer_start_time.getText();
 		String end_time = In_Advance_Customer_end_time.getText();
 		String phone = In_Advance_Customer_phone_number.getText();
+		
 		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
+		
+		if (!err_msg.isEmpty()) {
+			//TODO error msg
+			//System.out.println(err_msg);
+			createErrMsg(event, err_msg);
+
+			return;
+		}
+		
 		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
+		
+		String start_date_string =""+ start_date.toString();// In_Advance_Customer_start_date.getValue();
+		String end_date_string =""+ end_date.toString();// In_Advance_Customer_end_date.getValue();
+		
 		
 		String[] end_time_by_parts = end_time.split(":");
 		String[] start_time_by_parts = end_time.split(":"); 
@@ -672,6 +725,7 @@ public class PersonViewController {
 		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
 		
 		Timestamp start_timestamp = Timestamp.valueOf(start_date_string+" "+start_date_hours+":"+start_date_minutes+":00.0");
+		
 		start_timestamp.setHours(start_date_hours);
 		start_timestamp.setMinutes(start_date_minutes);
 		
@@ -679,13 +733,7 @@ public class PersonViewController {
 		end_timestamp.setHours(end_date_hours);
 		end_timestamp.setMinutes(end_date_minutes);
 		
-		if (!err_msg.isEmpty()) {
-			//TODO error msg
-			//System.out.println(err_msg);
-			createErrMsg(event, err_msg);
-
-			return;
-		}
+		
 		
 		if (client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
 			if (client.addNewCar(carID, clientID)) {
