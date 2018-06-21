@@ -196,5 +196,37 @@ public class Client {
 		}
 		return flag;
 	}
+
+	/**
+	 * client function - adding new complaint
+	 * @param client_id
+	 * @param description - the complaint itself
+	 * @return
+	 */
+	public boolean addNewComplaint(String client_id, String description)
+	{
+		boolean c = false;
+			try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("add complaint " + client_id + " " + description);
+			pw.flush();
+	
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			c = (boolean)ois.readObject();
+			if (c == true)
+				System.out.println("[response] new complaint was added");
+			else
+				System.out.println("[response] error adding new complaint");
+	
+			socket.close();
+		} catch (IOException ioe) {
+			System.out.println("complaint error");
+		} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+		}
+		return c;
+	}
 	
 }
