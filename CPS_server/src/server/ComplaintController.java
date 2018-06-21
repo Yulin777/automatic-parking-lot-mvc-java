@@ -85,6 +85,85 @@ public class ComplaintController
 		return ("Attendant " + attendantID + " was assigned successfully to complaint number "+ ComplaintID);
 	}
 
+	public static String respondToCompalint(String ComplaintID, String response)
+	 {
+		Statement stmt;
+		try {
+			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+			ResultSet c = stmt.executeQuery("SELECT * FROM complaints WHERE complaint_number=" + ComplaintID + ";");
+			if (!c.next()) {
+				System.err.println("There is no complaint with such id");
+				return ("There is no complaint with such id");
+			}
+				//ResultSet uprs = stmt.executeQuery("SELECT * FROM complaints");
+				c.moveToInsertRow();
+				c.updateString("response", response);
+				c.insertRow();
+
+				System.out.println("Response was added successfully to complaint number "+ ComplaintID);
+
+				if (c != null) {
+					try {
+						c.close();
+					} catch (SQLException e) {
+						/* ignored */
+					}
+				}
+				if (c != null) {
+					try {
+						c.close();
+					} catch (SQLException e) {
+						/* ignored */
+					}
+				}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ("Response was added successfully to complaint number "+ ComplaintID);
+	}
+	
+	public static String addCompensationToCompalint(String ComplaintID, float compnsationAmount)
+	 {
+		Statement stmt;
+		try {
+			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+			ResultSet c = stmt.executeQuery("SELECT * FROM complaints WHERE complaint_number=" + ComplaintID + ";");
+			if (!c.next()) {
+				System.err.println("There is no complaint with such id");
+				return ("There is no complaint with such id");
+			}
+				//ResultSet uprs = stmt.executeQuery("SELECT * FROM complaints");//getting the table
+				c.moveToInsertRow();//moing to the last row for allowing update
+				c.updateFloat("compensation",compnsationAmount);
+				c.insertRow();
+
+				System.out.println("Compensation of "+ compnsationAmount+ " was added successfully to complaint number "+ ComplaintID);
+
+				if (c != null) {
+					try {
+						c.close();
+					} catch (SQLException e) {
+						/* ignored */
+					}
+				}
+				if (c != null) {
+					try {
+						c.close();
+					} catch (SQLException e) {
+						/* ignored */
+					}
+				}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return ("Compensation of "+ compnsationAmount+ " was added successfully to complaint number "+ ComplaintID);
+	}
 	
 	
 }
