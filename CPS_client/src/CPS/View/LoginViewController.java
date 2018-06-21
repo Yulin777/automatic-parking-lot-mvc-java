@@ -271,7 +271,7 @@ public class LoginViewController {
 	void login_view_customer_sign_in(ActionEvent event) throws IOException {
 		// String url = "CustomerSignIn.fxml";
 		//switchWindow(url);
-		changeViewWithDates(event,"CustomerSignIn.fxml","sign in");
+		changeViewWithDates(event,"CustomerSignUp.fxml","sign up");
 		PersonViewController controller = loader.getController();
 		controller.Customer_Sign_Up_loadDates();
 		// switchScene(event,"sign in");
