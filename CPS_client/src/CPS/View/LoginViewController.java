@@ -116,15 +116,21 @@ public class LoginViewController {
 		Client client = new Client();
 
 		//worker login
-		if(worker_radio.isSelected())
-		{
 			if(worker_radio.isSelected())
 			{
+				if(isEmptyBars(id_bar, password_bar))
+				{
+					err_msg = err_msg + "please fill all bars\n";
+				}
+				else
+				{
 				Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.ParkingWorker);
+				
 				if(w==null)
 				{
 					err_msg = err_msg + "You are not a worker\n";
 				}
+				
 				else{
 					url = "workerView.fxml";
 					switchWindow(url);
@@ -139,6 +145,12 @@ public class LoginViewController {
 		//manger login
 		else if(manager_radio.isSelected())
 		{
+			if(isEmptyBars(id_bar, password_bar))
+			{
+				err_msg = err_msg + "please fill all bars\n";
+			}
+			else
+			{
 			Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.MasterManger);
 			if(w==null)
 			{
@@ -152,10 +164,17 @@ public class LoginViewController {
 				title = "Manager Interface";
 			}
 		}
+		}
 
 		//customer login
 		else if(customer_radio.isSelected())
 		{
+			if(isEmptyBars(id_bar, password_bar))
+			{
+				err_msg = err_msg + "please fill all bars\n";
+			}
+			else
+			{
 			Customer c = client.customerLogin(id_bar.getText(),password_bar.getText());
 			if(c==null)
 			{
@@ -171,13 +190,14 @@ public class LoginViewController {
 
 			//  controller.setWorkerInterfaceController(wIC);
 		}
+		}
 		else
 		{
 			err_msg = err_msg + "no button clicked\n";
 
 		}
 		if (!err_msg.isEmpty()) {
-			createErrMsg(event, "no button clicked");
+			createErrMsg(event, err_msg);
 			login_view_progress_bar.setVisible(false);
 
 			return;
@@ -261,5 +281,13 @@ public class LoginViewController {
 		switchWindow(url);
 		switchScene(event,title);
 
+	}
+	
+	
+	boolean isEmptyBars(TextField tf1, TextField tf2)
+	{
+		if(tf1.getText().equals("") || tf2.getText().equals("") )
+			return true;
+		return false;
 	}
 }

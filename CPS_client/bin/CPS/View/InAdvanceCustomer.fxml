@@ -32,7 +32,7 @@
       <Label layoutX="96.0" layoutY="315.0" prefHeight="17.0" prefWidth="63.0" text="start date:" />
       <TextField fx:id="In_Advance_Customer_start_time" layoutX="178.0" layoutY="346.0" promptText="hour : minute" />
       <Label layoutX="95.0" layoutY="350.0" prefHeight="17.0" prefWidth="52.0" text="start time" />
-      <TextField fx:id="In_Advance_Customer_id1" layoutX="180.0" layoutY="86.0" promptText="first name:" />
+      <TextField fx:id="In_Advance_Customer_first_name" layoutX="180.0" layoutY="86.0" promptText="first name:" />
       <Label layoutX="95.0" layoutY="90.0" text="first name:" />
       <TextField fx:id="In_Advance_Customer_id2" layoutX="180.0" layoutY="124.0" promptText="last name:" />
       <Label layoutX="93.0" layoutY="128.0" text="last name:" />

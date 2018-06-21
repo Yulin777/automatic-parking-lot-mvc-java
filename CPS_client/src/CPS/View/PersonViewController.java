@@ -595,52 +595,43 @@ public class PersonViewController {
 
 
 	@FXML
-	private TextField In_Advance_Customer_id1;
+    private Button In_Advance_Customer_back_btn;
 
-	@FXML
-	private TextField In_Advance_Customer_id2;
+    @FXML
+    private TextField In_Advance_Customer_end_time;
 
-	@FXML
-	private TextField In_Advance_Customer_id3;
+    @FXML
+    private TextField In_Advance_Customer_id;
 
-	@FXML // fx:id="In_Advance_Customer_back_btn"
-	private Button In_Advance_Customer_back_btn; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_phone_number;
 
-	@FXML // fx:id="In_Advance_Customer_end_time"
-	private TextField In_Advance_Customer_end_time; // Value injected by FXMLLoader
+    @FXML
+    private DatePicker In_Advance_Customer_end_date;
 
-	@FXML // fx:id="In_Advance_Customer_email"
-	private TextField In_Advance_Customer_email; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_car_number;
 
-	@FXML // fx:id="In_Advance_Customer_order"
-	private Button In_Advance_Customer_order; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_first_name;
 
-	@FXML // fx:id="In_Advance_Customer_car_park"
-	private TextField In_Advance_Customer_car_park; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_email;
 
-	@FXML // fx:id="In_Advance_Customer_start_date"
-	private DatePicker In_Advance_Customer_start_date; // Value injected by FXMLLoader
+    @FXML
+    private Button In_Advance_Customer_order;
 
-	@FXML // fx:id="In_Advance_Customer_id"
-	private TextField In_Advance_Customer_id; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_car_park;
 
-	@FXML // fx:id="In_Advance_Customer_id"
-	private TextField In_Advance_first_name; // Value injected by FXMLLoader
+    @FXML
+    private DatePicker In_Advance_Customer_start_date;
 
-	@FXML // fx:id="In_Advance_Customer_id"
-	private TextField In_Advance_last_name; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_last_name;
 
-	@FXML // fx:id="In_Advance_Customer_end_date"
-	private DatePicker In_Advance_Customer_end_date; // Value injected by FXMLLoader
-
-	@FXML // fx:id="In_Advance_Customer_start_time"
-	private TextField In_Advance_Customer_start_time; // Value injected by FXMLLoader
-
-	@FXML // fx:id="In_Advance_Customer_car_number"
-	private TextField In_Advance_Customer_car_number; // Value injected by FXMLLoader
-
-	@FXML // fx:id="In_Advance_Customer_phone_number"
-	private TextField In_Advance_Customer_phone_number; // Value injected by FXMLLoader
+    @FXML
+    private TextField In_Advance_Customer_start_time;
 
 	@FXML
 	void DatePicked(ActionEvent event) {
@@ -658,8 +649,8 @@ public class PersonViewController {
 	void In_Advance_Customer__Order(ActionEvent event) throws IOException, ParseException {
 		Client client = new Client();
 		String clientID = In_Advance_Customer_id.getText();
-		String first_name = In_Advance_first_name.getText();
-		String last_name = In_Advance_last_name.getText();
+		String first_name = In_Advance_Customer_first_name.getText();
+		String last_name = In_Advance_Customer_last_name.getText();
 		String carID = In_Advance_Customer_car_number.getText();
 		String car_park = In_Advance_Customer_car_park.getText();
 		String email = In_Advance_Customer_email.getText();
