@@ -15,14 +15,14 @@ public class Client {
 	public Client() {
 	}
 
-	public Customer customerLogin(String email, String password) {
+	public Customer customerLogin(String id, String password) {
 		Customer c = null;
 
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("login client " + email + " " + password);
+			pw.println("login client " + id + " " + password);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -34,7 +34,7 @@ public class Client {
 
 			socket.close();
 		} catch (IOException ioe) {
-			System.out.println("error 1");
+			System.out.println("login error");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,13 +125,13 @@ public class Client {
 		return flag;
 	}
 
-	public boolean addNewCar(String customerId, String carId) {
+	public boolean addNewCar(String carId, String customerId) {
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add car " + customerId + " " + carId);
+			pw.println("add car " + carId + " " + customerId);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -148,5 +148,30 @@ public class Client {
 		}
 		return flag;
 	}
+	
+	public boolean addOccasionalOrder(String car_id, Timestamp end_time) {
+		boolean flag = false;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("add occasional " + car_id + " " + end_time.toString());
+			pw.flush();
+			
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			flag = (boolean) ois.readObject();
+			
+			if (flag) {
+				System.out.println("[response] order was added successfully");
+			} else
+				System.out.println("[response] adding order was failed");
+			
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 
+	
 }

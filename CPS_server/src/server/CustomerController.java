@@ -91,20 +91,19 @@ public class CustomerController {
 		return return_res;
 	}
 
-	public Customer login(String email, String password) {
+	public Customer login(String id, String password) {
 		java.sql.PreparedStatement stmt;
 		Customer return_res = null;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT * FROM clients WHERE client_email = ? AND client_password = ?");
-			stmt.setString(1, email);
+			stmt = sql.conn.prepareStatement("SELECT * FROM clients WHERE client_ID = ? AND client_password = ?");
+			stmt.setString(1, id);
 			stmt.setString(2, password);
-
 
 			ResultSet rs = stmt.executeQuery();
 			if (!rs.next()) {
 				return null;
 			}
-			return_res = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "");
+			return_res = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
 
 			if (rs != null) {
 				try {
@@ -124,9 +123,9 @@ public class CustomerController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return return_res;
 	}
+
 
 	public boolean addCarToCustomer(int sid, int carNumber, int customerPid) {
 		return false;

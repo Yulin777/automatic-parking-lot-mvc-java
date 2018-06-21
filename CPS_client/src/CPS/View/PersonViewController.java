@@ -225,7 +225,7 @@ public class PersonViewController {
 
 
 
-/*
+	/*
     @FXML
     private DatePicker Customer_Sign_In_Sign_In_date_picker_btn;
 
@@ -308,7 +308,7 @@ public class PersonViewController {
 	}
 
 
-*/
+	 */
 
 
 	//------------------------^^^^Customer Sign In^^^----------------------------------
@@ -471,19 +471,23 @@ public class PersonViewController {
 		String car_park = Occasional_Customer_car_park.getText();
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
+		String end_date_string = Occasional_Customer_end_date.getValue().toString();
 		String end_time = Occasional_Customer_end_time.getText();
 		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time);
 		String first_name = "Occasional";
 		String last_name = "Occasional";
 		String phone = "Occasional";
 		String[] end_time_by_parts = end_time.split(":");
-		int end_date_year = end_date.getYear();
-		int end_date_month = end_date.getMonthValue();
-		int end_date_day = end_date.getDayOfMonth();
+//		int end_date_year = end_date.getYear()-1900;
+//		int end_date_month = end_date.getMonthValue();
+//		int end_date_day = end_date.getDayOfMonth()-2;
 		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
 		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
+		Timestamp timestamp = Timestamp.valueOf(end_date_string+" "+end_date_hours+":"+end_date_minutes+":00.0");
+		timestamp.setHours(end_date_hours);
+		timestamp.setMinutes(end_date_minutes);
 
-		Timestamp end_time_overall = new Timestamp(end_date_year, end_date_month, end_date_day, end_date_hours, end_date_minutes, 0, 0);
+//		Timestamp end_time_overall = new Timestamp(end_date_year, end_date_month, end_date_day, end_date_hours, end_date_minutes, 0, 0);
 
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
@@ -494,7 +498,7 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(id, car_number)) {
-				if (OrderController.addOccasionalOrder(car_number, end_time_overall)) {
+				if (client.addOccasionalOrder(car_number, timestamp)) {
 
 					//TODO add success message to gui
 				}
@@ -520,7 +524,7 @@ public class PersonViewController {
 			msg = msg + "car_park is empty\n";
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
-       /* if( end_date != null)
+		/* if( end_date != null)
         {
             LocalDate today = LocalDate.now();
             if(today.isAfter(end_date))
@@ -553,13 +557,13 @@ public class PersonViewController {
 				msg = msg + "ending date must be in the future\n";
 
 
-            /*LocalDate today = LocalDate.now();
+			/*LocalDate today = LocalDate.now();
             if(today.isAfter(end_date) || today.isAfter(start_date))
                 msg = msg + "choose only future dates\n";
             if(start_date.isAfter(end_date))
                 msg = msg + "starting date must be prior to ending date\n";
 
-                */
+			 */
 		} else if (end_date == null) {
 			msg = msg + "fill the date please\n";
 		}
@@ -590,7 +594,7 @@ public class PersonViewController {
 	//---------------------------^^Occasional Customer^^----------------------------------
 
 
-//------------------------------------In Advance Customer ----------------------------
+	//------------------------------------In Advance Customer ----------------------------
 
 
 	@FXML
@@ -658,16 +662,15 @@ public class PersonViewController {
 		String err_msg = In_Advance_Customer_inputIsValid(id, car_number, car_park, email, start_date, start_time, end_date, end_time);
 		int status = client.AdvanceOneTimeOrder(id, car_number, car_park, email, start_date, start_time, end_date, end_time);
 
-
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			//System.out.println(err_msg);
 			createErrMsg(event, err_msg);
 
-
 			return;
 		}
 
+		
 	}
 
 
@@ -715,13 +718,13 @@ public class PersonViewController {
 				msg = msg + "starting date must be prior to ending date\n";
 
 
-            /*LocalDate today = LocalDate.now();
+			/*LocalDate today = LocalDate.now();
             if(today.isAfter(end_date) || today.isAfter(start_date))
                 msg = msg + "choose only future dates\n";
             if(start_date.isAfter(end_date))
                 msg = msg + "starting date must be prior to ending date\n";
 
-                */
+			 */
 		} else if (start_date == null && end_date == null) {
 			msg = msg + "fill all the dates please\n";
 		}
