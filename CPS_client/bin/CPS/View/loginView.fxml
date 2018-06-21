@@ -18,7 +18,7 @@
          </toggleGroup></RadioButton>
       <RadioButton fx:id="worker_radio" layoutX="18.0" layoutY="164.0" mnemonicParsing="false" text="log as worker" toggleGroup="$type" />
       <RadioButton fx:id="customer_radio" layoutX="18.0" layoutY="95.0" mnemonicParsing="false" text="log as customer" toggleGroup="$type" />
-      <TextField fx:id="email_bar" layoutX="17.0" layoutY="14.0" prefHeight="25.0" prefWidth="460.0" promptText="email:" />
+      <TextField fx:id="id_bar" layoutX="17.0" layoutY="14.0" prefHeight="25.0" prefWidth="460.0" promptText="id:" />
       <PasswordField fx:id="password_bar" layoutX="17.0" layoutY="50.0" prefHeight="25.0" prefWidth="460.0" promptText="password:" />
       <Button fx:id="log_as_occasional_customer_btn" layoutX="310.0" layoutY="162.0" mnemonicParsing="false" onAction="#log_as_occasional_customer" prefHeight="25.0" prefWidth="178.0" text="Log as occasional customer" />
       <Button fx:id="log_as_in_advance_customer_btn" layoutX="310.0" layoutY="127.0" mnemonicParsing="false" onAction="#log_as_in_advance_customer" prefHeight="25.0" prefWidth="178.0" text="ordered in advance" />

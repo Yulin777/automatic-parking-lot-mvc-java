@@ -35,8 +35,8 @@ public class LoginViewController {
 	@FXML // fx:id="customer_radio"
 	private RadioButton customer_radio; // Value injected by FXMLLoader
 
-	@FXML // fx:id="email_bar"
-	private TextField email_bar; // Value injected by FXMLLoader
+	@FXML // fx:id="id_bar"
+	private TextField id_bar; // Value injected by FXMLLoader
 
 	@FXML // fx:id="login_btn"
 	private Button login_btn; // Value injected by FXMLLoader
@@ -120,7 +120,7 @@ public class LoginViewController {
 		{
 			if(worker_radio.isSelected())
 			{
-				Worker w = client.workerLogin(email_bar.getText(),password_bar.getText(),WorkerType.ParkingWorker);
+				Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.ParkingWorker);
 				if(w==null)
 				{
 					err_msg = err_msg + "You are not a worker\n";
@@ -129,7 +129,7 @@ public class LoginViewController {
 					url = "workerView.fxml";
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
-					controller.setWorkerName(email_bar.getText());
+					controller.setWorkerName(id_bar.getText());
 					controller.setWorkerInterfaceController(wIC);
 					title = "Worker Interface";
 				}
@@ -139,7 +139,7 @@ public class LoginViewController {
 		//manger login
 		else if(manager_radio.isSelected())
 		{
-			Worker w = client.workerLogin(email_bar.getText(),password_bar.getText(),WorkerType.MasterManger);
+			Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.MasterManger);
 			if(w==null)
 			{
 				err_msg = err_msg + "You are not a manager\n";
@@ -148,7 +148,7 @@ public class LoginViewController {
 				url = "ManagerView.fxml";
 				switchWindow(url);
 				PersonViewController controller = loader.getController();
-				controller.setManagerName(email_bar.getText());
+				controller.setManagerName(id_bar.getText());
 				title = "Manager Interface";
 			}
 		}
@@ -156,7 +156,7 @@ public class LoginViewController {
 		//customer login
 		else if(customer_radio.isSelected())
 		{
-			Customer c = client.customerLogin(email_bar.getText(),password_bar.getText());
+			Customer c = client.customerLogin(id_bar.getText(),password_bar.getText());
 			if(c==null)
 			{
 				err_msg = err_msg + "You are not a customer\n";
@@ -165,7 +165,7 @@ public class LoginViewController {
 				url = "CustomerView.fxml";
 				switchWindow(url);
 				PersonViewController controller = loader.getController();
-				controller.setCustomerName(email_bar.getText());
+				controller.setCustomerName(id_bar.getText());
 				title = "Customer Interface";
 			}
 

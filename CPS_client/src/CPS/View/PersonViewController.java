@@ -657,20 +657,37 @@ public class PersonViewController {
 	@FXML
 	void In_Advance_Customer__Order(ActionEvent event) throws IOException, ParseException {
 		Client client = new Client();
-		String id = In_Advance_Customer_id.getText();
+		String clientID = In_Advance_Customer_id.getText();
 		String first_name = In_Advance_first_name.getText();
 		String last_name = In_Advance_last_name.getText();
-		String car_number = In_Advance_Customer_car_number.getText();
+		String carID = In_Advance_Customer_car_number.getText();
 		String car_park = In_Advance_Customer_car_park.getText();
 		String email = In_Advance_Customer_email.getText();
 		LocalDate start_date = In_Advance_Customer_start_date.getValue();
-		String start_time = In_Advance_Customer_start_time.getText();
 		LocalDate end_date = In_Advance_Customer_end_date.getValue();
+		String start_date_string = start_date.toString();// In_Advance_Customer_start_date.getValue();
+		String end_date_string = end_date.toString();// In_Advance_Customer_end_date.getValue();
+		String start_time = In_Advance_Customer_start_time.getText();
 		String end_time = In_Advance_Customer_end_time.getText();
 		String phone = In_Advance_Customer_phone_number.getText();
-		String err_msg = In_Advance_Customer_inputIsValid(id, car_number, car_park, email, start_date, start_time, end_date, end_time);
-		int status = client.AdvanceOneTimeOrder(id, car_number, car_park, email, start_date, start_time, end_date, end_time);
-
+		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
+		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
+		
+		String[] end_time_by_parts = end_time.split(":");
+		String[] start_time_by_parts = end_time.split(":"); 
+		int start_date_hours = Integer.valueOf(start_time_by_parts[0]);
+		int start_date_minutes = Integer.valueOf(start_time_by_parts[1]);
+		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
+		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
+		
+		Timestamp start_timestamp = Timestamp.valueOf(start_date_string+" "+start_date_hours+":"+start_date_minutes+":00.0");
+		start_timestamp.setHours(start_date_hours);
+		start_timestamp.setMinutes(start_date_minutes);
+		
+		Timestamp end_timestamp = Timestamp.valueOf(end_date_string+" "+end_date_hours+":"+end_date_minutes+":00.0");
+		end_timestamp.setHours(end_date_hours);
+		end_timestamp.setMinutes(end_date_minutes);
+		
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			//System.out.println(err_msg);
@@ -679,12 +696,12 @@ public class PersonViewController {
 			return;
 		}
 		
-		if (client.addNewCustomer(id, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
-			if (client.addNewCar(car_number, id)) {
-				//if (client.addOccasionalOrder(car_number, timestamp)) {
+		if (client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
+			if (client.addNewCar(carID, clientID)) {
+				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp)) {
 
 					//TODO add success message to gui
-				//}
+				}
 			}
 		} else {
 			//TODO error msg
