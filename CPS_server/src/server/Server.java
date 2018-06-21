@@ -135,7 +135,7 @@ public class Server {
 		//complaints:
 		} else if (cmd[0].equals("add") && cmd[1].equals("complaint")) {
 			try {
-				boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3], cmd[4]);
+				boolean res = ComplaintController.addNewComplaint(cmd[2], cmd[3]);
 				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 				osw.writeObject(res);
 				osw.flush();
