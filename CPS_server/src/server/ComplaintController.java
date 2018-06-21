@@ -41,6 +41,12 @@ public class ComplaintController
 		return flag;
 	}
 	
+	/**
+	 *  assigning a worker to the compalint
+	 * @param ComplaintID 
+	 * @param attendantID - worker id
+	 * @return
+	 */
 	public static String assignAttendant(String ComplaintID, String attendantID)
 	 {
 		Statement stmt;
@@ -85,6 +91,12 @@ public class ComplaintController
 		return ("Attendant " + attendantID + " was assigned successfully to complaint number "+ ComplaintID);
 	}
 
+	/**
+	 * writing a response to the complaint
+	 * @param ComplaintID
+	 * @param response
+	 * @return
+	 */
 	public static String respondToCompalint(String ComplaintID, String response)
 	 {
 		Statement stmt;
@@ -125,6 +137,12 @@ public class ComplaintController
 		return ("Response was added successfully to complaint number "+ ComplaintID);
 	}
 	
+	/**
+	 * adding a compensation of needed to a complaint
+	 * @param ComplaintID
+	 * @param compnsationAmount
+	 * @return
+	 */
 	public static String addCompensationToCompalint(String ComplaintID, float compnsationAmount)
 	 {
 		Statement stmt;
