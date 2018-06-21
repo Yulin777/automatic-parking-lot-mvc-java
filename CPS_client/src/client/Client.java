@@ -173,5 +173,28 @@ public class Client {
 		return flag;
 	}
 
+	public boolean addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time) {
+		boolean flag = false;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString());
+			pw.flush();
+			
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			flag = (boolean) ois.readObject();
+			
+			if (flag) {
+				System.out.println("[response] in advance order was added successfully");
+			} else
+				System.out.println("[response] adding in advance order was failed");
+			
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 	
 }

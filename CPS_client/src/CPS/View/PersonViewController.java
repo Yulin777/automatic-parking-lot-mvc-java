@@ -478,9 +478,6 @@ public class PersonViewController {
 		String last_name = "Occasional";
 		String phone = "Occasional";
 		String[] end_time_by_parts = end_time.split(":");
-//		int end_date_year = end_date.getYear()-1900;
-//		int end_date_month = end_date.getMonthValue();
-//		int end_date_day = end_date.getDayOfMonth()-2;
 		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
 		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
 		Timestamp timestamp = Timestamp.valueOf(end_date_string+" "+end_date_hours+":"+end_date_minutes+":00.0");
@@ -627,6 +624,12 @@ public class PersonViewController {
 	@FXML // fx:id="In_Advance_Customer_id"
 	private TextField In_Advance_Customer_id; // Value injected by FXMLLoader
 
+	@FXML // fx:id="In_Advance_Customer_id"
+	private TextField In_Advance_first_name; // Value injected by FXMLLoader
+
+	@FXML // fx:id="In_Advance_Customer_id"
+	private TextField In_Advance_last_name; // Value injected by FXMLLoader
+
 	@FXML // fx:id="In_Advance_Customer_end_date"
 	private DatePicker In_Advance_Customer_end_date; // Value injected by FXMLLoader
 
@@ -635,6 +638,9 @@ public class PersonViewController {
 
 	@FXML // fx:id="In_Advance_Customer_car_number"
 	private TextField In_Advance_Customer_car_number; // Value injected by FXMLLoader
+
+	@FXML // fx:id="In_Advance_Customer_phone_number"
+	private TextField In_Advance_Customer_phone_number; // Value injected by FXMLLoader
 
 	@FXML
 	void DatePicked(ActionEvent event) {
@@ -652,6 +658,8 @@ public class PersonViewController {
 	void In_Advance_Customer__Order(ActionEvent event) throws IOException, ParseException {
 		Client client = new Client();
 		String id = In_Advance_Customer_id.getText();
+		String first_name = In_Advance_first_name.getText();
+		String last_name = In_Advance_last_name.getText();
 		String car_number = In_Advance_Customer_car_number.getText();
 		String car_park = In_Advance_Customer_car_park.getText();
 		String email = In_Advance_Customer_email.getText();
@@ -659,6 +667,7 @@ public class PersonViewController {
 		String start_time = In_Advance_Customer_start_time.getText();
 		LocalDate end_date = In_Advance_Customer_end_date.getValue();
 		String end_time = In_Advance_Customer_end_time.getText();
+		String phone = In_Advance_Customer_phone_number.getText();
 		String err_msg = In_Advance_Customer_inputIsValid(id, car_number, car_park, email, start_date, start_time, end_date, end_time);
 		int status = client.AdvanceOneTimeOrder(id, car_number, car_park, email, start_date, start_time, end_date, end_time);
 
@@ -669,8 +678,18 @@ public class PersonViewController {
 
 			return;
 		}
-
 		
+		if (client.addNewCustomer(id, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
+			if (client.addNewCar(car_number, id)) {
+				//if (client.addOccasionalOrder(car_number, timestamp)) {
+
+					//TODO add success message to gui
+				//}
+			}
+		} else {
+			//TODO error msg
+			createErrMsg(event, "could not add order.");
+		}
 	}
 
 

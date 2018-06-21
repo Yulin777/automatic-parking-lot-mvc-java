@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Customer extends Person implements Serializable {
     public static enum type {
-        OCCASIONAL, SUBSCRIBED
+        OCCASIONAL, SUBSCRIBED, ADVANCED
     }
 
     /**

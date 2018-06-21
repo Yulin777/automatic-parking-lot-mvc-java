@@ -151,7 +151,7 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean addInAdvanceOrder(String carID, Timestamp dueDate) {
+	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -165,7 +165,8 @@ public class OrderController {
 				uprs.updateString("order_status", OrderStatus.PENDING.toString());
 				uprs.updateString("order_car_id", carID);
 				uprs.updateString("order_type", OrderType.IN_ADVANCE.toString());
-				uprs.updateString("end_date", dueDate.toString());
+				uprs.updateString("start_date", startDate);
+				uprs.updateString("end_date", endDate);
 				uprs.insertRow();
 
 				System.out.println("New order was added succsfully");

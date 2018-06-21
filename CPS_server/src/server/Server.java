@@ -110,6 +110,16 @@ public class Server {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
+			try {
+				boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3], cmd[4]);
+				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+				osw.writeObject(res);
+				osw.flush();
+				currentSocket.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 
