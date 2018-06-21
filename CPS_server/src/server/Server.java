@@ -25,20 +25,30 @@ public class Server {
 			}
 
 
-		} catch (IOException ioe) {
-
-		} finally {
+		} catch (IOException ioe)
+		{
+			System.out.println(ioe.getMessage());
+		} 
+		finally
+		{
 			try {
 				if (socket != null)
+				{
 					socket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				}
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 
 		}
 	}
-
+	/**
+	 * handle incoming requests to the server
+	 * @param request
+	 * @param currentSocket
+	 */
 	private static void handelRequest(String request, Socket currentSocket) {
 		String cmd[] = ((String) request).split(" ");// arr cmd holds the 3 params of the possible commands:
 		if (cmd.length < 2)// we want at least 2 params
@@ -78,7 +88,7 @@ public class Server {
 			try {
 				CustomerController cc = new CustomerController();
 				if (cmd.length < 9) {
-					throw new Exception("not enough arguments fo add client");
+					throw new Exception("not enough arguments for adding a new client");
 				}
 				boolean flag = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
 				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
@@ -86,8 +96,8 @@ public class Server {
 				osw.writeObject(flag);
 				osw.flush();
 				currentSocket.close();
-			} catch (Exception ioe) {
-//                System.out.println(ioe.getMessage());
+			} catch (Exception ioe) 
+			{
 				ioe.printStackTrace();
 			}
 		} else if (cmd[0].equals("add") && cmd[1].equals("car")) {

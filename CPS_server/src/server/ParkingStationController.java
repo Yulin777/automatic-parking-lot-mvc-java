@@ -87,7 +87,7 @@ public class ParkingStationController {
 	}
 
 	/**
-	 * set parking staion slot as out of order
+	 * set parking station slot as out of order
 	 * @param parkId
 	 * @param level
 	 * @param row
