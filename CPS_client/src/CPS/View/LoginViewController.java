@@ -135,7 +135,7 @@ public class LoginViewController {
 					url = "workerView.fxml";
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
-					controller.setWorkerName(id_bar.getText());
+					controller.setWorkerName(w.getFirstName());
 					controller.setWorkerInterfaceController(wIC);
 					title = "Worker Interface";
 				}
@@ -151,7 +151,9 @@ public class LoginViewController {
 			}
 			else
 			{
+				
 			Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.MasterManger);
+			
 			if(w==null)
 			{
 				err_msg = err_msg + "You are not a manager\n";
@@ -160,7 +162,7 @@ public class LoginViewController {
 				url = "ManagerView.fxml";
 				switchWindow(url);
 				PersonViewController controller = loader.getController();
-				controller.setManagerName(id_bar.getText());
+				controller.setManagerName(w.getFirstName());
 				title = "Manager Interface";
 			}
 		}
@@ -184,7 +186,7 @@ public class LoginViewController {
 				url = "CustomerView.fxml";
 				switchWindow(url);
 				PersonViewController controller = loader.getController();
-				controller.setCustomerName(id_bar.getText());
+				controller.setCustomerName(c.getFirstName());
 				title = "Customer Interface";
 			}
 
