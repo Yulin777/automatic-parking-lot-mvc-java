@@ -18,6 +18,7 @@ import server.Customer;
 import server.OrderController;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -475,6 +476,14 @@ public class PersonViewController {
 		String first_name = "Occasional";
 		String last_name = "Occasional";
 		String phone = "Occasional";
+		String[] end_time_by_parts = end_time.split(":");
+		int end_date_year = end_date.getYear();
+		int end_date_month = end_date.getMonthValue();
+		int end_date_day = end_date.getDayOfMonth();
+		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
+		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
+
+		Timestamp end_time_overall = new Timestamp(end_date_year, end_date_month, end_date_day, end_date_hours, end_date_minutes, 0, 0);
 
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
@@ -485,7 +494,7 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(id, car_number)) {
-				if (OrderController.addOccasionalOrder(car_number)){
+				if (OrderController.addOccasionalOrder(car_number, end_time_overall)) {
 
 					//TODO add success message to gui
 				}

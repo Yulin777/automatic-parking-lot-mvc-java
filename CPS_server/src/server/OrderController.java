@@ -1,5 +1,7 @@
 package server;
 
+import com.sun.tools.corba.se.idl.constExpr.Times;
+
 import java.sql.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -12,6 +14,11 @@ public class OrderController {
 	public enum OrderType {
 		//todo edit more statuses
 		OCCASIONAL, IN_ADVANCE;
+	}
+
+	public enum PaymentMethod {
+		//todo edit more methods
+		CREDIT, CASH;
 	}
 
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
@@ -113,7 +120,7 @@ public class OrderController {
 		return ("New subscription was added succsfully");
 	}
 
-	public static boolean addOccasionalOrder(String carID) {
+	public static boolean addOccasionalOrder(String carID, Timestamp endDate) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -127,7 +134,7 @@ public class OrderController {
 				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
 				uprs.updateString("order_car_id", carID);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
-				uprs.updateString("due_date", (new Timestamp((new Date()).getTime())).toString());
+				uprs.updateString("end_date", endDate.toString());
 				uprs.insertRow();
 
 				System.out.println("New order was added succsfully");
@@ -158,7 +165,7 @@ public class OrderController {
 				uprs.updateString("order_status", OrderStatus.PENDING.toString());
 				uprs.updateString("order_car_id", carID);
 				uprs.updateString("order_type", OrderType.IN_ADVANCE.toString());
-				uprs.updateString("due_date", dueDate.toString());
+				uprs.updateString("end_date", dueDate.toString());
 				uprs.insertRow();
 
 				System.out.println("New order was added succsfully");

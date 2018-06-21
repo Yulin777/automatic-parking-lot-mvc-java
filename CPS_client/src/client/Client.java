@@ -116,7 +116,7 @@ public class Client {
 			if (flag) {
 				System.out.println("[response] customer " + firstName + " " + lastName + " creation Succeed");
 			} else
-				System.out.println("[response] customer not found");
+				System.out.println("[response] could not add customer");
 
 			socket.close();
 		} catch (Exception e) {

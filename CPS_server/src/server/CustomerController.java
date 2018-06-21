@@ -38,20 +38,8 @@ public class CustomerController {
 				System.out.println("New client was added succsfully");
 				flag = true;
 
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */
-					}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */
-					}
-				}
+				uprs.close();
+				stmt.close();
 			} else {
 				System.out.println("Client already exists");
 			}
