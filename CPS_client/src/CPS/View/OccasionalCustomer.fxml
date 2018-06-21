@@ -17,12 +17,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="Occasional_Customer_car_number" layoutX="176.0" layoutY="76.0" promptText="car number:" />
       <TextField fx:id="Occasional_Customer_id" layoutX="176.0" layoutY="45.0" promptText="id:" />
+      <TextField fx:id="Occasional_Customer_car_number" layoutX="176.0" layoutY="76.0" promptText="car number:" />
       <TextField fx:id="Occasional_Customer_car_park" layoutX="176.0" layoutY="108.0" promptText="car park:" />
       <TextField fx:id="Occasional_Customer_email" layoutX="176.0" layoutY="138.0" promptText="email:" />
-      <TextField fx:id="Occasional_Customer_end_time" layoutX="176.0" layoutY="207.0" promptText="hour : minute" />
       <DatePicker fx:id="Occasional_Customer_end_date" layoutX="176.0" layoutY="171.0" prefHeight="25.0" prefWidth="149.0" promptText="Choose Date" />
+      <TextField fx:id="Occasional_Customer_end_time" layoutX="176.0" layoutY="207.0" promptText="hour : minute" />
       <Label layoutX="76.0" layoutY="36.0" />
       <Label layoutX="100.0" layoutY="80.0" text="car number:" />
       <Label layoutX="105.0" layoutY="49.0" text="id:" />
