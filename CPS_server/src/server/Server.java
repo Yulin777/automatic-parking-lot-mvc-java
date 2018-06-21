@@ -110,6 +110,7 @@ public class Server {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
 			try {
 				boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3]);
@@ -130,6 +131,19 @@ public class Server {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+		//complaints:
+		} else if (cmd[0].equals("add") && cmd[1].equals("complaint")) {
+			try {
+				boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3], cmd[4]);
+				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+				osw.writeObject(res);
+				osw.flush();
+				currentSocket.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 
 

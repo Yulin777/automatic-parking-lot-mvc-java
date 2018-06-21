@@ -16,7 +16,7 @@ public class ComplaintController
 	 * Adding a new complaint to the db
 	 * @param client_id - id of client who submitted the complaint
 	 * @param description - the complaint itself
-	 * @return true for successfull addition
+	 * @return true for successful addition
 	 */
 	public static boolean addNewComplaint(String client_id, String description) {
 		boolean flag = false;
