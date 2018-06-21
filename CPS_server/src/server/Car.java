@@ -24,7 +24,7 @@ public class Car implements Serializable {
 		java.sql.PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM cars WHERE car_ID=?");  // createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			stmt.setString(1, ownerID);
+			stmt.setString(1, carID);
 
 
 			ResultSet car = stmt.executeQuery();
@@ -38,6 +38,20 @@ public class Car implements Serializable {
 			newCar.updateString("client_ID", ownerID);
 			newCar.updateString("car_ID", carID);
 			newCar.insertRow();
+			if (car != null) {
+				try {
+					car.close();
+				} catch (SQLException e) {
+					/* ignored */
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					/* ignored */
+				}
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

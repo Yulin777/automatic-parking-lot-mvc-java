@@ -497,7 +497,7 @@ public class PersonViewController {
 		}
 
 		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
-			if (client.addNewCar(id, car_number)) {
+			if (client.addNewCar(car_number, id)) {
 				if (client.addOccasionalOrder(car_number, timestamp)) {
 
 					//TODO add success message to gui
