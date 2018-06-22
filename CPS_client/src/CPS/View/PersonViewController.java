@@ -165,7 +165,13 @@ public class PersonViewController {
     private Label customer_view_label;
 
     @FXML
+    private Button customer_view_end_parking_btn;
+
+    @FXML
     private Label customer_view_num_msg_label;
+
+    @FXML
+    private Button customer_view_cancel_btn;
 
     @FXML
     private Label customer_view_label1;
@@ -174,13 +180,13 @@ public class PersonViewController {
     private Button customer_view_read_massages_btn;
 
     @FXML
-    private Button customer_view_leave_parking_btn;
+    private Button customer_view_complaint_btn;
 
     @FXML
     private Button customer_view_log_out;
 
     @FXML
-    private Button customer_view_enter_parking_btn;
+    private Button customer_view_start_parking_btn;
 
     @FXML
     void customer_view_read_massages(ActionEvent event) throws IOException 
@@ -275,7 +281,10 @@ public class PersonViewController {
 			createMsg(event, err_msg, "error msg");
 
 		}
-			
+			/*if(client.
+			{
+				
+			}*/
 			
 		createBillMsg(event, "0");
 	}
