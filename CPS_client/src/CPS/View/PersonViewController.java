@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import server.ComplaintController;
 import server.Customer;
 import server.OrderController;
 
@@ -84,6 +85,11 @@ public class PersonViewController {
 	    				
 	    	}
 	    	
+	    	if(!err_msg.isEmpty() && !ComplaintController.addNewComplaint(id,  text_area))
+	    	{
+	    		err_msg +="New complaint failed to be added\n";
+	    	}
+	    	
 	    	if(!err_msg.isEmpty())
 	    	{
     		createMsg(event, err_msg, "error msg");
@@ -91,8 +97,9 @@ public class PersonViewController {
 	    	}
 	    	
 	    	
+	    	
 	    	//TODO write complaints to the server
-	    	String succ = "in progress\n";
+	    	String succ = "New complaint was added successfully\n";
 	    	createMsg(event, succ, "succ msg");
 	    }
 
