@@ -100,6 +100,32 @@ public class Client {
 		}
 		return stations;
 	}
+	public boolean startParking(String carID) {
+		boolean res = false;
+
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("start parking " + carID);
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (boolean) ois.readObject();
+			if (res)
+				System.out.println("[response] start parking succeed");
+			else
+				System.out.println("[response] start parking failed");
+
+			socket.close();
+		} catch (IOException ioe) {
+			System.out.println("IOException exption");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
 								   String start_time, LocalDate end_date, String end_time) {
 		int result;

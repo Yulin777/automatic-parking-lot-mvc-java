@@ -27,7 +27,7 @@ public class OrderController {
 
 	//todo change
 	public boolean addNewClient(String id, String firstName, String lastName, String password, String type,
-								String email, String telephone) {
+			String email, String telephone) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -74,7 +74,7 @@ public class OrderController {
 	}
 
 	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
-											java.sql.Timestamp endDate) {
+			java.sql.Timestamp endDate) {
 		Statement stmt;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -184,7 +184,7 @@ public class OrderController {
 		}
 		return flag;
 	}
-	
+
 	/**
 	 * check for Available Order of given car in current time
 	 * @param parkId
@@ -194,26 +194,55 @@ public class OrderController {
 	public boolean checkAvailableOrder(int parkId,int carId){
 		java.sql.PreparedStatement stmt =null;
 		int numOfOrders = 0;
-			try {
-				stmt =  sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
+		try {
+			stmt =  sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
 			stmt.setInt(1,parkId);
 			stmt.setInt(2,carId);
 
-			
+
 			ResultSet rs = stmt.executeQuery();
-		      if (rs.next()) {
-		    	  numOfOrders = rs.getInt(1);
-		      }
-		      
+			if (rs.next()) {
+				numOfOrders = rs.getInt(1);
+			}
+
 			if(numOfOrders>0){
 				return true;
 			}
-			}
-			catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return false;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
+	public static boolean startParking(String carID){
+		boolean flag = false;
+		int res=0;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT order_id FROM orders WHERE order_car_id = ?");
+			stmt.setString(1, carID);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				String orderID = rs.getString(1);
+
+				stmt =  sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
+				stmt.setString(1, OrderStatus.ONGOING.toString());
+				stmt.setInt(2, Integer.valueOf(orderID));
+				res = stmt.executeUpdate();
+			} 
+			if(res == 1) {
+				System.out.println("order status was changed succsfully");
+				flag = true;
+			}else {
+				System.out.println("change order status failed");
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 }
