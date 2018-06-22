@@ -15,7 +15,7 @@ public class ParkingStationController {
 		java.sql.PreparedStatement stmt;
 		List<String> results = new ArrayList<String>();
 		try {
-			stmt = sql.conn.prepareStatement("SELECT parking_id FROM ParkingStation");
+			stmt = sql.conn.prepareStatement("SELECT parking_address FROM ParkingStation");
 
 			ResultSet rs = stmt.executeQuery();
 			if (!rs.next()) {
