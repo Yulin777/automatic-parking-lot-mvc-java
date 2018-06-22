@@ -50,13 +50,3 @@ public class mainView extends Application {
 
 
 }
-
-	
-	
-	
-	
-	
-	
-	
-	
-
