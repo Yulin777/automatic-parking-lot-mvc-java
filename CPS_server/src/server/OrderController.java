@@ -171,7 +171,7 @@ public class OrderController {
 				uprs.updateString("end_date", endDate);
 				uprs.insertRow();
 
-				System.out.println("New order was added succsfully");
+				System.out.println("New order was added successfully");
 				flag = true;
 
 				uprs.close();
