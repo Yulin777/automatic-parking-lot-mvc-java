@@ -24,11 +24,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import server.Customer.type;
 import server.CustomerController;
+import javafx.scene.control.MenuItem;
+import javafx.event.EventHandler;
 
+import javafx.scene.control.SplitMenuButton;
 
 public class PersonViewController {
 
@@ -778,7 +782,13 @@ public class PersonViewController {
     private TextField In_Advance_Customer_end_time;
 
     @FXML
+    private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
+
+    @FXML
     private TextField In_Advance_Customer_id;
+
+    @FXML
+    private ToggleGroup money_toggle;
 
     @FXML
     private TextField In_Advance_Customer_phone_number;
@@ -799,9 +809,6 @@ public class PersonViewController {
     private Button In_Advance_Customer_order;
 
     @FXML
-    private TextField In_Advance_Customer_car_park;
-
-    @FXML
     private DatePicker In_Advance_Customer_start_date;
 
     @FXML
@@ -809,6 +816,7 @@ public class PersonViewController {
 
     @FXML
     private TextField In_Advance_Customer_start_time;
+    
 
 	@FXML
 	void DatePicked(ActionEvent event) {
@@ -823,23 +831,23 @@ public class PersonViewController {
 	}
 
 	@FXML
-	void In_Advance_Customer__Order(ActionEvent event) throws IOException, ParseException {
+	void In_Advance_Customer_Order(ActionEvent event) throws IOException, ParseException {
 		Client client = new Client();
 		String clientID = In_Advance_Customer_id.getText();
 		String first_name = In_Advance_Customer_first_name.getText();
 		String last_name = In_Advance_Customer_last_name.getText();
 		String carID = In_Advance_Customer_car_number.getText();
-		String car_park = In_Advance_Customer_car_park.getText();
 		String email = In_Advance_Customer_email.getText();
 		LocalDate start_date = In_Advance_Customer_start_date.getValue();
 		LocalDate end_date = In_Advance_Customer_end_date.getValue();
-		
-		
 		String start_time = In_Advance_Customer_start_time.getText();
 		String end_time = In_Advance_Customer_end_time.getText();
 		String phone = In_Advance_Customer_phone_number.getText();
+		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
+		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time);
+		//SplitMenuButton smb = new SplitMenuButton();
+			//	smb.getItems().
 		
-		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
 		
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
@@ -887,7 +895,7 @@ public class PersonViewController {
 	}
 
 
-	private String In_Advance_Customer_inputIsValid(String id, String car_number, String car_park, String email, LocalDate start_date, String start_time, LocalDate end_date, String end_time) throws ParseException {
+	private String In_Advance_Customer_inputIsValid(String id, String car_number, String email, LocalDate start_date, String start_time, LocalDate end_date, String end_time) throws ParseException {
 
 
 		String msg = "";
@@ -899,8 +907,7 @@ public class PersonViewController {
 			msg = msg + "id is empty\n";
 		if (car_number.isEmpty())
 			msg = msg + "car_number is empty\n";
-		if (car_park.isEmpty())
-			msg = msg + "car_park is empty\n";
+		
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
 
@@ -957,8 +964,16 @@ public class PersonViewController {
 		return (matcher.matches());
 	}
 
+	public void In_Advance_Customer_load_car_lots() 
+	{
+		List<String> ls = Client.getStations();
+		In_Advance_Customer_parking_lot_split_menu_btn.getItems().clear();
+		
+		for (String str :  ls)
+			In_Advance_Customer_parking_lot_split_menu_btn.getItems().add(new MenuItem(str));	
+	}
+	
 
-	//TODO copy for all buttons
 	public void In_Advance_Customer_loadDates() {
 		In_Advance_Customer_start_date.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {

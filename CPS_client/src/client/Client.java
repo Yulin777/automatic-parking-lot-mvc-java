@@ -74,7 +74,7 @@ public class Client {
 		return w;
 	}
 	
-	public List<String> getStations() {
+	public static List<String> getStations() {
 		List<String> stations = new ArrayList<String>();
 
 		try {

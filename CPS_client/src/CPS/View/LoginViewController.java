@@ -101,6 +101,7 @@ public class LoginViewController {
 		//switchWindow(url);
 		PersonViewController controller = loader.getController();
 		controller.In_Advance_Customer_loadDates();
+		controller.In_Advance_Customer_load_car_lots(); 
 		//switchScene(event, "order in advance");
 
 
