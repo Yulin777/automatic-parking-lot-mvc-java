@@ -33,6 +33,57 @@ public class PersonViewController {
 	Client client = new Client();
 
 
+	
+	
+	
+	
+	//---------------------Start Parking---------------------------
+	
+	
+	@FXML
+    private Button start_parking_start_parking_btn;
+
+    @FXML
+    private TextField start_parking_car_number_bar;
+
+    @FXML
+    private Button start_parking_back_btn;
+
+    @FXML
+    void start_parking_back(ActionEvent event) throws IOException {
+    	String url = "LoginView.fxml";
+		switchWindow(url);
+		switchScene(event, "login page");
+
+
+    }
+
+    @FXML
+    void start_parking_start_parking(ActionEvent event) throws IOException 
+    {
+    	String car_num = start_parking_car_number_bar.getText();
+    	if(car_num.isEmpty())
+    	{
+    		String err_msg = "please provide car number\n";
+    		createMsg(event, err_msg, "error msg");
+    		return;
+    	}
+    	
+    	//TODO check if parking available + if this car number is signed + if customer is late (will pay fine)
+    	
+    	
+    	String succ_msg = "still in progress\n";
+    	createMsg(event, succ_msg, "succes msg");
+    	
+    }
+	
+	
+	
+	
+	//------------------^^Start Parking ^^---------------------------
+	
+	
+	
 	//----------------Customer View-------------------------------------
 
 
@@ -194,19 +245,19 @@ public class PersonViewController {
 		
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
-			createErrMsg(event, err_msg);
+			createMsg(event, err_msg, "error msg");
 			return;
 		}
 		Client c = new Client();
 		if(!c.addNewCustomer( id,  firstName,  lastName,  password,  type.SUBSCRIBED, email,  phone))
 		{
 			err_msg = "Somthing went wrong during sign up customer\n";
-			createErrMsg(event, err_msg);
+			createMsg(event, err_msg, "error msg");
 			return;
 		}
 		
-		err_msg = "Sign up succed\n";
-		createErrMsg(event, err_msg);
+		String succ_msg = "Sign up succed\n";
+		createMsg(event, succ_msg,"succes msg");
 		return;
 		
 	}
@@ -490,15 +541,15 @@ public class PersonViewController {
 	@FXML // fx:id="Occasional_Customer_end_time"
 	private TextField Occasional_Customer_end_time; // Value injected by FXMLLoader
 
-	void createErrMsg(ActionEvent event, String errMsg) throws IOException {
-		switchWindow("ErrorMsg.fxml");
-		Stage err_win_instance;
+	void createMsg(ActionEvent event, String Msg,String Title) throws IOException {
+		switchWindow("PopUpMsg.fxml");
+		Stage win_instance;
 		PersonViewController controller = loader.getController();
-		controller.setErrLabel(errMsg);
-		err_win_instance = new Stage();
-		err_win_instance.setScene(tableViewScene);
-		err_win_instance.setTitle("error window");
-		err_win_instance.show();
+		controller.setErrLabel(Msg);
+		win_instance = new Stage();
+		win_instance.setScene(tableViewScene);
+		win_instance.setTitle(Title);
+		win_instance.show();
 	}
 
 
@@ -527,7 +578,7 @@ public class PersonViewController {
 
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
-			createErrMsg(event, err_msg);
+			createMsg(event, err_msg, "error msg");
 
 			return;
 		}
@@ -541,7 +592,7 @@ public class PersonViewController {
 			}
 		} else {
 			//TODO error msg
-			createErrMsg(event, "could not add order.");
+			createMsg(event, "could not add order.","error msg");
 		}
 
 
@@ -706,7 +757,7 @@ public class PersonViewController {
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			//System.out.println(err_msg);
-			createErrMsg(event, err_msg);
+			createMsg(event, err_msg,"error msg");
 
 			return;
 		}
@@ -744,7 +795,7 @@ public class PersonViewController {
 			}
 		} else {
 			//TODO error msg
-			createErrMsg(event, "could not add order.");
+			createMsg(event, "could not add order.","error msg");
 		}
 	}
 

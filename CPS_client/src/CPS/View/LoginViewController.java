@@ -17,8 +17,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import server.Customer;
 import server.Worker;
@@ -26,52 +28,52 @@ import server.Worker.WorkerType;
 
 public class LoginViewController {
 
-	@FXML // fx:id="manager_radio"
-	private RadioButton manager_radio; // Value injected by FXMLLoader
-
-	@FXML // fx:id="worker_radio"
-	private RadioButton worker_radio; // Value injected by FXMLLoader
-
-	@FXML // fx:id="customer_radio"
-	private RadioButton customer_radio; // Value injected by FXMLLoader
-
-	@FXML // fx:id="id_bar"
-	private TextField id_bar; // Value injected by FXMLLoader
-
-	@FXML // fx:id="login_btn"
-	private Button login_btn; // Value injected by FXMLLoader
-
-	@FXML // fx:id="password_bar"
-	private TextField password_bar; // Value injected by FXMLLoader
-
-	@FXML // fx:id="error_msg_btn"
-	private Label error_msg_btn; // Value injected by FXMLLoader
-
-	@FXML // fx:id="error_msg_info"
-	private Label error_msg_info; // Value injected by FXMLLoader
-
 	@FXML
-	private Button log_as_in_advance_customer_btn;
+    private RadioButton manager_radio;
 
-	@FXML
-	private Button log_as_occasional_customer_btn;
+    @FXML
+    private RadioButton worker_radio;
 
-	@FXML
-	private Button login_view_customer_sign_in_btn;
+    @FXML
+    private RadioButton customer_radio;
 
-	@FXML
-	private ProgressIndicator login_view_progress_bar;
+    @FXML
+    private ProgressIndicator login_view_progress_bar;
 
-	@FXML
-	private Button login_view_finished_parking_btn;
+    @FXML
+    private Button log_as_occasional_customer_btn;
+
+    @FXML
+    private Button login_btn;
+
+    @FXML
+    private ToggleGroup type;
+
+    @FXML
+    private Button log_as_in_advance_customer_btn;
+
+    @FXML
+    private Button login_view_end_parking_btn;
+
+    @FXML
+    private Button login_view_start_parking_btn;
+
+    @FXML
+    private TextField id_bar;
+
+    @FXML
+    private PasswordField password_bar;
+
+    @FXML
+    private Button login_view_customer_sign_in_btn;
 
 
-	@FXML
+	/*@FXML
 	void login_view_finished_parking(ActionEvent event) throws IOException {
 		String url = "FinishedParking.fxml";
 		switchWindow(url);
 		switchScene(event,"Finish Parking");
-	}
+	}*/
 
 
 
@@ -212,6 +214,29 @@ public class LoginViewController {
 		window.show();
 	}
 
+	 @FXML
+	    void login_view_end_parking(ActionEvent event) throws IOException {
+		 String url = "FinishedParking.fxml";
+			switchWindow(url);
+			switchScene(event,"Finish Parking");
+	    }
+
+	    @FXML
+	    void login_view_start_parking(ActionEvent event) throws IOException 
+	    {
+	    	
+	    	String url = "StartParking.fxml";
+			switchWindow(url);
+			switchScene(event,"Start Parking");
+	    }
+	    
+
+	
+	
+	
+	
+	
+	
 	//----------------------------------------------------------------------------
 
 	private FXMLLoader loader;
@@ -255,7 +280,7 @@ public class LoginViewController {
 
 	void createErrMsg(ActionEvent event,String errMsg) throws IOException {
 		Stage err_win;
-		switchWindow("ErrorMsg.fxml");
+		switchWindow("PopUpMsg.fxml");
 
 		PersonViewController controller = loader.getController();
 		controller.setErrLabel(errMsg);
@@ -269,6 +294,9 @@ public class LoginViewController {
 	}
 
 
+	
+	
+	
 	@FXML
 	void login_view_customer_sign_in(ActionEvent event) throws IOException {
 		// String url = "CustomerSignIn.fxml";
