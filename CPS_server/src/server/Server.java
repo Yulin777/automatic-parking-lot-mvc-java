@@ -21,7 +21,7 @@ public class Server {
 				String s = br.readLine();
 				System.out.println("[request] " + s);
 				handelRequest(s, currentSocket);
-
+				OrderController.startParking("21");
 			}
 
 
