@@ -69,7 +69,7 @@ public class Server {
 		} else if (cmd[0].equals("login") && cmd[1].equals("worker")) {
 			try {
 				WorkerController wc = new WorkerController();
-				Worker w = wc.login(cmd[2], cmd[3], cmd[4]);
+				Worker w = wc.login(cmd[2], cmd[3], Worker.WorkerType.valueOf(cmd[4]));
 				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 				//PrintWriter pw = new PrintWriter(osw);
 				osw.writeObject(w);
