@@ -121,7 +121,7 @@ public class OrderController {
 		return ("New subscription was added succsfully");
 	}
 
-	public static boolean addOccasionalOrder(String carID, String endDate) {
+	public static boolean addOccasionalOrder(String carID, String endDate, String parkingID) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -134,6 +134,7 @@ public class OrderController {
 				uprs.moveToInsertRow();
 				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
 				uprs.updateString("order_car_id", carID);
+				uprs.updateString("order_parking_id", parkingID);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("end_date", endDate);
 				uprs.insertRow();

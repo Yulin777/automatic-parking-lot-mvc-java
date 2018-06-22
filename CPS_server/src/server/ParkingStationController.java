@@ -4,12 +4,50 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ParkingStationController {
 	int currentId = 0;
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 
+	public static List<String> getParkingIDs() {
+		java.sql.PreparedStatement stmt;
+		List<String> results = new ArrayList<String>();
+		try {
+			stmt = sql.conn.prepareStatement("SELECT parking_id FROM ParkingStation");
 
+			ResultSet rs = stmt.executeQuery();
+			if (!rs.next()) {
+				return null;
+			}
+			rs.beforeFirst();
+			while(rs.next()) {
+			    results.add(rs.getString(1));
+//			    System.out.println(rs.getString(1));
+			}
+
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					/* ignored */
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					/* ignored */
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
 	public void addWorkerToParking(){
 
 	}

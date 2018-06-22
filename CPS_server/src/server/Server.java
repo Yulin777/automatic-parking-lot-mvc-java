@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 public class Server {
 	public static void main(String[] args) {
@@ -20,6 +21,7 @@ public class Server {
 				String s = br.readLine();
 				System.out.println("[request] " + s);
 				handelRequest(s, currentSocket);
+
 			}
 
 
@@ -76,6 +78,15 @@ public class Server {
 			} catch (IOException ioe) {
 
 			}
+		} else if (cmd[0].equals("get") && cmd[1].equals("stations")) {
+			try {
+				List<String> stations = ParkingStationController.getParkingIDs();
+				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+				osw.writeObject(stations);
+				osw.flush();
+				currentSocket.close();
+			} catch (IOException ioe) {
+			}
 		} else if (cmd[0].equals("order") && cmd[1].equals("temporery")) {
 			try {
 				currentSocket.close();
@@ -111,7 +122,7 @@ public class Server {
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
 			try {
-				boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3]);
+				boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3], cmd[4]);
 				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 				osw.writeObject(res);
 				osw.flush();

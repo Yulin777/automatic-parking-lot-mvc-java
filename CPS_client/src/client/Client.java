@@ -1,13 +1,18 @@
 package client;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import server.Car;
 import server.Customer;
 import server.Worker;
 
@@ -68,7 +73,33 @@ public class Client {
 		}
 		return w;
 	}
+	
+	public List<String> getStations() {
+		List<String> stations = new ArrayList<String>();
 
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("get stations");
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			stations = (List<String>) ois.readObject();
+			if (stations != null)
+				System.out.println("[response] get stations succeed");
+			else
+				System.out.println("[response] get stations failed");
+
+			socket.close();
+		} catch (IOException ioe) {
+			System.out.println("IOException exption");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return stations;
+	}
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
 								   String start_time, LocalDate end_date, String end_time) {
 		int result;
@@ -149,13 +180,13 @@ public class Client {
 		return flag;
 	}
 	
-	public boolean addOccasionalOrder(String car_id, Timestamp end_time) {
+	public boolean addOccasionalOrder(String car_id, Timestamp end_time, String car_park) {
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add occasional " + car_id + " " + end_time.toString());
+			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park);
 			pw.flush();
 			
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
