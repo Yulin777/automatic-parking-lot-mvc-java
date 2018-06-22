@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class OrderController {
 	public enum OrderStatus {
@@ -181,6 +182,37 @@ public class OrderController {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+	
+	/**
+	 * check for Available Order of given car in current time
+	 * @param parkId
+	 * @param carId
+	 * @return true if there is order
+	 */
+	public boolean checkAvailableOrder(int parkId,int carId){
+		java.sql.PreparedStatement stmt =null;
+		int numOfOrders = 0;
+			try {
+				stmt =  sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
+			stmt.setInt(1,parkId);
+			stmt.setInt(2,carId);
+
+			
+			ResultSet rs = stmt.executeQuery();
+		      if (rs.next()) {
+		    	  numOfOrders = rs.getInt(1);
+		      }
+		      
+			if(numOfOrders>0){
+				return true;
+			}
+			}
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
 	}
 
 }
