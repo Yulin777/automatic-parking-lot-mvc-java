@@ -266,6 +266,7 @@ public class OrderController {
 		}
 		return flag;
 	}
+
 	public static double calcPrice(String carID){
 		double price_per_hour=0, hours=0;
 		PreparedStatement stmt;
@@ -280,19 +281,19 @@ public class OrderController {
 				long end_diff = endTime.getTime() - startTime.getTime();
 				long now_diff = nowTime.getTime() - startTime.getTime();
 				hours = (now_diff-end_diff) / 3600000.0;
-				
+
 				String type = rs.getString(5);
 				int parking_id = rs.getInt(6);
 				stmt = sql.conn.prepareStatement("SELECT order_price_per_hour FROM order_prices WHERE parking_id = ? AND order_type = ?");
 				stmt.setInt(1, parking_id);
 				stmt.setString(2, type);
 				rs = stmt.executeQuery();
-				
+
 				if(rs.next()) {
 					price_per_hour = rs.getDouble(1);				
 					System.out.println("price calculated succsfully");
 				}
-				
+
 			} else {
 				System.out.println("price calculation failed");
 			}
@@ -302,5 +303,19 @@ public class OrderController {
 			e.printStackTrace();
 		}
 		return hours * price_per_hour;
+	}
+
+
+	public static boolean removeOrder(String carID){
+		boolean res=false;
+		String clientId = Car.getClientId(carID);
+		if(CustomerController.removeCustomer(clientId)) {
+			System.out.println("order removed succsfully");
+			res=true;
+		}
+		else
+			System.out.println("remove order failed");
+
+		return res;
 	}
 }

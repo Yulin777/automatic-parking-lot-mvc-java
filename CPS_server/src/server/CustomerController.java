@@ -90,6 +90,27 @@ public class CustomerController {
 
 		return return_res;
 	}
+	
+	public static boolean removeCustomer(String id) {
+		int res = 0; 
+		java.sql.PreparedStatement stmt;
+		boolean return_res = false;
+		try {
+			stmt = sql.conn.prepareStatement("DELETE FROM `Group_1`.`clients` WHERE `clients`.`client_ID` = ?");
+			stmt.setString(1, id);
+			res = stmt.executeUpdate(); 
+			
+			if(res==1) {
+				return_res = true;
+			}
+			stmt.close();
+								
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return return_res;
+	}
 
 	public Customer login(String id, String password) {
 		java.sql.PreparedStatement stmt;

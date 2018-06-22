@@ -60,19 +60,38 @@ public class Car implements Serializable {
 		System.out.println("New car was added succefully");
 		return true;
 	}
+	
+	public static String getClientId(String carID) {
+		Statement stmt;
+		String return_res = "";
+		try {
+			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet rs = stmt.executeQuery("SELECT client_ID FROM cars WHERE car_ID=" + carID + ";");
+			
+			if (rs.next()) {
+				return_res += (rs.getString(1)); // client id
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
+		return return_res;
+	}
+	
 	public static String getClientCarsById(String id) {
 		Statement stmt;
 		String return_res = "";
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
+			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM cars WHERE client_ID=" + id + ";");
 			while (rs.next()) {
 				// Print out the values
 				return_res += (rs.getString(1)) + " "; // client id
 			}
-
+			
 			if (rs != null) {
 				try {
 					rs.close();
@@ -87,11 +106,11 @@ public class Car implements Serializable {
 					/* ignored */
 				}
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		
 		return return_res;
 	}
 }
