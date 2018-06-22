@@ -155,18 +155,36 @@ public class PersonViewController {
 	
 	//----------------Customer View-------------------------------------
 
+    @FXML
+    private Label customer_view_label12;
 
-	@FXML // fx:id="customer_view_label"
-	private Label customer_view_label; // Value injected by FXMLLoader
+    @FXML
+    private Label customer_view_label;
 
-	@FXML // fx:id="customer_view_leave_parking_btn"
-	private Button customer_view_leave_parking_btn; // Value injected by FXMLLoader
+    @FXML
+    private Label customer_view_num_msg_label;
 
-	@FXML // fx:id="customer_view_log_out"
-	private Button customer_view_log_out; // Value injected by FXMLLoader
+    @FXML
+    private Label customer_view_label1;
 
-	@FXML // fx:id="customer_view_enter_parking_btn"
-	private Button customer_view_enter_parking_btn; // Value injected by FXMLLoader
+    @FXML
+    private Button customer_view_read_massages_btn;
+
+    @FXML
+    private Button customer_view_leave_parking_btn;
+
+    @FXML
+    private Button customer_view_log_out;
+
+    @FXML
+    private Button customer_view_enter_parking_btn;
+
+    @FXML
+    void customer_view_read_massages(ActionEvent event) throws IOException 
+    {
+    	String msg = "no massages yet\n";
+    	createMsg(event, msg, "error msg");
+    }
 
 	@FXML
 	void customer_view_log_out(ActionEvent event) throws IOException {

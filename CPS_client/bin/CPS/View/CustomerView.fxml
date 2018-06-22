@@ -7,12 +7,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
    <children>
       <Button fx:id="customer_view_log_out" layoutX="26.0" layoutY="239.0" mnemonicParsing="false" onAction="#customer_view_log_out" text="log out" />
       <Button fx:id="customer_view_enter_parking_btn" layoutX="297.0" layoutY="62.0" mnemonicParsing="false" onAction="#customer_view_enter_parking" prefHeight="30.0" prefWidth="200.0" text="Enter Parking Station" />
       <Button fx:id="customer_view_leave_parking_btn" layoutX="297.0" layoutY="98.0" mnemonicParsing="false" onAction="#customer_view_leave_parking" prefHeight="30.0" prefWidth="200.0" text="Leave Parking Station" />
       <Label fx:id="customer_view_label" layoutX="46.0" layoutY="29.0" text="hello customer" />
+      <Label fx:id="customer_view_label1" layoutX="26.0" layoutY="86.0" text="you have" />
+      <Label fx:id="customer_view_num_msg_label" layoutX="83.0" layoutY="86.0" prefHeight="17.0" prefWidth="24.0" text="0" />
+      <Label fx:id="customer_view_label12" layoutX="100.0" layoutY="86.0" text="new massages:" />
+      <Button fx:id="customer_view_read_massages_btn" layoutX="26.0" layoutY="113.0" mnemonicParsing="false" onAction="#customer_view_read_massages" prefHeight="58.0" prefWidth="97.0" text="read massages" />
    </children>
 </AnchorPane>
