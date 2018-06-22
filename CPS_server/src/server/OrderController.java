@@ -1,15 +1,15 @@
 package server;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 public class OrderController {
 	public enum OrderStatus {
-		PENDING, ONGOING, COMPLETE, CANCELED;
+		PENDING, ONGOING;
 	}
 
 	public enum OrderType {
@@ -233,10 +233,10 @@ public class OrderController {
 				res = stmt.executeUpdate();
 			} 
 			if(res == 1) {
-				System.out.println("order status was changed succsfully");
+				System.out.println("parking started succsfully");
 				flag = true;
 			}else {
-				System.out.println("change order status failed");
+				System.err.println("cannot start parking");
 			}
 			rs.close();
 			stmt.close();
@@ -244,5 +244,63 @@ public class OrderController {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+
+	public static boolean endParking(String carID){
+		boolean flag = false;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ? AND order_status = ONGOING");
+			stmt.setString(1, carID);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				flag=true;
+				System.out.println("parking ended succsfully");
+			} else {
+				System.out.println("cannot end parking");
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	public static double calcPrice(String carID){
+		double price_per_hour=0, hours=0;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
+			stmt.setString(1, carID);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				Timestamp startTime = rs.getTimestamp("start_date");
+				Timestamp endTime = rs.getTimestamp("end_date");
+				Timestamp nowTime = new Timestamp(System.currentTimeMillis());
+				long end_diff = endTime.getTime() - startTime.getTime();
+				long now_diff = nowTime.getTime() - startTime.getTime();
+				hours = (now_diff-end_diff) / 3600000.0;
+				
+				String type = rs.getString(5);
+				int parking_id = rs.getInt(6);
+				stmt = sql.conn.prepareStatement("SELECT order_price_per_hour FROM order_prices WHERE parking_id = ? AND order_type = ?");
+				stmt.setInt(1, parking_id);
+				stmt.setString(2, type);
+				rs = stmt.executeQuery();
+				
+				if(rs.next()) {
+					price_per_hour = rs.getDouble(1);				
+					System.out.println("price calculated succsfully");
+				}
+				
+			} else {
+				System.out.println("price calculation failed");
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return hours * price_per_hour;
 	}
 }
