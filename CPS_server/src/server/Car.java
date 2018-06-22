@@ -66,7 +66,7 @@ public class Car implements Serializable {
 		String return_res = "";
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = stmt.executeQuery("SELECT client_ID FROM cars WHERE car_ID=" + carID + ";");
+			ResultSet rs = stmt.executeQuery("SELECT client_ID FROM cars WHERE car_ID=\"" + carID + "\";");
 			
 			if (rs.next()) {
 				return_res += (rs.getString(1)); // client id

@@ -246,18 +246,18 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean endParking(String carID){
+	public static boolean orderOngoingExist(String carID){
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ? AND order_status = ONGOING");
-			stmt.setString(1, carID);
+			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\""+ carID +"\" AND `order_status`=\"ONGOING\"");
+//			stmt.setString(1, carID);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				flag=true;
-				System.out.println("parking ended succsfully");
+				System.out.println("order ongoing exists");
 			} else {
-				System.out.println("cannot end parking");
+				System.out.println("order ongoing doesnt exist");
 			}
 			rs.close();
 			stmt.close();
@@ -268,7 +268,7 @@ public class OrderController {
 	}
 
 	public static double calcPrice(String carID){
-		double price_per_hour=0, hours=0;
+		double res=Double.MAX_VALUE, price_per_hour=0, hours=0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
@@ -290,7 +290,8 @@ public class OrderController {
 				rs = stmt.executeQuery();
 
 				if(rs.next()) {
-					price_per_hour = rs.getDouble(1);				
+					price_per_hour = rs.getDouble(1);
+					res = hours * price_per_hour;
 					System.out.println("price calculated succsfully");
 				}
 
@@ -302,7 +303,7 @@ public class OrderController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return hours * price_per_hour;
+		return res;
 	}
 
 
