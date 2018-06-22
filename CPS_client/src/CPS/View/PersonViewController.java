@@ -38,7 +38,6 @@ public class PersonViewController {
 
 	Client client = new Client();
 
-
 	
 	
 	//------------------Complaint View----------------------------------
@@ -250,8 +249,6 @@ public class PersonViewController {
 
 	//----------------------Finished Parking--------------------------
 
-	@FXML
-	private TextField finished_parking_id_bar;
 
 	@FXML
 	private Button finish_parking_back_btn;
@@ -270,6 +267,16 @@ public class PersonViewController {
 	@FXML
 	void finish_parking_pay(ActionEvent event) throws IOException {
 		// TODO calculate the price
+		String id = finished_parking_car_number_bar.getText();
+		String err_msg = "";
+		if(id.isEmpty())
+		{
+			err_msg = err_msg + "please provide car number\n";
+			createMsg(event, err_msg, "error msg");
+
+		}
+			
+			
 		createBillMsg(event, "0");
 	}
 
