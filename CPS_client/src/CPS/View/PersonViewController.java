@@ -38,7 +38,6 @@ public class PersonViewController {
 
 	Client client = new Client();
 
-
 	
 	
 	//------------------Complaint View----------------------------------

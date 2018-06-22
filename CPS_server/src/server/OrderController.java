@@ -246,18 +246,18 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean endParking(String carID){
+	public static boolean orderOngoingExist(String carID){
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ? AND order_status = ONGOING");
-			stmt.setString(1, carID);
+			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\""+ carID +"\" AND `order_status`=\"ONGOING\"");
+//			stmt.setString(1, carID);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				flag=true;
-				System.out.println("parking ended succsfully");
+				System.out.println("order ongoing exists");
 			} else {
-				System.out.println("cannot end parking");
+				System.out.println("order ongoing doesnt exist");
 			}
 			rs.close();
 			stmt.close();
@@ -266,8 +266,9 @@ public class OrderController {
 		}
 		return flag;
 	}
+
 	public static double calcPrice(String carID){
-		double price_per_hour=0, hours=0;
+		double res=Double.MAX_VALUE, price_per_hour=0, hours=0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
@@ -280,19 +281,20 @@ public class OrderController {
 				long end_diff = endTime.getTime() - startTime.getTime();
 				long now_diff = nowTime.getTime() - startTime.getTime();
 				hours = (now_diff-end_diff) / 3600000.0;
-				
+
 				String type = rs.getString(5);
 				int parking_id = rs.getInt(6);
 				stmt = sql.conn.prepareStatement("SELECT order_price_per_hour FROM order_prices WHERE parking_id = ? AND order_type = ?");
 				stmt.setInt(1, parking_id);
 				stmt.setString(2, type);
 				rs = stmt.executeQuery();
-				
+
 				if(rs.next()) {
-					price_per_hour = rs.getDouble(1);				
+					price_per_hour = rs.getDouble(1);
+					res = hours * price_per_hour;
 					System.out.println("price calculated succsfully");
 				}
-				
+
 			} else {
 				System.out.println("price calculation failed");
 			}
@@ -301,6 +303,20 @@ public class OrderController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return hours * price_per_hour;
+		return res;
+	}
+
+
+	public static boolean removeOrder(String carID){
+		boolean res=false;
+		String clientId = Car.getClientId(carID);
+		if(CustomerController.removeCustomer(clientId)) {
+			System.out.println("order removed succsfully");
+			res=true;
+		}
+		else
+			System.out.println("remove order failed");
+
+		return res;
 	}
 }
