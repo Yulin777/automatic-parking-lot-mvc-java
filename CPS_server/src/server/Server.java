@@ -21,7 +21,6 @@ public class Server {
 				String s = br.readLine();
 				System.out.println("[request] " + s);
 				handelRequest(s, currentSocket);
-				OrderController.calcPrice("21");
 			}
 		} catch (Exception ioe){
 			System.out.println(ioe.getMessage());
