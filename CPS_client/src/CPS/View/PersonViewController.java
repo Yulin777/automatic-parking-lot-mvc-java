@@ -788,6 +788,9 @@ public class PersonViewController {
     private TextField In_Advance_Customer_id;
 
     @FXML
+    private RadioButton In_Advance_Customer_cash;
+
+    @FXML
     private ToggleGroup money_toggle;
 
     @FXML
@@ -806,6 +809,9 @@ public class PersonViewController {
     private TextField In_Advance_Customer_email;
 
     @FXML
+    private RadioButton In_Advance_Customer_credit_card;
+
+    @FXML
     private Button In_Advance_Customer_order;
 
     @FXML
@@ -816,6 +822,7 @@ public class PersonViewController {
 
     @FXML
     private TextField In_Advance_Customer_start_time;
+
     
 
 	@FXML
@@ -845,10 +852,16 @@ public class PersonViewController {
 		String phone = In_Advance_Customer_phone_number.getText();
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
 		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time);
-		//SplitMenuButton smb = new SplitMenuButton();
-			//	smb.getItems().
 		
+		if(!In_Advance_Customer_credit_card.isSelected() && !In_Advance_Customer_cash.isSelected())
+			err_msg = err_msg + "please select payment method\n";
 		
+		String payMethod="";
+		if(In_Advance_Customer_credit_card.isSelected())
+			payMethod="CREDIT";
+		if(In_Advance_Customer_cash.isSelected())
+			payMethod="CASH";
+			
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			//System.out.println(err_msg);
@@ -857,7 +870,7 @@ public class PersonViewController {
 			return;
 		}
 		
-		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
+		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time,payMethod);
 		
 		String start_date_string =""+ start_date.toString();// In_Advance_Customer_start_date.getValue();
 		String end_date_string =""+ end_date.toString();// In_Advance_Customer_end_date.getValue();

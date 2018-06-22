@@ -44,11 +44,11 @@
         <Label layoutX="36.0" layoutY="121.0" text="last name:" />
         <TextField fx:id="In_Advance_Customer_phone_number" layoutX="156.0" layoutY="148.0" promptText="phone number:" />
         <Label layoutX="35.0" layoutY="152.0" text="phone number:" />
-        <RadioButton layoutX="156.0" layoutY="379.0" mnemonicParsing="false" text="cash">
+        <RadioButton fx:id="In_Advance_Customer_cash" layoutX="156.0" layoutY="379.0" mnemonicParsing="false" text="cash">
          <toggleGroup>
             <ToggleGroup fx:id="money_toggle" />
          </toggleGroup></RadioButton>
-        <RadioButton layoutX="223.0" layoutY="379.0" mnemonicParsing="false" text="credit card" toggleGroup="$money_toggle" />
+        <RadioButton fx:id="In_Advance_Customer_credit_card" layoutX="223.0" layoutY="379.0" mnemonicParsing="false" text="credit card" toggleGroup="$money_toggle" />
         <SplitMenuButton fx:id="In_Advance_Customer_parking_lot_split_menu_btn" layoutX="156.0" layoutY="250.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="167.0" text="available lots">
             <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />

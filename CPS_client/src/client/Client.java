@@ -127,7 +127,7 @@ public class Client {
 		return res;
 	}
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
-								   String start_time, LocalDate end_date, String end_time) {
+								   String start_time, LocalDate end_date, String end_time,String payMethod) {
 		int result;
 
 		// TODO: input validation
@@ -145,7 +145,7 @@ public class Client {
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("order temporery " + id + " " + car_number + " " + car_park + " " + email + " " + startTime + " "
-					+ endTime);
+					+ endTime + " " +payMethod);
 			pw.flush();
 			socket.close();
 
