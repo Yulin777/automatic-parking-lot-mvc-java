@@ -1,9 +1,6 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -125,15 +122,6 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 
-		} else if (cmd[0].equals("end") && cmd[1].equals("parking")) {
-			if(OrderController.orderOngoingExist(cmd[2])) {
-				double res = OrderController.calcPrice(cmd[2]);
-				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
-				osw.writeObject(res);
-				osw.flush();
-				OrderController.removeOrder(cmd[2]);
-			}
-			currentSocket.close();
 		}
 
 
