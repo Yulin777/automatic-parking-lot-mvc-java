@@ -12,7 +12,7 @@ public class Worker extends Person {
 
 	public enum WorkerType
 	{
-		ParkingWorker, MasterManger, CustomerService;
+		ParkingWorker, ParkingManger, CEO, CustomerService;
 	}
 	
 	public boolean setup() {

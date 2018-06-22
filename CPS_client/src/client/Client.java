@@ -42,14 +42,14 @@ public class Client {
 		return c;
 	}
 
-	public Worker workerLogin(String email, String password, Worker.WorkerType type) {
+	public Worker workerLogin(String id, String password, Worker.WorkerType type) {
 		Worker w = null;
 
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("login worker " + email + " " + password + " " + type.name());
+			pw.println("login worker " + id + " " + password + " " + type.name());
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());

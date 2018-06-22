@@ -9,39 +9,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class WorkerController {
+
 	private static sqlConnection sql = sqlConnection.getInstant();
 
-	public Worker login(String email, String password,String type) {
+	public Worker login(String id, String password, Worker.WorkerType type) {
 		java.sql.PreparedStatement stmt;
 		Worker return_res = null;
 		try {
-			stmt =  sql.conn.prepareStatement("SELECT * FROM workers WHERE worker_email = ? AND worker_password = ? AND worker_type = ?");
-			stmt.setString(1, email);    
+			stmt = sql.conn.prepareStatement("SELECT * FROM workers WHERE worker_id = ? AND worker_password = ? AND worker_type = ?");
+			stmt.setString(1, id);
 			stmt.setString(2, password);
-			if (type.equals("ParkingWorker"))stmt.setString(3, "0");
-			else stmt.setString(3, "1");
+			stmt.setString(3, type.name());
 
-			
 			ResultSet rs = stmt.executeQuery();
 			if (!rs.next()) {
 				return null;
 			}
-	 		return_res = new Worker(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "");
+			return_res = new Worker(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "");
 
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					/* ignored */}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					/* ignored */}
-			}
+			rs.close();
+			stmt.close();
 
-		} catch (SQLException e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -109,6 +99,6 @@ public class WorkerController {
 		  System.out.println(sha1("password"));
 		  System.out.println(sha1("password1"));
 	  }*/
-	
-	 
+
+
 }

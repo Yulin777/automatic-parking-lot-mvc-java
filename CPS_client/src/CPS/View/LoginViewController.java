@@ -70,15 +70,14 @@ public class LoginViewController {
 	void login_view_finished_parking(ActionEvent event) throws IOException {
 		String url = "FinishedParking.fxml";
 		switchWindow(url);
-		switchScene(event,"Finish Parking");
+		switchScene(event, "Finish Parking");
 	}
-
 
 
 	@FXML
 	void log_as_occasional_customer(ActionEvent event) throws IOException {
 
-		changeViewWithDates(event,"OccasionalCustomer.fxml","occasional customer");
+		changeViewWithDates(event, "OccasionalCustomer.fxml", "occasional customer");
 
 		//String url = "OccasionalCustomer.fxml";
 		// switchWindow(url);
@@ -90,7 +89,7 @@ public class LoginViewController {
 	@FXML
 	void log_as_in_advance_customer(ActionEvent event) throws IOException {
 
-		changeViewWithDates(event,"InAdvanceCustomer.fxml","order in advance");
+		changeViewWithDates(event, "InAdvanceCustomer.fxml", "order in advance");
 
 		//String url = "InAdvanceCustomer.fxml";
 		//switchWindow(url);
@@ -99,39 +98,30 @@ public class LoginViewController {
 		//switchScene(event, "order in advance");
 
 
-
 	}
 
 
 	@FXML
-	void login(ActionEvent event) throws IOException 
-	{
+	void login(ActionEvent event) throws IOException {
 		login_view_progress_bar.setVisible(true);
 
-		String url="";
-		String title="";
-		String err_msg="";
+		String url = "";
+		String title = "";
+		String err_msg = "";
 		//TODO need to consider what kind of login
 
 		Client client = new Client();
 
 		//worker login
-			if(worker_radio.isSelected())
-			{
-				if(isEmptyBars(id_bar, password_bar))
-				{
-					err_msg = err_msg + "please fill all bars\n";
-				}
-				else
-				{
-				Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.ParkingWorker);
-				
-				if(w==null)
-				{
+		if (worker_radio.isSelected()) {
+			if (isEmptyBars(id_bar, password_bar)) {
+				err_msg = err_msg + "please fill all bars\n";
+			} else {
+				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.ParkingWorker);
+
+				if (w == null) {
 					err_msg = err_msg + "You are not a worker\n";
-				}
-				
-				else{
+				} else {
 					url = "workerView.fxml";
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
@@ -143,58 +133,44 @@ public class LoginViewController {
 		}
 
 		//manger login
-		else if(manager_radio.isSelected())
-		{
-			if(isEmptyBars(id_bar, password_bar))
-			{
+		else if (manager_radio.isSelected()) {
+			if (isEmptyBars(id_bar, password_bar)) {
 				err_msg = err_msg + "please fill all bars\n";
+			} else {
+
+				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.ParkingManger);
+
+				if (w == null) {
+					err_msg = err_msg + "You are not a manager\n";
+				} else {
+					url = "ManagerView.fxml";
+					switchWindow(url);
+					PersonViewController controller = loader.getController();
+					controller.setManagerName(w.getFirstName());
+					title = "Manager Interface";
+				}
 			}
-			else
-			{
-				
-			Worker w = client.workerLogin(id_bar.getText(),password_bar.getText(),WorkerType.MasterManger);
-			
-			if(w==null)
-			{
-				err_msg = err_msg + "You are not a manager\n";
-			}
-			else{
-				url = "ManagerView.fxml";
-				switchWindow(url);
-				PersonViewController controller = loader.getController();
-				controller.setManagerName(w.getFirstName());
-				title = "Manager Interface";
-			}
-		}
 		}
 
 		//customer login
-		else if(customer_radio.isSelected())
-		{
-			if(isEmptyBars(id_bar, password_bar))
-			{
+		else if (customer_radio.isSelected()) {
+			if (isEmptyBars(id_bar, password_bar)) {
 				err_msg = err_msg + "please fill all bars\n";
-			}
-			else
-			{
-			Customer c = client.customerLogin(id_bar.getText(),password_bar.getText());
-			if(c==null)
-			{
-				err_msg = err_msg + "You are not a customer\n";
-			}
-			else{
-				url = "CustomerView.fxml";
-				switchWindow(url);
-				PersonViewController controller = loader.getController();
-				controller.setCustomerName(c.getFirstName());
-				title = "Customer Interface";
-			}
+			} else {
+				Customer c = client.customerLogin(id_bar.getText(), password_bar.getText());
+				if (c == null) {
+					err_msg = err_msg + "You are not a customer\n";
+				} else {
+					url = "CustomerView.fxml";
+					switchWindow(url);
+					PersonViewController controller = loader.getController();
+					controller.setCustomerName(c.getFirstName());
+					title = "Customer Interface";
+				}
 
-			//  controller.setWorkerInterfaceController(wIC);
-		}
-		}
-		else
-		{
+				//  controller.setWorkerInterfaceController(wIC);
+			}
+		} else {
 			err_msg = err_msg + "no button clicked\n";
 
 		}
@@ -204,9 +180,9 @@ public class LoginViewController {
 
 			return;
 		}
-		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		window.setScene(tableViewScene);
-		window.setTitle( title );
+		window.setTitle(title);
 		login_view_progress_bar.setVisible(false);
 
 		window.show();
@@ -220,22 +196,17 @@ public class LoginViewController {
 	WorkerInterfaceController wIC;
 
 
-	public LoginViewController()
-	{
+	public LoginViewController() {
 		this.wIC = new WorkerInterfaceController();
 	}
 
 
-	public LoginViewController(WorkerInterfaceController wIC) 
-	{
+	public LoginViewController(WorkerInterfaceController wIC) {
 		this.wIC = wIC;
 	}
 
 
-
-
-	void switchWindow(String url) throws IOException
-	{
+	void switchWindow(String url) throws IOException {
 
 		loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(url));
@@ -244,23 +215,22 @@ public class LoginViewController {
 
 	}
 
-	void switchScene(ActionEvent event, String pageTitle)
-	{
-		Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+	void switchScene(ActionEvent event, String pageTitle) {
+		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		window.setScene(tableViewScene);
 		window.setTitle(pageTitle);
 		window.show();
 	}
 
 
-	void createErrMsg(ActionEvent event,String errMsg) throws IOException {
+	void createErrMsg(ActionEvent event, String errMsg) throws IOException {
 		Stage err_win;
 		switchWindow("ErrorMsg.fxml");
 
 		PersonViewController controller = loader.getController();
 		controller.setErrLabel(errMsg);
 
-		err_win =  new Stage();
+		err_win = new Stage();
 		err_win.setScene(tableViewScene);
 		err_win.setTitle("error window");
 		err_win.show();
@@ -273,22 +243,21 @@ public class LoginViewController {
 	void login_view_customer_sign_in(ActionEvent event) throws IOException {
 		// String url = "CustomerSignIn.fxml";
 		//switchWindow(url);
-		changeViewWithDates(event,"CustomerSignUp.fxml","sign up");
+		changeViewWithDates(event, "CustomerSignUp.fxml", "sign up");
 		PersonViewController controller = loader.getController();
 		controller.Customer_Sign_Up_loadDates();
 		// switchScene(event,"sign in");
 	}
 
-	void changeViewWithDates(ActionEvent event,String url, String title) throws IOException {
+	void changeViewWithDates(ActionEvent event, String url, String title) throws IOException {
 		switchWindow(url);
-		switchScene(event,title);
+		switchScene(event, title);
 
 	}
-	
-	
-	boolean isEmptyBars(TextField tf1, TextField tf2)
-	{
-		if(tf1.getText().equals("") || tf2.getText().equals("") )
+
+
+	boolean isEmptyBars(TextField tf1, TextField tf2) {
+		if (tf1.getText().equals("") || tf2.getText().equals(""))
 			return true;
 		return false;
 	}
