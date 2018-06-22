@@ -28,6 +28,10 @@ import server.Worker.WorkerType;
 
 public class LoginViewController {
 
+	
+	@FXML
+    private Button login_view_complaint_btn;
+	
 	@FXML
     private RadioButton manager_radio;
 
@@ -209,7 +213,12 @@ public class LoginViewController {
 
 	
 	
-	
+	    @FXML
+	    void login_view_complaint(ActionEvent event) throws IOException {
+	    	String url = "ComplaintView.fxml";
+			switchWindow(url);
+			switchScene(event,"complaint section");
+	    }
 	
 	
 	
@@ -289,4 +298,9 @@ public class LoginViewController {
 			return true;
 		return false;
 	}
+	
+	
+	
+	
+	
 }

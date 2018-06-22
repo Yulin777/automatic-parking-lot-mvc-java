@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import server.Customer.type;
+import server.CustomerController;
 
 
 public class PersonViewController {
@@ -35,7 +36,68 @@ public class PersonViewController {
 
 	
 	
+	//------------------Complaint View----------------------------------
 	
+	
+	
+	 	@FXML
+	    private Button complaint_view_back_btn;
+
+	    @FXML
+	    private TextField complaint_view_id_bar;
+
+	    @FXML
+	    private TextArea complaint_view_text_area;
+
+	    @FXML
+	    private Button complaint_view_send_complaint_btn;
+
+	    @FXML
+	    void complaint_view_back(ActionEvent event) throws IOException {
+	    	String url = "LoginView.fxml";
+			switchWindow(url);
+			switchScene(event, "login page");
+
+
+
+	    }
+
+	    @FXML
+	    void complaint_view_send_complaint(ActionEvent event) throws IOException 
+	    {
+	    	String err_msg="";
+	    	String text_area = complaint_view_text_area.getText();
+	    	String id = complaint_view_id_bar.getText();
+	    	
+	    	if(text_area.isEmpty())
+	    	 err_msg = err_msg + "please fill complaint\n";
+	    	
+	    	if(id.isEmpty())
+		    	 err_msg =err_msg +  "please enter your id\n";
+	    	
+	    	else
+	    	{
+	    		Customer c;
+	    		c = CustomerController.getClientById(id );
+	    		if(c == null)
+	    			err_msg =err_msg +  "you are not a customer\n";
+	    				
+	    	}
+	    	
+	    	if(!err_msg.isEmpty())
+	    	{
+    		createMsg(event, err_msg, "error msg");
+    		return;
+	    	}
+	    	
+	    	
+	    	//TODO write complaints to the server
+	    	String succ = "in progress\n";
+	    	createMsg(event, succ, "succ msg");
+	    }
+
+	
+	//-----------------^^Complaint View^^^-----------------------------
 	
 	//---------------------Start Parking---------------------------
 	

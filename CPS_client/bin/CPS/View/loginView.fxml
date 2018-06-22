@@ -30,6 +30,7 @@
       </ProgressIndicator>
       <Button fx:id="login_view_end_parking_btn" layoutX="310.0" layoutY="226.0" mnemonicParsing="false" onAction="#login_view_end_parking" prefHeight="25.0" prefWidth="178.0" text="end parking" />
       <Button fx:id="login_view_start_parking_btn" layoutX="310.0" layoutY="194.0" mnemonicParsing="false" onAction="#login_view_start_parking" prefHeight="25.0" prefWidth="178.0" text="start parking" />
+      <Button fx:id="login_view_complaint_btn" layoutX="310.0" layoutY="257.0" mnemonicParsing="false" onAction="#login_view_complaint" prefHeight="25.0" prefWidth="178.0" text="complaints" />
    </children>
    <opaqueInsets>
       <Insets />
