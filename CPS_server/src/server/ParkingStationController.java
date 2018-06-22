@@ -19,7 +19,27 @@ public class ParkingStationController {
 	public int getSoltStatus(){
 		return 0;
 	}
-
+	/**
+	 * remove car from occupied slot
+	 * @param parkId
+	 * @param carId
+	 */
+	public void removeCar(int parkId,int carId){
+		java.sql.PreparedStatement updatestmt = null;
+		      
+		    try{
+		    	
+				updatestmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 0,car_ID='' WHERE parking_id = ? AND car_ID = ? LIMIT 1");
+				updatestmt.setInt(1, parkId);
+				updatestmt.setInt(2, carId);
+				updatestmt.executeUpdate();
+		    }
+			
+			catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 	/**
 	 * insert Car to available Slot
 	 * @param parkId
