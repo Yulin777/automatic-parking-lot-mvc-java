@@ -607,8 +607,41 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	public boolean updateParkingStaionPrices(String parking_id,String order_type, Double order_price_per_hour){
+		Socket socket;
+		boolean res = false;
+		try {
+			socket = new Socket(ip, 8080);
 
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("ParkingStaion updatePrices " + parking_id +" "+ order_type +" "+ String.valueOf(order_price_per_hour));
+			pw.flush();
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (boolean) ois.readObject();
+			if (res != true)
+				System.out.println("[response] parking staion price update succes");
+			else
+				System.out.println("[response] parking staion price update failure");
 
+			socket.close();
+		} catch (UnknownHostException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return res;
+
+	}
+
+	
+	
 }
 
 
