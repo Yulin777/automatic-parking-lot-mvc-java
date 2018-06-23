@@ -81,24 +81,9 @@ public class OrderController {
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
 			if (!client.next()) {
-//				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
-//				uprs.moveToInsertRow();
-//				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
-//				uprs.updateString("order_car_id", carID);
-//				int order_parking_id = getOrderParkingId(parkingName);
-//				uprs.updateInt("order_parking_id", order_parking_id);
-//				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
-//				uprs.updateString("end_date", endDate);
-//				uprs.insertRow();
-//				
-//				uprs = stmt.getGeneratedKeys();
-//	            if (uprs.next()) {
-//				    calcAndUpdatePrice(uprs.getInt(1));
-//				}
-				
+
 				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,end_date,order_parking_id) VALUES (?,?,?,?,?)"
-						,Statement.RETURN_GENERATED_KEYS);
+						, Statement.RETURN_GENERATED_KEYS);
 
 				stmt.setString(1, OrderStatus.PENDING.toString());
 				stmt.setString(2, carID);
@@ -106,10 +91,10 @@ public class OrderController {
 				stmt.setString(4, endDate);
 				stmt.setInt(5, getOrderParkingId(parkingName));
 				stmt.executeUpdate();
-				
-				ResultSet uprs = stmt.getGeneratedKeys(); 
-	            if (uprs.next()) {
-				    calcAndUpdatePrice(uprs.getInt(1));
+
+				ResultSet uprs = stmt.getGeneratedKeys();
+				if (uprs.next()) {
+					calcAndUpdatePrice(uprs.getInt(1));
 				}
 
 				System.out.println("New order was added succsfully");
@@ -154,7 +139,7 @@ public class OrderController {
 			if (!client.next()) {
 
 				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,start_date,end_date,order_parking_id) VALUES (?,?,?,?,?,?)"
-						,Statement.RETURN_GENERATED_KEYS);
+						, Statement.RETURN_GENERATED_KEYS);
 
 				stmt.setString(1, OrderStatus.PENDING.toString());
 				stmt.setString(2, carID);
@@ -163,10 +148,10 @@ public class OrderController {
 				stmt.setString(5, endDate);
 				stmt.setInt(6, getOrderParkingId(parkingName));
 				stmt.executeUpdate();
-				
-				ResultSet uprs = stmt.getGeneratedKeys(); 
-	            if (uprs.next()) {
-				    calcAndUpdatePrice(uprs.getInt(1));
+
+				ResultSet uprs = stmt.getGeneratedKeys();
+				if (uprs.next()) {
+					calcAndUpdatePrice(uprs.getInt(1));
 				}
 
 				System.out.println("New order was added successfully");
@@ -268,8 +253,9 @@ public class OrderController {
 		long diff = endTime.getTime() - startTime.getTime();
 		return diff / 3600000.0;
 	}
+
 	public static double getPricePerHour(int parking_id, String type) {
-		double price_per_hour=Double.MAX_VALUE;
+		double price_per_hour = Double.MAX_VALUE;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT order_price_per_hour FROM order_prices WHERE parking_id = ? AND order_type = ?");
@@ -277,7 +263,7 @@ public class OrderController {
 			stmt.setString(2, type);
 			ResultSet rs = stmt.executeQuery();
 
-			if(rs.next()) {
+			if (rs.next()) {
 				price_per_hour = rs.getDouble(1);
 			}
 			rs.close();
@@ -287,9 +273,9 @@ public class OrderController {
 		}
 		return price_per_hour;
 	}
-	
-	public static double calcPriceOnEndOrder(String carID){
-		double res=Double.MAX_VALUE, price_per_hour=0, hours=0;
+
+	public static double calcPriceOnEndOrder(String carID) {
+		double res = Double.MAX_VALUE, price_per_hour = 0, hours = 0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
@@ -303,9 +289,9 @@ public class OrderController {
 
 				String type = rs.getString(5);
 				int parking_id = rs.getInt(6);
-				
+
 				price_per_hour = getPricePerHour(parking_id, type);
-				if(price_per_hour != Double.MAX_VALUE) {
+				if (price_per_hour != Double.MAX_VALUE) {
 
 					res = hours * price_per_hour;
 					System.out.println("price calculated succsfully");
@@ -320,8 +306,9 @@ public class OrderController {
 		}
 		return res;
 	}
-	public static void calcAndUpdatePrice(int order_id){
-		double res=Double.MAX_VALUE, price_per_hour=0, hours=0;
+
+	public static void calcAndUpdatePrice(int order_id) {
+		double res = Double.MAX_VALUE, price_per_hour = 0, hours = 0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
@@ -331,19 +318,19 @@ public class OrderController {
 				Timestamp startTime = rs.getTimestamp("start_date");
 				Timestamp endTime = rs.getTimestamp("end_date");
 				hours = getTimeDiffInHours(startTime, endTime);
-				
+
 				String type = rs.getString(5);
 				int parking_id = rs.getInt(6);
 				price_per_hour = getPricePerHour(parking_id, type);
-				
-				if(price_per_hour != Double.MAX_VALUE) {
+
+				if (price_per_hour != Double.MAX_VALUE) {
 					res = hours * price_per_hour;
 					stmt = sql.conn.prepareStatement("UPDATE orders SET order_price = ? WHERE order_id = ?");
 					stmt.setDouble(1, res);
 					stmt.setInt(2, order_id);
 					stmt.executeUpdate();
-					
-					System.out.println("price "+ res + "calculated succsfully");
+
+					System.out.println("price " + res + "calculated succsfully");
 				}
 			} else {
 				System.out.println("price calculation failed");
@@ -354,7 +341,7 @@ public class OrderController {
 			e.printStackTrace();
 		}
 	}
-	
+
 
 	public static boolean removeOrderById(int order_id) {
 		java.sql.PreparedStatement stmt;
@@ -362,54 +349,53 @@ public class OrderController {
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
 			stmt.setInt(1, order_id);
-			
-			if(stmt.executeUpdate()==1) {
+
+			if (stmt.executeUpdate() == 1) {
 				System.out.println("order deleted successfully");
 				return_res = true;
 			}
 			stmt.close();
-								
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return return_res;
 	}
 
 	// type ONGOING for end parking, PENDING for cancel
-	public static boolean removeOrder(String carID, String type){
-		boolean res=false;
+	public static boolean removeOrder(String carID, String type) {
+		boolean res = false;
 		java.sql.PreparedStatement stmt;
 		String clientId = Car.getClientId(carID);
-		if(Car.getClientCarsById(clientId).size() == 1) {
-			if(CustomerController.removeCustomer(clientId)) {
-				res=true;
+		if (Car.getClientCarsById(clientId).size() == 1) {
+			if (CustomerController.removeCustomer(clientId)) {
+				res = true;
 			}
-		}
-		else {
+		} else {
 			try {
 				stmt = sql.conn.prepareStatement("DELETE FROM orders WHERE order_car_id = ? AND order_status = ?");
 				stmt.setString(1, carID);
 				stmt.setString(2, type);
-				if(stmt.executeUpdate()==1) {
+				if (stmt.executeUpdate() == 1) {
 					res = true;
 				}
 				stmt.close();
-									
+
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		if(res)
+		if (res)
 			System.out.println("order removed successfully");
 		else
 			System.out.println("remove order failed");
 
 		return res;
 	}
-	
-	public static boolean cancelOrder(String orderId){
-		boolean res=false;
+
+	public static boolean cancelOrder(String orderId) {
+		boolean res = false;
 //		java.sql.PreparedStatement stmt;
 //		String clientId = Car.getClientId(carID);
 //		if(Car.getClientCarsById(clientId).size() == 1) {
@@ -437,6 +423,6 @@ public class OrderController {
 //			System.out.println("remove order failed");
 
 		return res;
-		
+
 	}
 }
