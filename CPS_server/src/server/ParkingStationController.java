@@ -132,7 +132,7 @@ public class ParkingStationController {
 	 * @param row
 	 * @param col
 	 */
-	public void setResevedSlot(int parkId,int level,int row,int col){
+	public static void setResevedSlot(int parkId,int level,int row,int col){
 		java.sql.PreparedStatement stmt = null;
 
 
@@ -163,7 +163,7 @@ public class ParkingStationController {
 	 * @param row
 	 * @param col
 	 */
-	public void setOutOfOrderSlot(int parkId,int level,int row,int col){
+	public static void setOutOfOrderSlot(int parkId,int level,int row,int col){
 		java.sql.PreparedStatement stmt = null;
 
 
@@ -193,9 +193,9 @@ public class ParkingStationController {
 	 * @param size
 	 * @return true if DB add success
 	 */
-	public boolean addParkingStaion(String address,Worker director,int size){
+	public static boolean addParkingStaion(String address,int size){
 		Statement stmt;
-
+		int id = 0;
 		//add ParkingStation to db
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -207,7 +207,7 @@ public class ParkingStationController {
 			uprs.insertRow();
 
 			uprs.last();
-			int id = uprs.getInt("parking_id");
+			id = uprs.getInt("parking_id");
 			int [] prices = {5,4,(72*4)};
 			String [] type = {"OCCASIONAL","IN_ADVANCE", "SUBSCRIBED"}; 
 
@@ -237,8 +237,7 @@ public class ParkingStationController {
 			e.printStackTrace();
 		}
 
-		setupSlots(currentId, size);
-		currentId++;
+		setupSlots(id, size);
 		return(true);
 	}
 
@@ -247,7 +246,7 @@ public class ParkingStationController {
 	 * @param parkId
 	 * @param size
 	 */
-	public void setupSlots(int parkId,int size){
+	public static void setupSlots(int parkId,int size){
 		Statement stmt;
 
 		try {

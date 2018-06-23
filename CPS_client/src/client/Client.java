@@ -510,11 +510,11 @@ public class Client {
 		Socket socket;
 		try {
 			socket = new Socket(ip, 8080);
-		
-		OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
-		PrintWriter pw = new PrintWriter(osw);
-		pw.println("logout client " + id);
-		pw.flush();
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("logout client " + id);
+			pw.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -523,9 +523,72 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
-	public void setResevedSlot(int parkId,int level,int row,int col){}
-	public void setOutOfOrderSlot(int parkId,int level,int row,int col){}
-	public boolean addParkingStaion(String address,Worker director,int size){return true;}
+	public void setResevedSlot(int parkId,int level,int row,int col){
+		Socket socket;
+		try {
+			socket = new Socket(ip, 8080);
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("reseved slot " +String.valueOf(parkId)+" "+ String.valueOf(level)+" "+ String.valueOf(row)+" "+  String.valueOf(col));
+			pw.flush();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void setOutOfOrderSlot(int parkId,int level,int row,int col){
+		Socket socket;
+		try {
+			socket = new Socket(ip, 8080);
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("outOfOrder slot " +String.valueOf(parkId)+" "+ String.valueOf(level)+" "+ String.valueOf(row)+" "+  String.valueOf(col));
+			pw.flush();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public boolean addParkingStaion(String address,int size){
+		Socket socket;
+		boolean res = false;
+		try {
+			socket = new Socket(ip, 8080);
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("add ParkingStaion " +address+" "+ String.valueOf(size));
+			pw.flush();
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (boolean) ois.readObject();
+			if (res != true)
+				System.out.println("[response] addParkingStaion succeed");
+			else
+				System.out.println("[response] addParkingStaion fail");
+
+			socket.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+
+	}
 
 
 

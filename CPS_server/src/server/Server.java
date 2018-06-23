@@ -218,6 +218,16 @@ public class Server {
 		else if (cmd[0].equals("logout") && cmd[1].equals("client")) {
 			CustomerController.logout(cmd[2]);
 		}
+		else if (cmd[0].equals("reseved") && cmd[1].equals("slot")) {
+			ParkingStationController.setResevedSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
+		}
+		else if (cmd[0].equals("outOfOrder") && cmd[1].equals("slot")) {
+			ParkingStationController.setOutOfOrderSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
+		}
+		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
+			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+		}
+		 
 
 	}
 }
