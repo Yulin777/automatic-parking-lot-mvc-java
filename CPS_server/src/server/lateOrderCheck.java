@@ -25,6 +25,9 @@ public class lateOrderCheck  implements Runnable{
 						uprs.insertRow();
 						System.out.println("[auto] send late message to client "+rs.getString("client_ID"));
 					}
+					else{
+						
+					}
 			}
 			stmt.close();
 			rs.close();

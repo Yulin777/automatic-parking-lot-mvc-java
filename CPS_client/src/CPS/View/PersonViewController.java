@@ -148,12 +148,7 @@ public class PersonViewController {
 		}
 
 
-		double bill = client.cancelOrder(Integer.parseInt(order_id));
-
-
-		
-		double bill = client.cancelOrder(Integer.parseInt(order_id));
-		
+		double bill = client.cancelOrder(Integer.parseInt(order_id));		
 
 		//TODO need to delete order from database. DONE!
 		
