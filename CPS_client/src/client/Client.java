@@ -366,7 +366,7 @@ public class Client {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add compensation " + ComplaintID + " " + compnsationAmount);
+			pw.println("add compensation " + ComplaintID + " " + Float.toString(compnsationAmount));
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());

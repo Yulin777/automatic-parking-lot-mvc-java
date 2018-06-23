@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
+   <children>
+      <Button fx:id="complaint_view_back_btn" layoutX="11.0" layoutY="265.0" mnemonicParsing="false" onAction="#complaint_view_back" text="&lt;&lt; back" />
+      <TextArea fx:id="complaint_view_text_area" layoutX="8.0" layoutY="75.0" prefHeight="174.0" prefWidth="480.0" promptText="my complaint:" />
+      <Text layoutX="122.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="write your complaint down below:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="complaint_view_send_complaint_btn" layoutX="172.0" layoutY="257.0" mnemonicParsing="false" onAction="#complaint_view_send_complaint" prefHeight="40.0" prefWidth="132.0" text="send complaint" />
+      <TextField fx:id="complaint_view_id_bar" layoutX="47.0" layoutY="39.0" prefHeight="25.0" prefWidth="149.0" promptText="id:" />
+      <Text layoutX="7.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="id:" />
+   </children>
+</AnchorPane>
