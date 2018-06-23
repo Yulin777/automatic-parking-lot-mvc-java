@@ -20,5 +20,6 @@
       <Button fx:id="customer_view_end_parking_btn" layoutX="320.0" layoutY="236.0" mnemonicParsing="false" onAction="#customer_view_end_parking" prefHeight="25.0" prefWidth="178.0" text="end parking" />
       <Button fx:id="customer_view_cancel_btn" layoutX="309.0" layoutY="130.0" mnemonicParsing="false" onAction="#customer_view_cancel" prefHeight="25.0" prefWidth="178.0" text="cancel parking" />
       <Button fx:id="customer_view_add_car_btn" layoutX="309.0" layoutY="70.0" mnemonicParsing="false" onAction="#customer_view_add_car" text="add car" />
+      <Button fx:id="customer_view_see_my_orders_btn" layoutX="167.0" layoutY="159.0" mnemonicParsing="false" onAction="#customer_view_see_my_orders" prefHeight="25.0" prefWidth="178.0" text="see my orders" />
    </children>
 </AnchorPane>
