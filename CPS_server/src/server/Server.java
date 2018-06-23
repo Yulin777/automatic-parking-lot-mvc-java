@@ -111,22 +111,52 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 
-		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
+		}
+		else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
 			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-
-			//complaints:
-		} else if (cmd[0].equals("add") && cmd[1].equals("complaint")) {
+		}
+		//================complaint handle============================================
+		else if (cmd[0].equals("add") && cmd[1].equals("complaint"))
+		{
 			boolean res = ComplaintController.addNewComplaint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-
-		} else if (cmd[0].equals("end") && cmd[1].equals("parking")) {
+		}
+		
+		else if (cmd[0].equals("assign") && cmd[1].equals("attendant"))
+		{
+			String res = ComplaintController.assignAttendantToComlaint(cmd[2], cmd[3]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
+		
+		else if (cmd[0].equals("respond") && cmd[1].equals("compalint"))
+		{
+			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}	
+		
+		else if (cmd[0].equals("add") && cmd[1].equals("compensation"))
+		{
+			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
+		//=========end of complaints handling==================================
+		else if (cmd[0].equals("end") && cmd[1].equals("parking")) {
 			boolean res;
 			res = OrderController.orderOngoingExist(cmd[2]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
