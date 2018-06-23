@@ -1,5 +1,6 @@
 package server;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -64,7 +65,7 @@ public class ParkingStationController {
 	 * @param parkId
 	 * @param carId
 	 */
-	public void removeCar(int parkId,int carId){
+	public static void removeCar(int parkId,int carId){
 		java.sql.PreparedStatement updatestmt = null;
 
 		try{
@@ -224,13 +225,13 @@ public class ParkingStationController {
 				try {
 					uprs.close();
 				} catch (SQLException e) {
-					/* ignored */}
+				/* ignored */}
 			}
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					/* ignored */}
+				/* ignored */}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -342,8 +343,8 @@ public class ParkingStationController {
 			stmt.setInt(1,parkId);
 			stmt.setString(2, endTime);
 			stmt.setString(3,startTime);
-			
-			 rs = stmt.executeQuery();
+
+			rs = stmt.executeQuery();
 
 			if (rs.next()) {
 				orderSlot = rs.getInt(1);
@@ -361,4 +362,30 @@ public class ParkingStationController {
 		return false;
 
 	}
+	/**
+	 * return parking id of a given order
+	 * @param orderId
+	 * @return integer
+	 */
+	public static int getParkId(int orderId) {
+		int id = -1;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT order_parking_id FROM orders WHERE order_id = ?");
+			stmt.setInt(1, orderId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				id = rs.getInt(1);
+			} else {
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+		return id;
+
+	}
+
 }
