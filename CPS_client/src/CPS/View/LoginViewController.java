@@ -265,6 +265,7 @@ public class LoginViewController {
 		err_win.setResizable(false);
 		err_win.setScene(tableViewScene);
 		err_win.setTitle("Error");
+		err_win.centerOnScreen();
 		err_win.show();
 
 

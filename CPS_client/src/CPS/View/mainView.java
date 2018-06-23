@@ -29,6 +29,7 @@ public class mainView extends Application {
         window.setResizable(false);
         url = getClass().getResource(loginStr);
         pane = FXMLLoader.load(url);
+        pane.setCenterShape(true);
         loginScene = new Scene(pane);
         url = getClass().getResource(workStationStr);
         pane = FXMLLoader.load(url);
