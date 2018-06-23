@@ -26,7 +26,9 @@ public class lateOrderCheck  implements Runnable{
 						System.out.println("[auto] send late message to client "+rs.getString("client_ID"));
 					}
 					else{
+						stmt =  sql.conn.prepareStatement("SELECT * FROM orders,cars WHERE order_car_id = car_ID AND order_status = 'PENDING' AND  (TIMESTAMPDIFF(MINUTE,NOW(),start_date))<-29");
 						
+						 rs = stmt.executeQuery();
 					}
 			}
 			stmt.close();
