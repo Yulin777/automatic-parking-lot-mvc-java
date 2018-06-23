@@ -292,13 +292,13 @@ public class PersonViewController {
 		{
 			err_msg = err_msg + "please provide car number\n";
 		}
-		else if(client.endParking(car_id)) {
+		else if(client.endParking(car_id, "3232")) {
 			double bill = client.getPrice(car_id);
 			if(bill != Double.MAX_VALUE)
 				createBillMsg(event, String.valueOf(bill));
 		}
 		else
-			err_msg = err_msg + "ongoing order doesn't exists\n";
+			err_msg = err_msg + "invalid car number\n";
 
 		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");

@@ -390,13 +390,13 @@ public class Client {
 
 	//==============================end of compliant handling=====================================
 
-	public boolean endParking(String car_id) {
+	public boolean endParking(String car_id, String client_id) {
 		boolean res = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("end parking " + car_id);
+			pw.println("end parking " + car_id + " "+ client_id);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
