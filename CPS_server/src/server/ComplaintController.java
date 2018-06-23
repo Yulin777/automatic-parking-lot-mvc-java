@@ -47,7 +47,7 @@ public class ComplaintController
 	 * @param attendantID - worker id
 	 * @return
 	 */
-	public static String assignAttendant(String ComplaintID, String attendantID)
+	public static String assignAttendantToComlaint(String ComplaintID, String attendantID)
 	 {
 		Statement stmt;
 		try {

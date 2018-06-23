@@ -253,12 +253,13 @@ public class Client {
 		}
 		return flag;
 	}
-
+//================complaint handle============================================
+	
 	/**
 	 * client function - adding new complaint
 	 * @param client_id
 	 * @param description - the complaint itself
-	 * @return
+	 * @return true for success
 	 */
 	public boolean addNewComplaint(String client_id, String description)
 	{
@@ -286,6 +287,66 @@ public class Client {
 		return c;
 	}
 
+	/**
+	 * client function - assigning attendant(worker) to complaint
+	 * @param ComplaintID
+	 * @param attendantID
+	 * @return true for success
+	 */
+	
+	public boolean assignAttendantToCOmplaint(String ComplaintID, String attendantID)
+	{
+		boolean c = false;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("assign attendant " + ComplaintID + " " + attendantID);
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			c = (boolean)ois.readObject();
+			if (c == true)
+				System.out.println("[response] Attendant assigned to complaint ");
+			else
+				System.out.println("[response] error assigning  assigned to complaint");
+
+			socket.close();
+		} catch (IOException ioe) {
+			System.out.println("assigning to complaint error");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return c;
+	}
+	
+	public boolean respondToCompalint(String ComplaintID, String response)
+	{
+		boolean c = false;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("respond compalint " + ComplaintID + " " + response);
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			c = (boolean)ois.readObject();
+			if (c == true)
+				System.out.println("[response] complaint responded ");
+			else
+				System.out.println("[response] error respondeing to complaint");
+
+			socket.close();
+		} catch (IOException ioe) {
+			System.out.println("responding to complaint error");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return c;
+	}
+	
+	
 	public boolean endParking(String car_id) {
 		boolean res = false;
 		try {
