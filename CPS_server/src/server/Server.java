@@ -1,6 +1,9 @@
 package server;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -108,7 +111,7 @@ public class Server {
 			currentSocket.close();
 
 		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
-			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6]);
+			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
@@ -122,6 +125,20 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 
+		} else if (cmd[0].equals("end") && cmd[1].equals("parking")) {
+			boolean res;
+			res = OrderController.orderOngoingExist(cmd[2]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
+			double res = OrderController.calcPrice(cmd[2]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			OrderController.removeOrder(cmd[2]);
+			currentSocket.close();
 		}
 
 

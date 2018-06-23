@@ -886,7 +886,7 @@ public class PersonViewController {
 			return;
 		}
 		
-		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time,payMethod);
+		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
 		
 		String start_date_string =""+ start_date.toString();// In_Advance_Customer_start_date.getValue();
 		String end_date_string =""+ end_date.toString();// In_Advance_Customer_end_date.getValue();

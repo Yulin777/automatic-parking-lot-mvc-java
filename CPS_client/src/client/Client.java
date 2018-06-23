@@ -286,8 +286,8 @@ public class Client {
 		return c;
 	}
 
-	public double endParking(String car_id) {
-		double res = Double.MAX_VALUE;
+	public boolean endParking(String car_id) {
+		boolean res = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
@@ -296,12 +296,34 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			res = (double)ois.readObject();
-			if (res != Double.MAX_VALUE)
+			res = (boolean)ois.readObject();
+			if (res)
 				System.out.println("[response] end parking succeeded");
 			else
 				System.out.println("[response] end parking failed");
 
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}	
+	public double getPrice(String car_id) {
+		double res = Double.MAX_VALUE;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("get price " + car_id);
+			pw.flush();
+			
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (double)ois.readObject();
+			if (res != Double.MAX_VALUE)
+				System.out.println("[response] get price succeeded");
+			else
+				System.out.println("[response] get price failed");
+			
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
