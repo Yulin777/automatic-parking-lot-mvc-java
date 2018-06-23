@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import server.Customer;
+import server.ParkingStation;
+import server.ParkingStationController;
 import server.Worker;
 
 public class Client {

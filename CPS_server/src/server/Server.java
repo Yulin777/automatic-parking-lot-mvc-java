@@ -102,7 +102,7 @@ public class Server {
 			boolean flag = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			//PrintWriter pw = new PrintWriter(osw);
-			osw.writeObject(flag);
+			osw.writeObject(true);
 			osw.flush();
 			currentSocket.close();
 

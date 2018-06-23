@@ -1,8 +1,5 @@
 package server;
 
-import com.mysql.jdbc.PreparedStatement;
-
-import javax.xml.transform.sax.SAXSource;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,20 +9,19 @@ import java.util.List;
 
 public class Car implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public String ownerID;
-	public String carID;
+	private String ownerID;
+	private String carID;
 	private static sqlConnection sql = sqlConnection.getInstant();
 
 	public Car(String carID, String ownerID) {
 		this.ownerID = ownerID;
 		this.carID = carID;
-//        addNewCarToClient(ownerID, carID);
 	}
 
 	public boolean addNewCarToClient() {
 		boolean res=false;
 		java.sql.PreparedStatement stmt;
-		ResultSet car = null;
+		ResultSet car;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM cars WHERE car_ID=?");  // createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			stmt.setString(1, carID);
@@ -47,8 +43,8 @@ public class Car implements Serializable {
 			stmt.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println(e.getMessage());
+//			e.printStackTrace();
+			System.err.println("car already exists. checking order validity...");
 			return false;
 		}
 		System.out.println(res ? "car already exists" : "New car was added succefully");
