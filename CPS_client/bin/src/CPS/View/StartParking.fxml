@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="CPS.View.PersonViewController">
+   <children>
+      <Button fx:id="start_parking_back_btn" layoutX="14.0" layoutY="254.0" mnemonicParsing="false" onAction="#start_parking_back" text="&lt;&lt; back" />
+      <TextField fx:id="start_parking_car_number_bar" layoutX="125.0" layoutY="115.0" prefHeight="25.0" prefWidth="239.0" promptText="car number:" />
+      <Label layoutX="125.0" layoutY="37.0" text="Please provide car number:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Button fx:id="start_parking_start_parking_btn" layoutX="120.0" layoutY="187.0" mnemonicParsing="false" onAction="#start_parking_start_parking" prefHeight="25.0" prefWidth="239.0" text="Start Parking" />
+   </children>
+</AnchorPane>
