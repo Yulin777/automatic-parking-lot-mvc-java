@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
    <children>
       <Button fx:id="display_bill_ok_btn" layoutX="117.0" layoutY="216.0" mnemonicParsing="false" onAction="#display_bill_ok" prefHeight="25.0" prefWidth="256.0" text="Ok" />
-      <Text layoutX="18.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="you are charged with: " wrappingWidth="249.03515625">
+      <Text layoutX="18.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="you are charged with: " wrappingWidth="281.03515625">
          <font>
             <Font size="24.0" />
          </font>
