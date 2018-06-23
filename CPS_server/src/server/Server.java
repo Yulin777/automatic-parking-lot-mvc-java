@@ -194,6 +194,12 @@ public class Server {
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
+		} else if (cmd[0].equals("cancel") && cmd[1].equals("order")) {
+			double res = OrderController.cancelOrder(Integer.parseInt(cmd[2]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
 		}
 
 
