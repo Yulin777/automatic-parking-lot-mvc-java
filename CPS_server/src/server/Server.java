@@ -129,7 +129,14 @@ public class Server {
 		}
 		//================complaint handle============================================
 		else if (cmd[0].equals("add") && cmd[1].equals("complaint")) {
-			boolean res = ComplaintController.addNewComplaint(cmd[2], cmd[3]);
+			StringBuffer complaint_txt_builder = new StringBuffer();
+			for (int i = 2; i < cmd.length; i++) {
+				complaint_txt_builder.append( cmd[i] );
+			}
+			String complaint_str = complaint_txt_builder.toString();
+			
+			
+			boolean res = ComplaintController.addNewComplaint(cmd[2], complaint_str);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
