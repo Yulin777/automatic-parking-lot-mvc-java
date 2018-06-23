@@ -48,9 +48,69 @@ import server.OrderController;
 public class PersonViewController {
 
 	Client client = new Client();
+	static String pid;
 
 
+	
+	
+	
+	
+	//-------------Order detail view -----------------
+	
+	@FXML
+    private TextField order_detail_view_id_bar;
 
+    @FXML
+    private TextArea order_detail_view_text_area;
+
+    @FXML
+    private Button order_detail_view_read_order_details_btn;
+
+    @FXML
+    private Button order_detail_view_back_btn;
+
+    @FXML
+    void order_detail_view_read_order_details(ActionEvent event) throws IOException 
+    {
+    	String order_id = order_detail_view_id_bar.getText();
+    	String err_msg ="";
+    	
+    	if(order_id.isEmpty())
+    		err_msg += "please provide order id\n"; 
+    	
+    	
+    	
+    	if(!err_msg.isEmpty())
+    	{
+			createMsg(event, err_msg, "error msg");
+			return;
+    	}
+
+    	String details = "";
+    	details=client.getOrderStatus(Integer.parseInt(order_id));
+    	
+    	if(details == null)
+    	{
+    		err_msg+= "wrong order id\n";
+			createMsg(event, err_msg, "error msg");
+			return;
+    	}
+    
+    	order_detail_view_text_area.setText(details);
+    	order_detail_view_text_area.setEditable(false);	
+    }
+
+    @FXML
+    void order_detail_view_back(ActionEvent event) throws IOException {
+    	String url = "CustomerView.fxml";
+		switchWindow(url);
+		switchScene(event, "customer page");
+
+
+    }
+	
+	
+	//-------------------^^^^^Order detail view^^^^^^^-------------------
 
 	//--------------------cancel order --------------------------
 
@@ -93,7 +153,7 @@ public class PersonViewController {
 		double bill = client.cancelOrder( Integer.parseInt(order_id));
 		
 
-		//TODO need to delete order from database
+		//TODO need to delete order from database. DONE!
 		
 		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + Double.toString(bill);
 		createMsg(event, succ_msg, "succ msg");
@@ -124,34 +184,27 @@ public class PersonViewController {
 	@FXML
 	private Button add_car_view_back_btn;
 
-	@FXML
-	void add_car_view_add(ActionEvent event) throws IOException {
-
-		String car_num = add_car_view_car_number_bar.getText();
-		String err_msg="";
-		if(car_num.isEmpty())
-			err_msg +="please provide car number\n";
-
-		if(!err_msg.isEmpty())
-		{
-			createMsg(event, err_msg, "error msg");
+    @FXML
+    void add_car_view_add(ActionEvent event) throws IOException {
+    			
+    	String car_num = add_car_view_car_number_bar.getText();
+    	String err_msg="";
+    	if(car_num.isEmpty())
+    		err_msg +="please provide car number\n";
+    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), pid))
+    		err_msg +="car already exists\n";
+    	
+    	if(!err_msg.isEmpty())
+    	{
+    		createMsg(event, err_msg, "error msg");
 			return;
-		}
-
-
-		/*
-		 * 
-		 * For talya to add carrrr
-		 * 
-		 * 
-		 * 
-		 */
-		String succ_msg = "car was added succsecfully\n";
-
-		createMsg(event, succ_msg, "succ msg");
-		return;
-
-	}
+    	}
+    	else {
+    		String succ_msg = "car was added succsecfully\n";
+    		createMsg(event, succ_msg, "succ msg");
+    	}
+    }
+    
 
 	@FXML
 	void add_car_view_back(ActionEvent event) throws IOException {
@@ -281,37 +334,40 @@ public class PersonViewController {
 	//----------------Customer View-------------------------------------
 
 	@FXML
-	private Label customer_view_label12;
+    private Label customer_view_label12;
 
-	@FXML
-	private Label customer_view_label;
+    @FXML
+    private Button customer_view_see_my_orders_btn;
 
-	@FXML
-	private Button customer_view_end_parking_btn;
+    @FXML
+    private Label customer_view_label;
 
-	@FXML
-	private Button customer_view_add_car_btn;
+    @FXML
+    private Button customer_view_end_parking_btn;
 
-	@FXML
-	private Label customer_view_num_msg_label;
+    @FXML
+    private Button customer_view_add_car_btn;
 
-	@FXML
-	private Button customer_view_cancel_btn;
+    @FXML
+    private Label customer_view_num_msg_label;
 
-	@FXML
-	private Label customer_view_label1;
+    @FXML
+    private Button customer_view_cancel_btn;
 
-	@FXML
-	private Button customer_view_read_massages_btn;
+    @FXML
+    private Button customer_view_log_out_btn;
 
-	@FXML
-	private Button customer_view_complaint_btn;
+    @FXML
+    private Label customer_view_label1;
 
-	@FXML
-	private Button customer_view_log_out_btn;
+    @FXML
+    private Button customer_view_read_massages_btn;
 
-	@FXML
-	private Button customer_view_start_parking_btn;
+    @FXML
+    private Button customer_view_complaint_btn;
+
+    @FXML
+    private Button customer_view_start_parking_btn;
 
 
 	@FXML
@@ -339,6 +395,11 @@ public class PersonViewController {
 
 	void setCustomerName(String name) {
 		customer_view_label.setText("Hello " + name);
+		
+	}
+	
+	void setCustomerID(String id) {
+		pid = id;
 	}
 
 
@@ -352,6 +413,17 @@ public class PersonViewController {
 
 	}
 
+	
+	 @FXML
+	    void customer_view_see_my_orders(ActionEvent event) throws IOException {
+		 	String url = "OrderDetailView.fxml";
+			switchWindow(url);
+			switchScene(event, "customer page");
+	    }
+
+	
+	
+	
 	//-------------------^^^-Customer View^^^-----------------------------------
 
 
@@ -414,12 +486,14 @@ public class PersonViewController {
 		String err_msg = "";
 		if (car_id.isEmpty()) {
 			err_msg = err_msg + "please provide car number\n";
-		} else if (client.endParking(car_id)) {
+		}
+		else if(client.endParking(car_id, pid)) {
 			double bill = client.getPrice(car_id);
 			if (bill != Double.MAX_VALUE)
 				createBillMsg(event, String.valueOf(bill));
-		} else
-			err_msg = err_msg + "ongoing order doesn't exists\n";
+		}
+		else
+			err_msg = err_msg + "invalid car number\n";
 
 		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
@@ -950,7 +1024,7 @@ public class PersonViewController {
 		timestamp.setHours(end_date_hours);
 		timestamp.setMinutes(end_date_minutes);
 
-		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
+		if (client.addNewCustomer(id, first_name, last_name, password, Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(car_number, id)) {
 				if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
 
@@ -1204,7 +1278,7 @@ public class PersonViewController {
 		end_timestamp.setMinutes(end_date_minutes);
 
 
-		client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone);
+		client.addNewCustomer(clientID, first_name, last_name, password, Customer.type.ADVANCED, email, phone);
 		client.addNewCar(carID, clientID);
 		if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod)) {
 
@@ -1212,7 +1286,12 @@ public class PersonViewController {
 		} else {
 			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
+			return;
 		}
+		String succ = "order was added succesfully\n";
+		createMsg(event,succ, "succ msg");
+
+		
 	}
 
 
@@ -1535,6 +1614,9 @@ public class PersonViewController {
 
 
 	void log_out(ActionEvent event) throws IOException {
+		//TODO: call client logout method
+		
+		
 		String url = "LoginView.fxml";
 		switchWindow(url);
 		switchScene(event, "login page");

@@ -171,6 +171,7 @@ public class LoginViewController {
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
 					controller.setCustomerName(c.getFirstName());
+					controller.setCustomerID(c.getPid());
 					title = "Customer Interface";
 				}
 
