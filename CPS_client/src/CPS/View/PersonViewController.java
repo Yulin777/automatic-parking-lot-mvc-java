@@ -683,18 +683,25 @@ public class PersonViewController {
 
 	//--------------------MANAGER----------------------------------------
 
-	@FXML // fx:id="manager_current_state_btn"
-	private Button manager_current_state_btn; // Value injected by FXMLLoader
+	@FXML
+    private Button manager_current_state_btn;
 
-	@FXML // fx:id="manager_name_label"
-	private Label manager_name_label; // Value injected by FXMLLoader
+    @FXML
+    private Label manager_name_label;
 
-	@FXML // fx:id="manager_log_out_btn"
-	private Button manager_log_out_btn; // Value injected by FXMLLoader
+    @FXML
+    private Button manager_View_print_report_btn;
 
-	@FXML // fx:id="manager_performance_report_btn"
-	private Button manager_performance_report_btn; // Value injected by FXMLLoader
+    @FXML
+    private Button manager_log_out_btn;
 
+    @FXML
+    private Button manager_performance_report_btn;
+
+    @FXML
+    private SplitMenuButton manager_View_level_menu;
+
+    
 	@FXML
 	void managerPrintCurrentState(ActionEvent event) {
 
@@ -717,6 +724,68 @@ public class PersonViewController {
 	}
 
 
+		@FXML
+	    void manager_View_print_report(ActionEvent event) throws IOException 
+		{
+			String level =  manager_View_level_menu.getText();
+	    	String err_msg="";
+	    	err_msg=manager_Check_Valid_input_report(level);
+	    	
+	    	
+	    	if(!err_msg.isEmpty())
+	    	{
+	    		createMsg(event, err_msg, "error msg");
+				return;
+			}
+			//int location_id = OrderController.getOrderParkingId(location);
+			int level_int = Integer.parseInt(level);
+
+			
+			//TODO get the location number from manager person
+			ShowReport(level_int, 1);
+			
+    }
+	
+	
+		String manager_Check_Valid_input_report(String level)
+		{
+			String err_msg="";
+			if(level.isEmpty())
+				err_msg+="please provide level\n";
+			
+			return err_msg;
+		}
+		
+		
+		void ManagerLoad() {
+			List<String> ls = Client.getStations();
+			manager_View_level_menu.getItems().clear();
+
+			String[] level_arr = {"0", "1", "2"};	
+			for (String i : level_arr) {
+				MenuItem mi = new MenuItem(i);
+				mi.setText(i);
+				mi.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						manager_View_level_menu.setText(mi.getText());
+					}
+				});
+				manager_View_level_menu.getItems().add(mi);
+			}
+
+
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	//--------------------^MANAGER^----------------------------------------
 
 
@@ -1321,7 +1390,7 @@ public class PersonViewController {
 		return arr;
 	}
 
-	public void ShowReport(int park_lot_id, int Level) {
+	public void ShowReport( int Level,int park_lot_id) {
 		Stage st = new Stage();
 		GridPane root = new GridPane();
 		Client cli = new Client();
@@ -1330,7 +1399,7 @@ public class PersonViewController {
 		int maxRow = 0;
 		for (int i = 0; i < c[Level].length; i++)
 			if (c[Level][i].length > maxRow)
-				maxRow = c[Level].length;
+				maxRow = c[Level][i].length;
 
 
 		int[] arr_col = fillArray(maxRow);
