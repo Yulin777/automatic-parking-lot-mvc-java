@@ -48,7 +48,7 @@ import server.OrderController;
 public class PersonViewController {
 
 	Client client = new Client();
-
+	static String pid;
 
 
 	
@@ -153,7 +153,7 @@ public class PersonViewController {
 		double bill = client.cancelOrder( Integer.parseInt(order_id));
 		
 
-		//TODO need to delete order from database
+		//TODO need to delete order from database. DONE!
 		
 		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + Double.toString(bill);
 		createMsg(event, succ_msg, "succ msg");
@@ -184,34 +184,27 @@ public class PersonViewController {
 	@FXML
 	private Button add_car_view_back_btn;
 
-	@FXML
-	void add_car_view_add(ActionEvent event) throws IOException {
-
-		String car_num = add_car_view_car_number_bar.getText();
-		String err_msg="";
-		if(car_num.isEmpty())
-			err_msg +="please provide car number\n";
-
-		if(!err_msg.isEmpty())
-		{
-			createMsg(event, err_msg, "error msg");
+    @FXML
+    void add_car_view_add(ActionEvent event) throws IOException {
+    			
+    	String car_num = add_car_view_car_number_bar.getText();
+    	String err_msg="";
+    	if(car_num.isEmpty())
+    		err_msg +="please provide car number\n";
+    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), pid))
+    		err_msg +="car already exists\n";
+    	
+    	if(!err_msg.isEmpty())
+    	{
+    		createMsg(event, err_msg, "error msg");
 			return;
-		}
-
-
-		/*
-		 * 
-		 * For talya to add carrrr
-		 * 
-		 * 
-		 * 
-		 */
-		String succ_msg = "car was added succsecfully\n";
-
-		createMsg(event, succ_msg, "succ msg");
-		return;
-
-	}
+    	}
+    	else {
+    		String succ_msg = "car was added succsecfully\n";
+    		createMsg(event, succ_msg, "succ msg");
+    	}
+    }
+    
 
 	@FXML
 	void add_car_view_back(ActionEvent event) throws IOException {
@@ -402,6 +395,11 @@ public class PersonViewController {
 
 	void setCustomerName(String name) {
 		customer_view_label.setText("Hello " + name);
+		
+	}
+	
+	void setCustomerID(String id) {
+		pid = id;
 	}
 
 
@@ -488,12 +486,14 @@ public class PersonViewController {
 		String err_msg = "";
 		if (car_id.isEmpty()) {
 			err_msg = err_msg + "please provide car number\n";
-		} else if (client.endParking(car_id)) {
+		}
+		else if(client.endParking(car_id, pid)) {
 			double bill = client.getPrice(car_id);
 			if (bill != Double.MAX_VALUE)
 				createBillMsg(event, String.valueOf(bill));
-		} else
-			err_msg = err_msg + "ongoing order doesn't exists\n";
+		}
+		else
+			err_msg = err_msg + "invalid car number\n";
 
 		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
@@ -1614,6 +1614,9 @@ public class PersonViewController {
 
 
 	void log_out(ActionEvent event) throws IOException {
+		//TODO: call client logout method
+		
+		
 		String url = "LoginView.fxml";
 		switchWindow(url);
 		switchScene(event, "login page");

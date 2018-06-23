@@ -308,15 +308,15 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean orderOngoingExist(String carID) {
-		boolean flag = false;
+	public static int orderOngoingExist(String carID) {
+		int id = -1;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\"" + carID + "\" AND `order_status`=\"ONGOING\"");
 			//			stmt.setString(1, carID);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				flag = true;
+				id = rs.getInt(1);
 				System.out.println("order ongoing exists");
 			} else {
 				System.out.println("order ongoing doesnt exist");
@@ -326,9 +326,9 @@ public class OrderController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return flag;
+		return id;
 	}
-
+	
 	public static boolean orderPendingExist(String carID) {
 		boolean flag = false;
 		PreparedStatement stmt;

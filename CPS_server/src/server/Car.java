@@ -23,6 +23,7 @@ public class Car implements Serializable {
 	}
 
 	public boolean addNewCarToClient() {
+		boolean res=false;
 		java.sql.PreparedStatement stmt;
 		ResultSet car = null;
 		try {
@@ -39,6 +40,9 @@ public class Car implements Serializable {
 			newCar.updateString("car_ID", carID);
 			newCar.insertRow();
 
+			if(car.next())
+				res=true;
+			
 			car.close();
 			stmt.close();
 
@@ -47,11 +51,7 @@ public class Car implements Serializable {
 			System.err.println(e.getMessage());
 			return false;
 		}
-		try {
-			System.out.println(car.next() ? "car already exists" : "New car was added succefully");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		System.out.println(res ? "car already exists" : "New car was added succefully");
 		return true;
 	}
 

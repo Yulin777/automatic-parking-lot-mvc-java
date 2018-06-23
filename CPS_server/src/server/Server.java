@@ -176,11 +176,17 @@ public class Server {
 		}
 		//=========end of complaints handling==================================
 		else if (cmd[0].equals("end") && cmd[1].equals("parking")) {
-			boolean res;
-			res = OrderController.orderOngoingExist(cmd[2]);
-			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
-			osw.writeObject(res);
-			osw.flush();
+			boolean res=false;
+			if(Car.getClientId(cmd[2]).equals(cmd[3])) {
+				int parkId = ParkingStationController.getParkId(OrderController.orderOngoingExist(cmd[2]));
+				if(parkId != -1) {
+					ParkingStationController.removeCar(parkId, Integer.valueOf(cmd[2]));
+					ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+					osw.writeObject(res);
+					osw.flush();
+					res = true;
+				}
+			}
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
 			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
