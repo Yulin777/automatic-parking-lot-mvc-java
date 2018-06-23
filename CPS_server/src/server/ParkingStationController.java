@@ -69,7 +69,7 @@ public class ParkingStationController {
 	 * @param parkId
 	 * @param carId
 	 */
-	public static void removeCar(int parkId,int carId){
+	public void removeCar(int parkId, int carId) {
 		java.sql.PreparedStatement updatestmt = null;
 
 		try {
@@ -79,10 +79,6 @@ public class ParkingStationController {
 			updatestmt.setInt(2, carId);
 			updatestmt.executeUpdate();
 		} catch (SQLException e) {
-
-		}
-
-		catch (SQLException e) {
 
 			e.printStackTrace();
 		}
@@ -207,9 +203,9 @@ public class ParkingStationController {
 	 * @param size
 	 * @return true if DB add success
 	 */
-	public static boolean addParkingStaion(String address,int size){
+	public boolean addParkingStaion(String address, Worker director, int size) {
 		Statement stmt;
-		int id = 0;
+
 		//add ParkingStation to db
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -348,6 +344,29 @@ public class ParkingStationController {
 		return null;
 
 	}
+
+
+	public static String getParkingNameByID(int parkingID) {
+		java.sql.PreparedStatement stmt;
+
+		try {
+			stmt = sql.conn.prepareStatement("SELECT parking_address FROM ParkingStation WHERE parking_id = ?");
+			stmt.setInt(1, parkingID);
+
+
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return rs.getString(1);
+			} else {
+				System.err.println("no parking station with id: " + parkingID);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static boolean checkAvilablePlace(int parkId,String startTime,String endTime){
 		java.sql.PreparedStatement stmt =null,updatestmt = null;
 		int availableSlot = 0,orderSlot = 0;
