@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class OrderController {
 	public enum OrderStatus {
@@ -30,7 +31,7 @@ public class OrderController {
 
 		try {
 			stmt =  sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
-		
+
 		stmt.setInt(1, order_id);
 		ResultSet rs = stmt.executeQuery();
 
@@ -45,7 +46,7 @@ public class OrderController {
 		return null;
 	}
 	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
-			java.sql.Timestamp endDate) {
+											java.sql.Timestamp endDate) {
 		Statement stmt;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -111,7 +112,7 @@ public class OrderController {
 				stmt.setInt(5, getOrderParkingId(parkingName));
 				stmt.executeUpdate();
 
-				ResultSet uprs = stmt.getGeneratedKeys(); 
+				ResultSet uprs = stmt.getGeneratedKeys();
 				if (uprs.next()) {
 					calcAndUpdatePrice(uprs.getInt(1));
 				}
@@ -149,15 +150,15 @@ public class OrderController {
 	}
 
 	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName, String paymentMethod) {
-		boolean flag = false;
+		boolean flag = true;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id=?");
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
-			if (!client.next()) {
+			if (/*!client.next()*/ OrderOverlaps(carID, startDate, endDate, parkingName) == false) {
 
-				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,start_date,end_date,order_parking_id) VALUES (?,?,?,?,?,?)"
+				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,start_date,end_date,order_parking_id,order_payment_method ) VALUES (?,?,?,?,?,?,?)"
 						, Statement.RETURN_GENERATED_KEYS);
 
 				stmt.setString(1, OrderStatus.PENDING.toString());
@@ -166,9 +167,10 @@ public class OrderController {
 				stmt.setString(4, startDate);
 				stmt.setString(5, endDate);
 				stmt.setInt(6, getOrderParkingId(parkingName));
+				stmt.setString(7, paymentMethod);
 				stmt.executeUpdate();
 
-				ResultSet uprs = stmt.getGeneratedKeys(); 
+				ResultSet uprs = stmt.getGeneratedKeys();
 				if (uprs.next()) {
 					calcAndUpdatePrice(uprs.getInt(1));
 				}
@@ -185,6 +187,56 @@ public class OrderController {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+
+	public static boolean OrderOverlaps(String carID, String startDate, String endDate, String parkingName) {
+		java.sql.PreparedStatement stmt = null;
+		try {
+
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			java.util.Date start = (java.util.Date) dateFormat.parse(startDate);
+			Timestamp start_date_timestamp = new java.sql.Timestamp(start.getTime());
+
+
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			java.util.Date end = (java.util.Date) dateFormat.parse(endDate);
+			Timestamp end_date_timestamp = new java.sql.Timestamp(end.getTime());
+
+
+			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
+			stmt.setString(1, carID);
+
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				int numColumns = rs.getMetaData().getColumnCount();
+				for (int i = 1; i <= numColumns; i++) {
+					// Column numbers start at 1.
+					// Also there are many methods on the result set to return
+					//  the column as a particular type. Refer to the Sun documentation
+					//  for the list of valid conversions.
+
+					Timestamp order_start_time = rs.getTimestamp(7);
+					Timestamp order_end_time = rs.getTimestamp(8);
+
+					if (start_date_timestamp.after(order_start_time) && start_date_timestamp.before(order_end_time)) {
+						System.err.println("start time overlaps existing order");
+						return true;
+					}
+					if (end_date_timestamp.after(order_start_time) && start_date_timestamp.before(order_end_time)) {
+						System.err.println("end time overlaps existing order");
+						return true;
+					}
+				}
+			}
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 	/**
@@ -435,9 +487,9 @@ public class OrderController {
 		return res;
 	}
 
-	public static double cancelOrder(int orderId){
+	public static double cancelOrder(int orderId) {
 		PreparedStatement stmt;
-		double diff=0, price=Double.MAX_VALUE;
+		double diff = 0, price = Double.MAX_VALUE;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
 			stmt.setInt(1, orderId);
@@ -448,15 +500,15 @@ public class OrderController {
 				diff = getTimeDiffInHours(startTime, nowTime);
 				price = rs.getDouble(9);
 
-				if(diff <= 1)
+				if (diff <= 1)
 					;
-				else if(diff < 3 && diff > 1)
+				else if (diff < 3 && diff > 1)
 					price *= 0.5;
 				else
 					price *= 0.9;
 
 				removeOrderById(orderId);
-			} 
+			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
