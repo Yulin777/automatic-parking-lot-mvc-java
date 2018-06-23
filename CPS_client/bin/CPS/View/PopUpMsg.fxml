@@ -6,9 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
+<AnchorPane prefHeight="150.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
    <children>
-      <Button fx:id="err_msg_ok_btn" layoutX="84.0" layoutY="174.0" mnemonicParsing="false" onAction="#err_msg_ok" prefHeight="25.0" prefWidth="133.0" text="Ok" />
+      <Button fx:id="err_msg_ok_btn" layoutX="84.0" layoutY="174.0" mnemonicParsing="false" onAction="#err_msg_ok" prefHeight="25.0" prefWidth="133.0" text="OK" />
       <Label fx:id="err_msg_label" layoutX="3.0" layoutY="8.0" prefHeight="163.0" prefWidth="294.0" text="err_msg" />
    </children>
 </AnchorPane>

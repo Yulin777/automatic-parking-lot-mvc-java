@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import client.Client;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -720,6 +721,7 @@ public class PersonViewController {
 		String id = Occasional_Customer_id.getText();
 		String car_number = Occasional_Customer_car_number.getText();
 		String car_park = Occasional_Customer_parking_lot_btn.getText();
+//		System.out.println(car_park);
 		//= Occasional_Customer_car_park.getText();
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
@@ -848,11 +850,29 @@ public class PersonViewController {
 	
 	public void Occasional_Customer_load_car_lots() 
 	{
+		
+		
 		List<String> ls = Client.getStations();
 		Occasional_Customer_parking_lot_btn.getItems().clear();
 
 		for (String str :  ls)
-			Occasional_Customer_parking_lot_btn.getItems().add(new MenuItem(str));	
+		{
+			MenuItem mi = new MenuItem(str);
+			mi.setText(str);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+                
+ @Override
+ public void handle(ActionEvent event) 
+ {
+	 Occasional_Customer_parking_lot_btn.setText( mi.getText());
+ }
+});
+			Occasional_Customer_parking_lot_btn.getItems().add(mi);
+		}
+		
+		
+		
+		
 	}
 
 
@@ -938,6 +958,10 @@ public class PersonViewController {
 		String end_time = In_Advance_Customer_end_time.getText();
 		String phone = In_Advance_Customer_phone_number.getText();
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
+		
+//		System.out.println(car_park);
+
+		//In_Advance_Customer_parking_lot_split_menu_btn.
 		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time);
 
 		if(!In_Advance_Customer_credit_card.isSelected() && !In_Advance_Customer_cash.isSelected())
@@ -983,7 +1007,7 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
 			if (client.addNewCar(carID, clientID)) {
-				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp)) {
+				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park)) {
 
 					//TODO add success message to gui
 				}
@@ -1070,7 +1094,19 @@ public class PersonViewController {
 		In_Advance_Customer_parking_lot_split_menu_btn.getItems().clear();
 
 		for (String str :  ls)
-			In_Advance_Customer_parking_lot_split_menu_btn.getItems().add(new MenuItem(str));	
+		{
+			MenuItem mi = new MenuItem(str);
+			mi.setText(str);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+                
+ @Override
+ public void handle(ActionEvent event) 
+ {
+	 In_Advance_Customer_parking_lot_split_menu_btn.setText( mi.getText());
+ }
+});
+			In_Advance_Customer_parking_lot_split_menu_btn.getItems().add(mi);
+		}
 	}
 
 

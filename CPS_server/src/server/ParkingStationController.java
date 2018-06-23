@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingStationController {
-	int currentId = 2;
+	int currentId = 1;
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 
 	public static List<String> getParkingIDs() {
@@ -246,8 +246,8 @@ public class ParkingStationController {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ResultSet uprs = null;
 			for(int level=1;level<4;level++){
-				for(int col=1;col<4;col++){
-					for(int row=1;row<size+1;row++){
+				for(int row=1;row<4;row++){
+					for(int col=1;col<size+1;col++){
 						uprs = stmt.executeQuery("SELECT * FROM ParkingStationSlots");
 						uprs.moveToInsertRow();
 						uprs.updateInt("parking_id", parkId);
@@ -279,7 +279,7 @@ public class ParkingStationController {
 		}
 	}
 	/**
-	 * return all slot status of given park station in form of [level][column][row]
+	 * return all slot status of given park station in form of [level][row][column]
 	 * @param parkId
 	 * @return 3d array options are 0=AVAILABLE 1=OCCUPIED 2=OUT_OF_ORDER 3=RESERVED
 	 */
@@ -309,7 +309,7 @@ public class ParkingStationController {
 			}
 			rs_slots.beforeFirst();
 			while(rs_slots.next()) {
-				result[rs_slots.getInt("level")-1][rs_slots.getInt("col")-1][rs_slots.getInt("row")-1] = rs_slots.getInt("ParkingStationSlot_status");
+				result[rs_slots.getInt("level")-1][rs_slots.getInt("row")-1][rs_slots.getInt("col")-1] = rs_slots.getInt("ParkingStationSlot_status");
 			}
 			return result;
 

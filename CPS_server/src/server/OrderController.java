@@ -25,9 +25,8 @@ public class OrderController {
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 
 
-
 	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
-			java.sql.Timestamp endDate) {
+											java.sql.Timestamp endDate) {
 		Statement stmt;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -74,7 +73,7 @@ public class OrderController {
 		return ("New subscription was added succsfully");
 	}
 
-	public static boolean addOccasionalOrder(String carID, String endDate, String parkingID) {
+	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -87,7 +86,8 @@ public class OrderController {
 				uprs.moveToInsertRow();
 				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
 				uprs.updateString("order_car_id", carID);
-				uprs.updateString("order_parking_id", parkingID);
+				int order_parking_id = getOrderParkingId(parkingName);
+				uprs.updateInt("order_parking_id", order_parking_id);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("end_date", endDate);
 				uprs.insertRow();
@@ -111,7 +111,25 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate) {
+	public static int getOrderParkingId(String parkingName) {
+		int res = -1;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT parking_id FROM ParkingStation WHERE parking_address=?;");
+			stmt.setString(1, parkingName);
+			ResultSet client = stmt.executeQuery();
+			if (client.next()) {
+				return client.getInt(1);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+
+	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -160,17 +178,18 @@ public class OrderController {
 
 	/**
 	 * check for Available Order of given car in current time
+	 *
 	 * @param parkId
 	 * @param carId
 	 * @return true if there is order
 	 */
-	public boolean checkAvailableOrder(int parkId,int carId){
-		java.sql.PreparedStatement stmt =null;
+	public boolean checkAvailableOrder(int parkId, int carId) {
+		java.sql.PreparedStatement stmt = null;
 		int numOfOrders = 0;
 		try {
-			stmt =  sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
-			stmt.setInt(1,parkId);
-			stmt.setInt(2,carId);
+			stmt = sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
+			stmt.setInt(1, parkId);
+			stmt.setInt(2, carId);
 
 
 			ResultSet rs = stmt.executeQuery();
@@ -178,20 +197,19 @@ public class OrderController {
 				numOfOrders = rs.getInt(1);
 			}
 
-			if(numOfOrders>0){
+			if (numOfOrders > 0) {
 				return true;
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-	public static boolean startParking(String carID){
+	public static boolean startParking(String carID) {
 		boolean flag = false;
-		int res=0;
+		int res = 0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT order_id FROM orders WHERE order_car_id = ?");
@@ -200,15 +218,15 @@ public class OrderController {
 			if (rs.next()) {
 				String orderID = rs.getString(1);
 
-				stmt =  sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
+				stmt = sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
 				stmt.setString(1, OrderStatus.ONGOING.toString());
 				stmt.setInt(2, Integer.valueOf(orderID));
 				res = stmt.executeUpdate();
-			} 
-			if(res == 1) {
+			}
+			if (res == 1) {
 				System.out.println("parking started succsfully");
 				flag = true;
-			}else {
+			} else {
 				System.err.println("cannot start parking");
 			}
 			rs.close();
@@ -219,15 +237,15 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean orderOngoingExist(String carID){
+	public static boolean orderOngoingExist(String carID) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\""+ carID +"\" AND `order_status`=\"ONGOING\"");
+			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\"" + carID + "\" AND `order_status`=\"ONGOING\"");
 //			stmt.setString(1, carID);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				flag=true;
+				flag = true;
 				System.out.println("order ongoing exists");
 			} else {
 				System.out.println("order ongoing doesnt exist");
@@ -282,6 +300,7 @@ public class OrderController {
 				
 				price_per_hour = getPricePerHour(parking_id, type);
 				if(price_per_hour != Double.MAX_VALUE) {
+
 					res = hours * price_per_hour;
 					System.out.println("price calculated succsfully");
 				}
@@ -330,7 +349,6 @@ public class OrderController {
 		}
 	}
 	
-
 
 	public static boolean removeOrderById(int order_id) {
 		java.sql.PreparedStatement stmt;

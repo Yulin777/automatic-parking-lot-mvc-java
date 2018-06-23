@@ -114,7 +114,7 @@ public class LoginViewController {
 		//worker login
 		if (worker_radio.isSelected()) {
 			if (isEmptyBars(id_bar, password_bar)) {
-				err_msg = err_msg + "please fill all bars\n";
+				err_msg = err_msg + "missing password or user id\n";
 			} else {
 				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.ParkingWorker);
 
@@ -134,7 +134,7 @@ public class LoginViewController {
 		//manger login
 		else if (manager_radio.isSelected()) {
 			if (isEmptyBars(id_bar, password_bar)) {
-				err_msg = err_msg + "please fill all bars\n";
+				err_msg = err_msg + "missing password or user id\n";
 			} else {
 
 				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.ParkingManger);
@@ -154,7 +154,7 @@ public class LoginViewController {
 		//customer login
 		else if (customer_radio.isSelected()) {
 			if (isEmptyBars(id_bar, password_bar)) {
-				err_msg = err_msg + "please fill all bars\n";
+				err_msg = err_msg + "missing password or user id\n";
 			} else {
 				Customer c = client.customerLogin(id_bar.getText(), password_bar.getText());
 				if (c == null) {
@@ -170,7 +170,7 @@ public class LoginViewController {
 				//  controller.setWorkerInterfaceController(wIC);
 			}
 		} else {
-			err_msg = err_msg + "no button clicked\n";
+			err_msg = err_msg + "you need to select how to login\n";
 
 		}
 		if (!err_msg.isEmpty()) {
@@ -265,6 +265,7 @@ public class LoginViewController {
 		err_win.setResizable(false);
 		err_win.setScene(tableViewScene);
 		err_win.setTitle("Error");
+		err_win.centerOnScreen();
 		err_win.show();
 
 
