@@ -721,7 +721,7 @@ public class PersonViewController {
 		String id = Occasional_Customer_id.getText();
 		String car_number = Occasional_Customer_car_number.getText();
 		String car_park = Occasional_Customer_parking_lot_btn.getText();
-		System.out.println(car_park);
+//		System.out.println(car_park);
 		//= Occasional_Customer_car_park.getText();
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
@@ -959,7 +959,7 @@ public class PersonViewController {
 		String phone = In_Advance_Customer_phone_number.getText();
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
 		
-		System.out.println(car_park);
+//		System.out.println(car_park);
 
 		//In_Advance_Customer_parking_lot_split_menu_btn.
 		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time);
@@ -1007,7 +1007,7 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
 			if (client.addNewCar(carID, clientID)) {
-				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp)) {
+				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park)) {
 
 					//TODO add success message to gui
 				}

@@ -100,6 +100,7 @@ public class Client {
 		}
 		return stations;
 	}
+
 	public boolean startParking(String carID) {
 		boolean res = false;
 
@@ -126,8 +127,9 @@ public class Client {
 		}
 		return res;
 	}
+
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
-			String start_time, LocalDate end_date, String end_time) {
+								   String start_time, LocalDate end_date, String end_time) {
 		int result;
 
 		// TODO: input validation
@@ -157,7 +159,7 @@ public class Client {
 	}
 
 	public boolean addNewCustomer(String id, String firstName, String lastName, String password, Customer.type type,
-			String email, String phone) {
+								  String email, String phone) {
 		boolean flag = false;
 
 		try {
@@ -230,13 +232,13 @@ public class Client {
 		return flag;
 	}
 
-	public boolean addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time) {
+	public boolean addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time, String parkingName) {
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString());
+			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString() + " " + parkingName);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -254,15 +256,15 @@ public class Client {
 		return flag;
 	}
 //================complaint handle============================================
-	
+
 	/**
 	 * client function - adding new complaint
+	 *
 	 * @param client_id
 	 * @param description - the complaint itself
 	 * @return true for success
 	 */
-	public boolean addNewComplaint(String client_id, String description)
-	{
+	public boolean addNewComplaint(String client_id, String description) {
 		boolean c = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -272,7 +274,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			c = (boolean)ois.readObject();
+			c = (boolean) ois.readObject();
 			if (c == true)
 				System.out.println("[response] new complaint was added");
 			else
@@ -289,13 +291,13 @@ public class Client {
 
 	/**
 	 * client function - assigning attendant(worker) to complaint
+	 *
 	 * @param ComplaintID
 	 * @param attendantID
 	 * @return true for success
 	 */
-	
-	public boolean assignAttendantToCOmplaint(String ComplaintID, String attendantID)
-	{
+
+	public boolean assignAttendantToCOmplaint(String ComplaintID, String attendantID) {
 		boolean c = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -305,7 +307,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			c = (boolean)ois.readObject();
+			c = (boolean) ois.readObject();
 			if (c == true)
 				System.out.println("[response] Attendant assigned to complaint ");
 			else
@@ -319,16 +321,16 @@ public class Client {
 		}
 		return c;
 	}
-	
-	
+
+
 	/**
 	 * client function - respond to complaint
+	 *
 	 * @param ComplaintID
 	 * @param response
 	 * @return true for success
 	 */
-	public boolean respondToCompalint(String ComplaintID, String response)
-	{
+	public boolean respondToCompalint(String ComplaintID, String response) {
 		boolean c = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -338,7 +340,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			c = (boolean)ois.readObject();
+			c = (boolean) ois.readObject();
 			if (c == true)
 				System.out.println("[response] complaint responded ");
 			else
@@ -352,15 +354,15 @@ public class Client {
 		}
 		return c;
 	}
-	
+
 	/**
 	 * client function - add compensation to complaint
+	 *
 	 * @param ComplaintID
 	 * @param compnsationAmount
 	 * @return true for success
 	 */
-	public boolean addCompensationToCompalint(String ComplaintID, float compnsationAmount)
-	{
+	public boolean addCompensationToCompalint(String ComplaintID, float compnsationAmount) {
 		boolean c = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -370,7 +372,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			c = (boolean)ois.readObject();
+			c = (boolean) ois.readObject();
 			if (c == true)
 				System.out.println("[response] compensation added ");
 			else
@@ -384,9 +386,9 @@ public class Client {
 		}
 		return c;
 	}
-	
+
 	//==============================end of compliant handling=====================================
-	
+
 	public boolean endParking(String car_id) {
 		boolean res = false;
 		try {
@@ -397,7 +399,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			res = (boolean)ois.readObject();
+			res = (boolean) ois.readObject();
 			if (res)
 				System.out.println("[response] end parking succeeded");
 			else
@@ -408,7 +410,8 @@ public class Client {
 			e.printStackTrace();
 		}
 		return res;
-	}	
+	}
+
 	public double getPrice(String car_id) {
 		double res = Double.MAX_VALUE;
 		try {
@@ -419,7 +422,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			res = (double)ois.readObject();
+			res = (double) ois.readObject();
 			if (res != Double.MAX_VALUE)
 				System.out.println("[response] get price succeeded");
 			else
@@ -431,7 +434,8 @@ public class Client {
 		}
 		return res;
 	}
-	public int [][][]getParkSoltStatus(int parkId){
+
+	public int[][][] getParkSoltStatus(int parkId) {
 		int[][][] res = null;
 		try {
 			Socket socket = new Socket("localhost", 8080);
@@ -441,7 +445,7 @@ public class Client {
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-			res = (int[][][])ois.readObject();
+			res = (int[][][]) ois.readObject();
 			if (res != null)
 				System.out.println("[response] get park solt status succeeded");
 			else
