@@ -13,16 +13,18 @@ public class lateOrderCheck  implements Runnable{
 		java.sql.PreparedStatement stmt =null;
 
 		try {
-			stmt =  sql.conn.prepareStatement("SELECT * FROM orders WHERE order_status = PENDING AND DATEDIFF(NOW(), start_date) > 0");
+			stmt =  sql.conn.prepareStatement("SELECT * FROM orders,cars WHERE order_car_id = car_ID AND order_status = 'PENDING' AND  (TIMESTAMPDIFF(MINUTE,NOW(),start_date))<0");
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-				ResultSet uprs = statement.executeQuery("SELECT * FROM Messages WHERE ");
-					uprs.moveToInsertRow();
-					uprs.updateString("messages_text", "your subscription is end in a week");
-					uprs.updateInt("messages_confirmation", 0);
-					uprs.insertRow();
-					System.out.println("[auto] send subscriptions end message to client "+rs.getString("client_ID"));
+				ResultSet uprs = statement.executeQuery("SELECT * FROM Messages WHERE messages_text = 'you are late to order "+rs.getString("order_id")+"'");
+					if(!uprs.next()){
+						uprs.moveToInsertRow();
+						uprs.updateString("messages_text", "you are late to order "+rs.getString("order_id"));
+						uprs.updateInt("messages_confirmation", 0);
+						uprs.insertRow();
+						System.out.println("[auto] send late message to client "+rs.getString("client_ID"));
+					}
 			}
 			stmt.close();
 			rs.close();
