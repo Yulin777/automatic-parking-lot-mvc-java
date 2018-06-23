@@ -73,7 +73,7 @@ public class Client {
 		}
 		return w;
 	}
-	
+
 	public static List<String> getStations() {
 		List<String> stations = new ArrayList<String>();
 
@@ -127,7 +127,7 @@ public class Client {
 		return res;
 	}
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
-								   String start_time, LocalDate end_date, String end_time,String payMethod) {
+			String start_time, LocalDate end_date, String end_time) {
 		int result;
 
 		// TODO: input validation
@@ -145,7 +145,7 @@ public class Client {
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("order temporery " + id + " " + car_number + " " + car_park + " " + email + " " + startTime + " "
-					+ endTime + " " +payMethod);
+					+ endTime);
 			pw.flush();
 			socket.close();
 
@@ -157,7 +157,7 @@ public class Client {
 	}
 
 	public boolean addNewCustomer(String id, String firstName, String lastName, String password, Customer.type type,
-								  String email, String phone) {
+			String email, String phone) {
 		boolean flag = false;
 
 		try {
@@ -205,7 +205,7 @@ public class Client {
 		}
 		return flag;
 	}
-	
+
 	public boolean addOccasionalOrder(String car_id, Timestamp end_time, String car_park) {
 		boolean flag = false;
 		try {
@@ -214,15 +214,15 @@ public class Client {
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park);
 			pw.flush();
-			
+
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			flag = (boolean) ois.readObject();
-			
+
 			if (flag) {
 				System.out.println("[response] order was added successfully");
 			} else
 				System.out.println("[response] adding order was failed");
-			
+
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -238,15 +238,15 @@ public class Client {
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString());
 			pw.flush();
-			
+
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			flag = (boolean) ois.readObject();
-			
+
 			if (flag) {
 				System.out.println("[response] in advance order was added successfully");
 			} else
 				System.out.println("[response] adding in advance order was failed");
-			
+
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -263,27 +263,71 @@ public class Client {
 	public boolean addNewComplaint(String client_id, String description)
 	{
 		boolean c = false;
-			try {
+		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add complaint " + client_id + " " + description);
 			pw.flush();
-	
+
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			c = (boolean)ois.readObject();
 			if (c == true)
 				System.out.println("[response] new complaint was added");
 			else
 				System.out.println("[response] error adding new complaint");
-	
+
 			socket.close();
 		} catch (IOException ioe) {
 			System.out.println("complaint error");
 		} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+			e.printStackTrace();
 		}
 		return c;
 	}
-	
+
+	public boolean endParking(String car_id) {
+		boolean res = false;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("end parking " + car_id);
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (boolean)ois.readObject();
+			if (res)
+				System.out.println("[response] end parking succeeded");
+			else
+				System.out.println("[response] end parking failed");
+
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}	
+	public double getPrice(String car_id) {
+		double res = Double.MAX_VALUE;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("get price " + car_id);
+			pw.flush();
+			
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (double)ois.readObject();
+			if (res != Double.MAX_VALUE)
+				System.out.println("[response] get price succeeded");
+			else
+				System.out.println("[response] get price failed");
+			
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}	
 }

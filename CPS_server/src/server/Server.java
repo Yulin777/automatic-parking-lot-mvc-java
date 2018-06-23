@@ -25,23 +25,26 @@ public class Server {
 				System.out.println("[request] " + s);
 				handelRequest(s, currentSocket);
 			}
-		} catch (Exception ioe) {
+		} catch (Exception ioe){
 			System.out.println(ioe.getMessage());
-		} finally {
+		} 
+		finally
+		{
 			try {
-				if (socket != null) {
+				if (socket != null)
+				{
 					socket.close();
 				}
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 
 		}
 	}
-
 	/**
 	 * handle incoming requests to the server
-	 *
 	 * @param request
 	 * @param currentSocket
 	 */
@@ -104,14 +107,14 @@ public class Server {
 
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
-			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5]);
+			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3], cmd[4]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 
 		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
-			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6]);
+			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3], cmd[4]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
@@ -126,13 +129,18 @@ public class Server {
 			currentSocket.close();
 
 		} else if (cmd[0].equals("end") && cmd[1].equals("parking")) {
-			if(OrderController.orderOngoingExist(cmd[2])) {
-				double res = OrderController.calcPrice(cmd[2]);
-				ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
-				osw.writeObject(res);
-				osw.flush();
-				OrderController.removeOrder(cmd[2]);
-			}
+			boolean res;
+			res = OrderController.orderOngoingExist(cmd[2]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
+			double res = OrderController.calcPrice(cmd[2]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			OrderController.removeOrder(cmd[2]);
 			currentSocket.close();
 		}
 
