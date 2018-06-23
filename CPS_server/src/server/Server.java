@@ -207,6 +207,13 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		}
+		else if (cmd[0].equals("get") && cmd[1].equals("OrderStatus")) {
+			String res = OrderController.getOrderStatus(Integer.parseInt(cmd[2]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
 
 
 	}
