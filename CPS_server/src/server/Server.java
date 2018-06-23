@@ -114,14 +114,14 @@ public class Server {
 
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
-			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5]);
+			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 
 		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
-			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7]);
+			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7], cmd[8]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();

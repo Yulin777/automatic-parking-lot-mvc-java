@@ -73,7 +73,7 @@ public class PersonViewController {
 	}
 
 	@FXML
-	void complaint_view_send_complaint(ActionEvent event) throws IOException 
+	void complaint_view_send_complaint(ActionEvent event) throws IOException
 	{
 		String err_msg="";
 		String text_area = complaint_view_text_area.getText();
@@ -138,7 +138,7 @@ public class PersonViewController {
 	}
 
 	@FXML
-	void start_parking_start_parking(ActionEvent event) throws IOException 
+	void start_parking_start_parking(ActionEvent event) throws IOException
 	{
 		String car_num = start_parking_car_number_bar.getText();
 		if(car_num.isEmpty())
@@ -196,7 +196,7 @@ public class PersonViewController {
 	private Button customer_view_start_parking_btn;
 
 	@FXML
-	void customer_view_read_massages(ActionEvent event) throws IOException 
+	void customer_view_read_massages(ActionEvent event) throws IOException
 	{
 		String msg = "no massages yet\n";
 		createMsg(event, msg, "error msg");
@@ -294,7 +294,7 @@ public class PersonViewController {
 		}
 		else
 			err_msg = err_msg + "ongoing order doesn't exists\n";
-		
+
 		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
 			return;
@@ -431,12 +431,12 @@ public class PersonViewController {
 
 
 
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	@FXML
     void customer_view_end_parking(ActionEvent event) throws IOException {
 	 String url = "FinishedParking.fxml";
@@ -445,14 +445,14 @@ public class PersonViewController {
     }
 
     @FXML
-    void customer_view_start_parking(ActionEvent event) throws IOException 
+    void customer_view_start_parking(ActionEvent event) throws IOException
     {
-    	
+
     	String url = "StartParking.fxml";
 		switchWindow(url);
 		switchScene(event,"Start Parking");
     }
-    
+
 
 
 
@@ -463,7 +463,7 @@ public class PersonViewController {
 		switchScene(event,"complaint section");
     }
 
-	
+
     @FXML
     void customer_view_cancel(ActionEvent event) {
 
@@ -726,17 +726,24 @@ public class PersonViewController {
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
 		String end_time = Occasional_Customer_end_time.getText();
+
+		String payMethod="";
+		if(In_Advance_Customer_credit_card.isSelected())
+			payMethod="CREDIT";
+		if(In_Advance_Customer_cash.isSelected())
+			payMethod="CASH";
+
 		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time);
 		String first_name = "Occasional";
 		String last_name = "Occasional";
 		String phone = "Occasional";
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 
 		//		Timestamp end_time_overall = new Timestamp(end_date_year, end_date_month, end_date_day, end_date_hours, end_date_minutes, 0, 0);
 
@@ -756,7 +763,7 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(car_number, id)) {
-				if (client.addOccasionalOrder(car_number, timestamp, car_park)) {
+				if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
 
 					//TODO add success message to gui
 				}
@@ -847,11 +854,11 @@ public class PersonViewController {
 			}
 		});
 	}
-	
-	public void Occasional_Customer_load_car_lots() 
+
+	public void Occasional_Customer_load_car_lots()
 	{
-		
-		
+
+
 		List<String> ls = Client.getStations();
 		Occasional_Customer_parking_lot_btn.getItems().clear();
 
@@ -860,19 +867,19 @@ public class PersonViewController {
 			MenuItem mi = new MenuItem(str);
 			mi.setText(str);
 			mi.setOnAction(new EventHandler<ActionEvent>() {
-                
+
  @Override
- public void handle(ActionEvent event) 
+ public void handle(ActionEvent event)
  {
 	 Occasional_Customer_parking_lot_btn.setText( mi.getText());
  }
 });
 			Occasional_Customer_parking_lot_btn.getItems().add(mi);
 		}
-		
-		
-		
-		
+
+
+
+
 	}
 
 
@@ -958,7 +965,7 @@ public class PersonViewController {
 		String end_time = In_Advance_Customer_end_time.getText();
 		String phone = In_Advance_Customer_phone_number.getText();
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
-		
+
 //		System.out.println(car_park);
 
 		//In_Advance_Customer_parking_lot_split_menu_btn.
@@ -988,7 +995,7 @@ public class PersonViewController {
 
 
 		String[] end_time_by_parts = end_time.split(":");
-		String[] start_time_by_parts = end_time.split(":"); 
+		String[] start_time_by_parts = end_time.split(":");
 		int start_date_hours = Integer.valueOf(start_time_by_parts[0]);
 		int start_date_minutes = Integer.valueOf(start_time_by_parts[1]);
 		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
@@ -1007,7 +1014,7 @@ public class PersonViewController {
 
 		if (client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
 			if (client.addNewCar(carID, clientID)) {
-				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park)) {
+				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod)) {
 
 					//TODO add success message to gui
 				}
@@ -1088,7 +1095,7 @@ public class PersonViewController {
 		return (matcher.matches());
 	}
 
-	public void In_Advance_Customer_load_car_lots() 
+	public void In_Advance_Customer_load_car_lots()
 	{
 		List<String> ls = Client.getStations();
 		In_Advance_Customer_parking_lot_split_menu_btn.getItems().clear();
@@ -1098,9 +1105,9 @@ public class PersonViewController {
 			MenuItem mi = new MenuItem(str);
 			mi.setText(str);
 			mi.setOnAction(new EventHandler<ActionEvent>() {
-                
+
  @Override
- public void handle(ActionEvent event) 
+ public void handle(ActionEvent event)
  {
 	 In_Advance_Customer_parking_lot_split_menu_btn.setText( mi.getText());
  }

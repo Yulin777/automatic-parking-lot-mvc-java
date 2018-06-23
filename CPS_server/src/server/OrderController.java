@@ -73,7 +73,7 @@ public class OrderController {
 		return ("New subscription was added succsfully");
 	}
 
-	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName) {
+	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -90,6 +90,7 @@ public class OrderController {
 				uprs.updateInt("order_parking_id", order_parking_id);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("end_date", endDate);
+				uprs.updateString("order_payment_method", paymentMethod);
 				uprs.insertRow();
 
 				System.out.println("New order was added succsfully");
@@ -124,7 +125,7 @@ public class OrderController {
 		return res;
 	}
 
-	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName) {
+	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -140,6 +141,7 @@ public class OrderController {
 				uprs.updateString("order_type", OrderType.IN_ADVANCE.toString());
 				uprs.updateString("start_date", startDate);
 				uprs.updateString("end_date", endDate);
+				uprs.updateString("order_payment_method", paymentMethod);
 				int order_parking_id = getOrderParkingId(parkingName);
 				uprs.updateInt("order_parking_id", order_parking_id);
 				uprs.insertRow();
