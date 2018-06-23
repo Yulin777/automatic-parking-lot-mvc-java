@@ -18,15 +18,14 @@ import server.Worker;
 
 public class Client {
 	public Client() {
-		getOrderStatus(44);
-
+		
 	}
-	static String ip = "localhost";
+
 	public Customer customerLogin(String id, String password) {
 		Customer c = null;
 
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("login client " + id + " " + password);
@@ -52,7 +51,7 @@ public class Client {
 		Worker w = null;
 
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("login worker " + email + " " + password + " " + type.name());
@@ -78,7 +77,7 @@ public class Client {
 		List<String> stations = new ArrayList<String>();
 
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("get stations");
@@ -104,7 +103,7 @@ public class Client {
 		boolean res = false;
 
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("start parking " + carID);
@@ -127,7 +126,7 @@ public class Client {
 	}
 
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
-			String start_time, LocalDate end_date, String end_time) {
+								   String start_time, LocalDate end_date, String end_time) {
 		int result;
 
 		// TODO: input validation
@@ -141,7 +140,7 @@ public class Client {
 			Timestamp startTime = new Timestamp(s.getTime());
 			Timestamp endTime = new Timestamp(e.getTime());
 
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("order temporery " + id + " " + car_number + " " + car_park + " " + email + " " + startTime + " "
@@ -157,11 +156,11 @@ public class Client {
 	}
 
 	public boolean addNewCustomer(String id, String firstName, String lastName, String password, Customer.type type,
-			String email, String phone) {
+								  String email, String phone) {
 		boolean flag = false;
 
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add client " + id + " " + firstName + " " + lastName + " " + password + " " + type.toString() + " " + email
@@ -185,7 +184,7 @@ public class Client {
 	public boolean addNewCar(String carId, String customerId) {
 		boolean flag = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add car " + carId + " " + customerId);
@@ -209,7 +208,7 @@ public class Client {
 	public boolean addOccasionalOrder(String car_id, Timestamp end_time, String car_park, String payMethod) {
 		boolean flag = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park+ " " + payMethod);
@@ -233,7 +232,7 @@ public class Client {
 	public boolean addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString() + " " + parkingName + " " + paymentMethod);
@@ -253,7 +252,7 @@ public class Client {
 		}
 		return flag;
 	}
-	//================complaint handle============================================
+//================complaint handle============================================
 
 	/**
 	 * client function - adding new complaint
@@ -265,7 +264,7 @@ public class Client {
 	public boolean addNewComplaint(String client_id, String description) {
 		boolean c = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add complaint " + client_id + " " + description);
@@ -298,7 +297,7 @@ public class Client {
 	public boolean assignAttendantToCOmplaint(String ComplaintID, String attendantID) {
 		boolean c = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("assign attendant " + ComplaintID + " " + attendantID);
@@ -335,7 +334,7 @@ public class Client {
 	public boolean respondToCompalint(String ComplaintID, String response) {
 		boolean c = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("respond compalint " + ComplaintID + " " + response);
@@ -367,7 +366,7 @@ public class Client {
 	public boolean addCompensationToCompalint(String ComplaintID, float compnsationAmount) {
 		boolean c = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("add compensation " + ComplaintID + " " + Float.toString(compnsationAmount));
@@ -394,7 +393,7 @@ public class Client {
 	public boolean endParking(String car_id) {
 		boolean res = false;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("end parking " + car_id);
@@ -417,7 +416,7 @@ public class Client {
 	public double getPrice(String car_id) {
 		double res = Double.MAX_VALUE;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("get price " + car_id);
@@ -440,7 +439,7 @@ public class Client {
 	public int[][][] getParkSoltStatus(int parkId) {
 		int[][][] res = null;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("get slots " + String.valueOf(parkId));
@@ -463,7 +462,7 @@ public class Client {
 	public double cancelOrder(int orderId) {
 		double res = Double.MAX_VALUE;
 		try {
-			Socket socket = new Socket(ip, 8080);
+			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("cancel order " + String.valueOf(orderId));

@@ -20,7 +20,7 @@ public class Server {
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 //		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
-		scheduler.scheduleAtFixedRate(new NonRespondedComplaintsAutoCheck(),0, 1, TimeUnit.DAYS);
+
 		ServerSocket socket = null;
 		try {
 			socket = new ServerSocket(8080);
