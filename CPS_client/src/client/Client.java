@@ -310,9 +310,13 @@ public class Client {
 				System.out.println("[response] error assigning attendant to complaint");
 
 			socket.close();
-		} catch (IOException ioe) {
+		} 
+		catch (IOException ioe) 
+		{
 			System.out.println("assigning to complaint error");
-		} catch (ClassNotFoundException e) {
+		}
+		catch (ClassNotFoundException e)
+		{
 			e.printStackTrace();
 		}
 		return c;
