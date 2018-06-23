@@ -50,66 +50,126 @@ public class PersonViewController {
 	Client client = new Client();
 
 
-	
-	
-	
-	//-----------------------add car view -------------------------------
-	
+
+
+	//--------------------cancel order --------------------------
+
 	@FXML
-    private Button add_car_view_add_btn;
+	private TextField cancel_order_view_id_bar;
 
-    @FXML
-    private TextField add_car_view_car_number_bar;
+	@FXML
+	private Button cancel_order_view_back_btn;
 
-    @FXML
-    private Button add_car_view_back_btn;
+	@FXML
+	private Button cancel_order_view_cancel_order_btn;
 
-    @FXML
-    void add_car_view_add(ActionEvent event) throws IOException {
-    			
-    	String car_num = add_car_view_car_number_bar.getText();
-    	String err_msg="";
-    	if(car_num.isEmpty())
-    		err_msg +="please provide car number\n";
-    	
-    	if(!err_msg.isEmpty())
-    	{
-    		createMsg(event, err_msg, "error msg");
-			return;
-    	}
-    	
-    	
-    	/*
-    	 * 
-    	 * For talya to add carrrr
-    	 * 
-    	 * 
-    	 * 
-    	 */
-    	String succ_msg = "car was added succsecfully\n";
-    	
-    	createMsg(event, succ_msg, "succ msg");
-		return;
-    	
-    }
-
-    @FXML
-    void add_car_view_back(ActionEvent event) throws IOException {
-    	
-    	
-    	String url = "CustomerView.fxml";
+	@FXML
+	void cancel_order_view_back(ActionEvent event) throws IOException {
+		String url = "CustomerView.fxml";
 		switchWindow(url);
 		switchScene(event, "customer page");
-    	
 
-    }
+	}
+
+	@FXML
+	void cancel_order_view_cancel_order(ActionEvent event) throws IOException 
+	{
+		String err_msg ="";
+		
+		String order_id = cancel_order_view_id_bar.getText();
+		
+		if(order_id.isEmpty())
+		{
+			err_msg+="please provide order id\n";
+		}
+		
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+
+		
+		double bill = client.cancelOrder( Integer.parseInt(order_id));
+		
+
+		//TODO need to delete order from database
+		
+		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + Double.toString(bill);
+		createMsg(event, succ_msg, "succ msg");
+	}
+
+
+
+	//------------------^^^^cancel order-^^^^----------------------
+
+
+
+
+
+
+
+
+
+
+
+	//-----------------------add car view -------------------------------
+
+	@FXML
+	private Button add_car_view_add_btn;
+
+	@FXML
+	private TextField add_car_view_car_number_bar;
+
+	@FXML
+	private Button add_car_view_back_btn;
+
+	@FXML
+	void add_car_view_add(ActionEvent event) throws IOException {
+
+		String car_num = add_car_view_car_number_bar.getText();
+		String err_msg="";
+		if(car_num.isEmpty())
+			err_msg +="please provide car number\n";
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+
+
+		/*
+		 * 
+		 * For talya to add carrrr
+		 * 
+		 * 
+		 * 
+		 */
+		String succ_msg = "car was added succsecfully\n";
+
+		createMsg(event, succ_msg, "succ msg");
+		return;
+
+	}
+
+	@FXML
+	void add_car_view_back(ActionEvent event) throws IOException {
+
+
+		String url = "CustomerView.fxml";
+		switchWindow(url);
+		switchScene(event, "customer page");
+
+
+	}
 
 
 	//---------------------^^add car view ^^^--------------------
-	
-	
-	
-	
+
+
+
+
 
 	//------------------Complaint View----------------------------------
 
@@ -221,37 +281,37 @@ public class PersonViewController {
 	//----------------Customer View-------------------------------------
 
 	@FXML
-    private Label customer_view_label12;
+	private Label customer_view_label12;
 
-    @FXML
-    private Label customer_view_label;
+	@FXML
+	private Label customer_view_label;
 
-    @FXML
-    private Button customer_view_end_parking_btn;
+	@FXML
+	private Button customer_view_end_parking_btn;
 
-    @FXML
-    private Button customer_view_add_car_btn;
+	@FXML
+	private Button customer_view_add_car_btn;
 
-    @FXML
-    private Label customer_view_num_msg_label;
+	@FXML
+	private Label customer_view_num_msg_label;
 
-    @FXML
-    private Button customer_view_cancel_btn;
+	@FXML
+	private Button customer_view_cancel_btn;
 
-    @FXML
-    private Label customer_view_label1;
+	@FXML
+	private Label customer_view_label1;
 
-    @FXML
-    private Button customer_view_read_massages_btn;
+	@FXML
+	private Button customer_view_read_massages_btn;
 
-    @FXML
-    private Button customer_view_complaint_btn;
+	@FXML
+	private Button customer_view_complaint_btn;
 
-    @FXML
-    private Button customer_view_log_out_btn;
+	@FXML
+	private Button customer_view_log_out_btn;
 
-    @FXML
-    private Button customer_view_start_parking_btn;
+	@FXML
+	private Button customer_view_start_parking_btn;
 
 
 	@FXML
@@ -281,17 +341,17 @@ public class PersonViewController {
 		customer_view_label.setText("Hello " + name);
 	}
 
-	
+
 	@FXML
-    void customer_view_add_car(ActionEvent event) throws IOException 
+	void customer_view_add_car(ActionEvent event) throws IOException 
 	{
-		
+
 		String url = "AddCarView.fxml";
 		switchWindow(url);
 		switchScene(event, "add car interface");
-		
-    }
-	
+
+	}
+
 	//-------------------^^^-Customer View^^^-----------------------------------
 
 
@@ -515,14 +575,17 @@ public class PersonViewController {
 
 
 	@FXML
-	void customer_view_cancel(ActionEvent event) {
+	void customer_view_cancel(ActionEvent event) throws IOException {
+		String url = "CancelOrderView.fxml";
+		switchWindow(url);
+		switchScene(event, "cancel order");
 
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 
 
@@ -689,24 +752,24 @@ public class PersonViewController {
 	//--------------------MANAGER----------------------------------------
 
 	@FXML
-    private Button manager_current_state_btn;
+	private Button manager_current_state_btn;
 
-    @FXML
-    private Label manager_name_label;
+	@FXML
+	private Label manager_name_label;
 
-    @FXML
-    private Button manager_View_print_report_btn;
+	@FXML
+	private Button manager_View_print_report_btn;
 
-    @FXML
-    private Button manager_log_out_btn;
+	@FXML
+	private Button manager_log_out_btn;
 
-    @FXML
-    private Button manager_performance_report_btn;
+	@FXML
+	private Button manager_performance_report_btn;
 
-    @FXML
-    private SplitMenuButton manager_View_level_menu;
+	@FXML
+	private SplitMenuButton manager_View_level_menu;
 
-    
+
 	@FXML
 	void managerPrintCurrentState(ActionEvent event) {
 
@@ -729,109 +792,109 @@ public class PersonViewController {
 	}
 
 
-		@FXML
-	    void manager_View_print_report(ActionEvent event) throws IOException 
+	@FXML
+	void manager_View_print_report(ActionEvent event) throws IOException 
+	{
+		String level =  manager_View_level_menu.getText();
+		String err_msg="";
+		err_msg=manager_Check_Valid_input_report(level);
+
+
+		if(!err_msg.isEmpty())
 		{
-			String level =  manager_View_level_menu.getText();
-	    	String err_msg="";
-	    	err_msg=manager_Check_Valid_input_report(level);
-	    	
-	    	
-	    	if(!err_msg.isEmpty())
-	    	{
-	    		createMsg(event, err_msg, "error msg");
-				return;
-			}
-			//int location_id = OrderController.getOrderParkingId(location);
-			int level_int = Integer.parseInt(level);
-
-			
-			//TODO get the location number from manager person
-			ShowReport(level_int, 1);
-			
-    }
-	
-	
-		String manager_Check_Valid_input_report(String level)
-		{
-			String err_msg="";
-			if(level.isEmpty())
-				err_msg+="please provide level\n";
-			
-			return err_msg;
+			createMsg(event, err_msg, "error msg");
+			return;
 		}
-		
-		
-		void ManagerLoad() {
-			List<String> ls = Client.getStations();
-			manager_View_level_menu.getItems().clear();
-
-			String[] level_arr = {"0", "1", "2"};	
-			for (String i : level_arr) {
-				MenuItem mi = new MenuItem(i);
-				mi.setText(i);
-				mi.setOnAction(new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(ActionEvent event) {
-						manager_View_level_menu.setText(mi.getText());
-					}
-				});
-				manager_View_level_menu.getItems().add(mi);
-			}
+		//int location_id = OrderController.getOrderParkingId(location);
+		int level_int = Integer.parseInt(level);
 
 
+		//TODO get the location number from manager person
+		ShowReport(level_int, 1);
+
+	}
+
+
+	String manager_Check_Valid_input_report(String level)
+	{
+		String err_msg="";
+		if(level.isEmpty())
+			err_msg+="please provide level\n";
+
+		return err_msg;
+	}
+
+
+	void ManagerLoad() {
+		List<String> ls = Client.getStations();
+		manager_View_level_menu.getItems().clear();
+
+		String[] level_arr = {"0", "1", "2"};	
+		for (String i : level_arr) {
+			MenuItem mi = new MenuItem(i);
+			mi.setText(i);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					manager_View_level_menu.setText(mi.getText());
+				}
+			});
+			manager_View_level_menu.getItems().add(mi);
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+	}
+
+
+
+
+
+
+
+
+
 	//--------------------^MANAGER^----------------------------------------
 
 
 	//---------------------------Occasional Customer----------------------------------
 
 
-	 	@FXML
-	    private ToggleGroup money_toggle2;
+	@FXML
+	private ToggleGroup money_toggle2;
 
-	    @FXML
-	    private TextField Occasional_Customer_email;
+	@FXML
+	private TextField Occasional_Customer_email;
 
-	    @FXML
-	    private Button Occasional_Customer_order;
+	@FXML
+	private Button Occasional_Customer_order;
 
-	    @FXML
-	    private DatePicker Occasional_Customer_end_date;
+	@FXML
+	private DatePicker Occasional_Customer_end_date;
 
-	    @FXML
-	    private PasswordField Occasional_Customer_password;
+	@FXML
+	private PasswordField Occasional_Customer_password;
 
-	    @FXML
-	    private Button Occasional_Customer_back_btn;
+	@FXML
+	private Button Occasional_Customer_back_btn;
 
-	    @FXML
-	    private RadioButton Occasional_Customer_cash;
+	@FXML
+	private RadioButton Occasional_Customer_cash;
 
-	    @FXML
-	    private RadioButton Occasional_Customer_credit_card;
+	@FXML
+	private RadioButton Occasional_Customer_credit_card;
 
-	    @FXML
-	    private SplitMenuButton Occasional_Customer_parking_lot_btn;
+	@FXML
+	private SplitMenuButton Occasional_Customer_parking_lot_btn;
 
-	    @FXML
-	    private TextField Occasional_Customer_id;
+	@FXML
+	private TextField Occasional_Customer_id;
 
-	    @FXML
-	    private TextField Occasional_Customer_car_number;
+	@FXML
+	private TextField Occasional_Customer_car_number;
 
-	    @FXML
-	    private TextField Occasional_Customer_end_time;
+	@FXML
+	private TextField Occasional_Customer_end_time;
 
 
 	void createMsg(ActionEvent event, String Msg, String Title) throws IOException {
@@ -852,7 +915,7 @@ public class PersonViewController {
 		String id = Occasional_Customer_id.getText();
 		String car_number = Occasional_Customer_car_number.getText();
 		String car_park = Occasional_Customer_parking_lot_btn.getText();
-//		System.out.println(car_park);
+		//		System.out.println(car_park);
 		//= Occasional_Customer_car_park.getText();
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
@@ -921,9 +984,9 @@ public class PersonViewController {
 			msg = msg + "email is empty\n";
 		if (password.isEmpty())
 			msg = msg + "password is empty\n";
-		
-		
-		
+
+
+
 		/* if( end_date != null)
         {
             LocalDate today = LocalDate.now();
@@ -1020,55 +1083,55 @@ public class PersonViewController {
 
 
 	@FXML
-    private Button In_Advance_Customer_back_btn;
+	private Button In_Advance_Customer_back_btn;
 
-    @FXML
-    private TextField In_Advance_Customer_end_time;
+	@FXML
+	private TextField In_Advance_Customer_end_time;
 
-    @FXML
-    private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
+	@FXML
+	private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
 
-    @FXML
-    private TextField In_Advance_Customer_id;
+	@FXML
+	private TextField In_Advance_Customer_id;
 
-    @FXML
-    private RadioButton In_Advance_Customer_cash;
+	@FXML
+	private RadioButton In_Advance_Customer_cash;
 
-    @FXML
-    private ToggleGroup money_toggle;
+	@FXML
+	private ToggleGroup money_toggle;
 
-    @FXML
-    private PasswordField In_Advance_Customer_password;
+	@FXML
+	private PasswordField In_Advance_Customer_password;
 
-    @FXML
-    private TextField In_Advance_Customer_phone_number;
+	@FXML
+	private TextField In_Advance_Customer_phone_number;
 
-    @FXML
-    private DatePicker In_Advance_Customer_end_date;
+	@FXML
+	private DatePicker In_Advance_Customer_end_date;
 
-    @FXML
-    private TextField In_Advance_Customer_car_number;
+	@FXML
+	private TextField In_Advance_Customer_car_number;
 
-    @FXML
-    private TextField In_Advance_Customer_first_name;
+	@FXML
+	private TextField In_Advance_Customer_first_name;
 
-    @FXML
-    private TextField In_Advance_Customer_email;
+	@FXML
+	private TextField In_Advance_Customer_email;
 
-    @FXML
-    private RadioButton In_Advance_Customer_credit_card;
+	@FXML
+	private RadioButton In_Advance_Customer_credit_card;
 
-    @FXML
-    private Button In_Advance_Customer_order;
+	@FXML
+	private Button In_Advance_Customer_order;
 
-    @FXML
-    private DatePicker In_Advance_Customer_start_date;
+	@FXML
+	private DatePicker In_Advance_Customer_start_date;
 
-    @FXML
-    private TextField In_Advance_Customer_last_name;
+	@FXML
+	private TextField In_Advance_Customer_last_name;
 
-    @FXML
-    private TextField In_Advance_Customer_start_time;
+	@FXML
+	private TextField In_Advance_Customer_start_time;
 
 
 	@FXML
@@ -1174,11 +1237,11 @@ public class PersonViewController {
 			msg = msg + "password is empty\n";
 
 		}
-		
+
 		if (start_time.isEmpty())
 			msg = msg + "start time is empty\n";
-		
-		
+
+
 		else if (!check_hour_minute(start_time)) {
 			msg = msg + "fix starting hour and minute \n";
 			dateFlag = 0;
@@ -1284,40 +1347,40 @@ public class PersonViewController {
 	//----------------------------Ceo view-----------------------------
 
 	@FXML
-    private SplitMenuButton Ceo_View_level_menu;
+	private SplitMenuButton Ceo_View_level_menu;
 
-    @FXML
-    private Button Ceo_View_back_btn;
+	@FXML
+	private Button Ceo_View_back_btn;
 
-    @FXML
-    private SplitMenuButton Ceo_View_location_menu;
+	@FXML
+	private SplitMenuButton Ceo_View_location_menu;
 
-    @FXML
-    private Text Ceo_View_hello_label;
+	@FXML
+	private Text Ceo_View_hello_label;
 
-    @FXML
-    private Button Ceo_View_print_report_btn;
+	@FXML
+	private Button Ceo_View_print_report_btn;
 
-    @FXML
-    void Ceo_View_back(ActionEvent event) throws IOException {
-    			String url = "LoginView.fxml";
-    			switchWindow(url);
-    			switchScene(event, "login page");
+	@FXML
+	void Ceo_View_back(ActionEvent event) throws IOException {
+		String url = "LoginView.fxml";
+		switchWindow(url);
+		switchScene(event, "login page");
 
-    }
+	}
 
-    @FXML
-    void Ceo_View_print_report(ActionEvent event) throws IOException 
-    {
-    	String level =  Ceo_View_level_menu.getText();
-    	String location = Ceo_View_location_menu.getText();
-    	String err_msg="";
-    	err_msg=Ceo_Check_Valid_input_report(level,location);
-    	
-    	
-    	if(!err_msg.isEmpty())
-    	{
-    		createMsg(event, err_msg, "error msg");
+	@FXML
+	void Ceo_View_print_report(ActionEvent event) throws IOException 
+	{
+		String level =  Ceo_View_level_menu.getText();
+		String location = Ceo_View_location_menu.getText();
+		String err_msg="";
+		err_msg=Ceo_Check_Valid_input_report(level,location);
+
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
 			return;
 		}
 		int location_id = OrderController.getOrderParkingId(location);
