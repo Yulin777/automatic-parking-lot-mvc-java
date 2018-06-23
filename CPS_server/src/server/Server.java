@@ -19,7 +19,7 @@ public class Server {
 		int[][][] arr = psc.getSlotStatus(1);
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+//		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
 
 		ServerSocket socket = null;
 		try {

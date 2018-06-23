@@ -81,22 +81,37 @@ public class OrderController {
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
 			if (!client.next()) {
-				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
-				uprs.moveToInsertRow();
-				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
-				uprs.updateString("order_car_id", carID);
-				int order_parking_id = getOrderParkingId(parkingName);
-				uprs.updateInt("order_parking_id", order_parking_id);
-				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
-				uprs.updateString("end_date", endDate);
-				uprs.insertRow();
+//				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
+//				uprs.moveToInsertRow();
+//				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
+//				uprs.updateString("order_car_id", carID);
+//				int order_parking_id = getOrderParkingId(parkingName);
+//				uprs.updateInt("order_parking_id", order_parking_id);
+//				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
+//				uprs.updateString("end_date", endDate);
+//				uprs.insertRow();
+//				
+//				uprs = stmt.getGeneratedKeys();
+//	            if (uprs.next()) {
+//				    calcAndUpdatePrice(uprs.getInt(1));
+//				}
 				
-				uprs = stmt.getGeneratedKeys();
+				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,end_date,order_parking_id) VALUES (?,?,?,?,?)"
+						,Statement.RETURN_GENERATED_KEYS);
+
+				stmt.setString(1, OrderStatus.PENDING.toString());
+				stmt.setString(2, carID);
+				stmt.setString(3, OrderType.IN_ADVANCE.toString());
+				stmt.setString(4, endDate);
+				stmt.setInt(5, getOrderParkingId(parkingName));
+				stmt.executeUpdate();
+				
+				ResultSet uprs = stmt.getGeneratedKeys(); 
 	            if (uprs.next()) {
 				    calcAndUpdatePrice(uprs.getInt(1));
 				}
-				
+
 				System.out.println("New order was added succsfully");
 				flag = true;
 
@@ -137,17 +152,8 @@ public class OrderController {
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
 			if (!client.next()) {
-//				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//				ResultSet uprs = statement.executeQuery("SELECT * FROM orders");
-//				uprs.moveToInsertRow();
-//				uprs.updateString("order_status", OrderStatus.PENDING.toString());
-//				uprs.updateString("order_car_id", carID);
-//				uprs.updateString("order_type", OrderType.IN_ADVANCE.toString());
-//				uprs.updateString("start_date", startDate);
-//				uprs.updateString("end_date", endDate);
-//				uprs.insertRow();
-				
-				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,start_date,end_date) VALUES (?,?,?,?,?)"
+
+				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,start_date,end_date,order_parking_id) VALUES (?,?,?,?,?,?)"
 						,Statement.RETURN_GENERATED_KEYS);
 
 				stmt.setString(1, OrderStatus.PENDING.toString());
@@ -155,6 +161,7 @@ public class OrderController {
 				stmt.setString(3, OrderType.IN_ADVANCE.toString());
 				stmt.setString(4, startDate);
 				stmt.setString(5, endDate);
+				stmt.setInt(6, getOrderParkingId(parkingName));
 				stmt.executeUpdate();
 				
 				ResultSet uprs = stmt.getGeneratedKeys(); 
