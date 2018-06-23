@@ -525,4 +525,25 @@ public class OrderController {
 		}
 		return price;
 	}
+	public static void responseToMessage(int response,int messages_id){
+		java.sql.PreparedStatement stmt = null;
+		try {
+			stmt =  sql.conn.prepareStatement("UPDATE Messages SET messages_confirmation = ? WHERE messages_id = ?");
+			stmt.setInt(1, response);
+			stmt.setInt(2, messages_id);    
+	  
+			int rs = stmt.executeUpdate();
+
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}    
+
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			/* ignored */}
+		}
+
+	}
 }
