@@ -20,7 +20,7 @@ public class Server {
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 //		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
-		scheduler.scheduleAtFixedRate(new NonRespondedComplaintsAutoCheck(),0, 1, TimeUnit.DAYS);
+
 		ServerSocket socket = null;
 		try {
 			socket = new ServerSocket(8080);
@@ -196,6 +196,13 @@ public class Server {
 			currentSocket.close();
 		} else if (cmd[0].equals("cancel") && cmd[1].equals("order")) {
 			double res = OrderController.cancelOrder(Integer.parseInt(cmd[2]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
+		else if (cmd[0].equals("get") && cmd[1].equals("OrderStatus")) {
+			String res = OrderController.getOrderStatus(Integer.parseInt(cmd[2]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();

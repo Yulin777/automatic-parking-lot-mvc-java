@@ -482,4 +482,29 @@ public class Client {
 		return res;
 
 	}
+	public String getOrderStatus(int orderId) {
+		String res = "";
+		try {
+			Socket socket = new Socket(ip, 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("get OrderStatus " + String.valueOf(orderId));
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (String) ois.readObject();
+			if (res != null)
+				System.out.println("[response] order Status "+res);
+			else
+				System.out.println("[response] order not found");
+
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+
+	}
 }
+
+
