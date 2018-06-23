@@ -76,7 +76,7 @@ public class ParkingStationController {
 		}
 
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
@@ -120,7 +120,6 @@ public class ParkingStationController {
 			}
 		}
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -145,7 +144,6 @@ public class ParkingStationController {
 			int rs = stmt.executeUpdate();
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}    
 
@@ -177,7 +175,6 @@ public class ParkingStationController {
 			int rs = stmt.executeUpdate();
 
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}    
 
@@ -315,7 +312,6 @@ public class ParkingStationController {
 
 		}
 		catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
