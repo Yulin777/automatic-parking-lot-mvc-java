@@ -20,8 +20,9 @@
          <toggleGroup>
             <ToggleGroup fx:id="type" />
          </toggleGroup></RadioButton>
-      <RadioButton fx:id="worker_radio" layoutX="18.0" layoutY="164.0" mnemonicParsing="false" text="log as worker" toggleGroup="$type" />
+      
       <RadioButton fx:id="customer_radio" layoutX="18.0" layoutY="95.0" mnemonicParsing="false" text="log as customer" toggleGroup="$type" />
+      <RadioButton fx:id="worker_radio" layoutX="18.0" layoutY="164.0" mnemonicParsing="false" text="log as worker" toggleGroup="$type" />
       <TextField fx:id="id_bar" layoutX="17.0" layoutY="14.0" prefHeight="25.0" prefWidth="460.0" promptText="ID" />
       <PasswordField fx:id="password_bar" layoutX="17.0" layoutY="50.0" prefHeight="25.0" prefWidth="460.0" promptText="Password" />
       <Button fx:id="log_as_occasional_customer_btn" layoutX="310.0" layoutY="162.0" mnemonicParsing="false" onAction="#log_as_occasional_customer" prefHeight="25.0" prefWidth="178.0" text="Occasional parking " />
