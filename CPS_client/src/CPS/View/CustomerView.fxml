@@ -15,9 +15,10 @@
       <Label fx:id="customer_view_num_msg_label" layoutX="83.0" layoutY="86.0" prefHeight="17.0" prefWidth="24.0" text="0" />
       <Label fx:id="customer_view_label12" layoutX="100.0" layoutY="86.0" text="new massages:" />
       <Button fx:id="customer_view_read_massages_btn" layoutX="26.0" layoutY="113.0" mnemonicParsing="false" onAction="#customer_view_read_massages" prefHeight="58.0" prefWidth="97.0" text="read massages" />
-      <Button fx:id="customer_view_complaint_btn" layoutX="320.0" layoutY="267.0" mnemonicParsing="false" onAction="#customer_view_complaint" prefHeight="25.0" prefWidth="178.0" text="complaints" />
-      <Button fx:id="customer_view_start_parking_btn" layoutX="320.0" layoutY="204.0" mnemonicParsing="false" onAction="#customer_view_start_parking" prefHeight="25.0" prefWidth="178.0" text="start parking" />
-      <Button fx:id="customer_view_end_parking_btn" layoutX="320.0" layoutY="236.0" mnemonicParsing="false" onAction="#customer_view_end_parking" prefHeight="25.0" prefWidth="178.0" text="end parking" />
-      <Button fx:id="customer_view_cancel_btn" layoutX="309.0" layoutY="130.0" mnemonicParsing="false" onAction="#customer_view_cancel" prefHeight="25.0" prefWidth="178.0" text="cancel parking" />
+      <Button fx:id="customer_view_complaint_btn" layoutX="308.0" layoutY="113.0" mnemonicParsing="false" onAction="#customer_view_complaint" prefHeight="25.0" prefWidth="178.0" text="complaints" />
+      <Button fx:id="customer_view_start_parking_btn" layoutX="308.0" layoutY="46.0" mnemonicParsing="false" onAction="#customer_view_start_parking" prefHeight="25.0" prefWidth="178.0" text="start parking" />
+      <Button fx:id="customer_view_end_parking_btn" layoutX="308.0" layoutY="78.0" mnemonicParsing="false" onAction="#customer_view_end_parking" prefHeight="25.0" prefWidth="178.0" text="end parking" />
+      <Button fx:id="customer_view_cancel_btn" layoutX="308.0" layoutY="14.0" mnemonicParsing="false" onAction="#customer_view_cancel" prefHeight="25.0" prefWidth="178.0" text="cancel parking" />
+      <Button fx:id="customer_view_add_car_btn" layoutX="308.0" layoutY="150.0" mnemonicParsing="false" onAction="#customer_view_add_car" prefHeight="25.0" prefWidth="178.0" text="Add car" />
    </children>
 </AnchorPane>

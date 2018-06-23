@@ -18,6 +18,7 @@ import server.Worker;
 
 public class Client {
 	public Client() {
+	//	System.out.println(cancelOrder(51));
 		
 	}
 
