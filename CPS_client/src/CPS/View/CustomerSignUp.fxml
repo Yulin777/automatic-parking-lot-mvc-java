@@ -24,13 +24,13 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="customer_sign_up_first_name" layoutX="223.0" layoutY="60.0" promptText="name" />
+      <TextField fx:id="customer_sign_up_first_name" layoutX="223.0" layoutY="60.0" promptText="Name" />
       <Label layoutX="115.0" layoutY="64.0" text="first name:" />
       <Label layoutX="115.0" layoutY="92.0" text="last name:" />
       <Label layoutX="115.0" layoutY="255.0" text="phone number" />
-      <TextField fx:id="customer_sign_up_last_name" layoutX="223.0" layoutY="88.0" promptText="last name:" />
-      <TextField fx:id="customer_sign_up_phone_number" layoutX="224.0" layoutY="250.0" promptText="phone number:" />
-      <TextField fx:id="customer_sign_up_password" layoutX="223.0" layoutY="149.0" promptText="password:" />
+      <TextField fx:id="customer_sign_up_last_name" layoutX="223.0" layoutY="88.0" promptText="Last name" />
+      <TextField fx:id="customer_sign_up_phone_number" layoutX="224.0" layoutY="250.0" promptText="Phone number" />
+      <TextField fx:id="customer_sign_up_password" layoutX="223.0" layoutY="149.0" promptText="Password" />
       <Label layoutX="115.0" layoutY="153.0" text="password:" />
    </children>
 </AnchorPane>
