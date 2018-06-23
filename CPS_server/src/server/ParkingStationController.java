@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,8 @@ public class ParkingStationController {
 			}
 			rs.beforeFirst();
 			while(rs.next()) {
-			    results.add(rs.getString(1));
-//			    System.out.println(rs.getString(1));
+				results.add(rs.getString(1));
+				//			    System.out.println(rs.getString(1));
 			}
 
 			if (rs != null) {
@@ -47,7 +49,7 @@ public class ParkingStationController {
 		}
 		return results;
 	}
-	
+
 	public void addWorkerToParking(){
 
 	}
@@ -64,19 +66,19 @@ public class ParkingStationController {
 	 */
 	public void removeCar(int parkId,int carId){
 		java.sql.PreparedStatement updatestmt = null;
-		      
-		    try{
-		    	
-				updatestmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 0,car_ID='' WHERE parking_id = ? AND car_ID = ? LIMIT 1");
-				updatestmt.setInt(1, parkId);
-				updatestmt.setInt(2, carId);
-				updatestmt.executeUpdate();
-		    }
-			
-			catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+		try{
+
+			updatestmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 0,car_ID='' WHERE parking_id = ? AND car_ID = ? LIMIT 1");
+			updatestmt.setInt(1, parkId);
+			updatestmt.setInt(2, carId);
+			updatestmt.executeUpdate();
+		}
+
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * insert Car to available Slot
@@ -85,32 +87,43 @@ public class ParkingStationController {
 	 * @param carId
 	 * @return true if there is available Slot
 	 */
-	public boolean insertCar(int parkId,LocalDate endTime,int carId){
+	public boolean insertCar(int parkId,LocalDateTime endTime,int carId){
 		java.sql.PreparedStatement stmt =null,updatestmt = null;
-		int availableSlot = 0;
-			try {
-				stmt =  sql.conn.prepareStatement("SELECT count(*) FROM ParkingStationSlots WHERE parking_id = ? AND ParkingStationSlot_status = 0");
+		int availableSlot = 0,orderSlot = 0;
+		try {
+			stmt =  sql.conn.prepareStatement("SELECT count(*) FROM ParkingStationSlots WHERE parking_id = ? AND ParkingStationSlot_status = 0");
 			stmt.setInt(1,parkId);
-			
+
 			ResultSet rs = stmt.executeQuery();
-		      if (rs.next()) {
-		    	  availableSlot = rs.getInt(1);
-		      }
-		      
-		    //TODO: check for orders
-			if(availableSlot>0){
+			if (rs.next()) {
+				availableSlot = rs.getInt(1);
+			}
+
+			stmt =  sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND start_date >= NOW() AND start_date <= ?");
+			stmt.setInt(1,parkId);
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        String endT = endTime.format(formatter);
+			stmt.setString(2,endT);
+			 rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				orderSlot = rs.getInt(1);
+			}
+
+			//TODO: check for orders
+			if((availableSlot - orderSlot)>0){
 				updatestmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 1, car_ID = ? WHERE parking_id = ? AND ParkingStationSlot_status = 0 LIMIT 1");
 				updatestmt.setInt(1, carId);
 				updatestmt.setInt(2, parkId);
 				updatestmt.executeUpdate();
 				return true;
 			}
-			}
-			catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return false;
+		}
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	/**
 	 * Reseve Parking staion slot 
@@ -121,26 +134,26 @@ public class ParkingStationController {
 	 */
 	public void setResevedSlot(int parkId,int level,int row,int col){
 		java.sql.PreparedStatement stmt = null;
-		
-			
-			try {
-				stmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 3 WHERE parking_id = ? AND level = ? AND row= ? AND col= ?");
-				stmt.setInt(1, parkId);
-				stmt.setInt(2, level);    
-				stmt.setInt(3, row);    
-				stmt.setInt(4, col);   
-				int rs = stmt.executeUpdate();
 
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}    
-			
+
+		try {
+			stmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 3 WHERE parking_id = ? AND level = ? AND row= ? AND col= ?");
+			stmt.setInt(1, parkId);
+			stmt.setInt(2, level);    
+			stmt.setInt(3, row);    
+			stmt.setInt(4, col);   
+			int rs = stmt.executeUpdate();
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}    
+
 		if (stmt != null) {
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-				/* ignored */}
+			/* ignored */}
 		}
 	}
 
@@ -153,159 +166,159 @@ public class ParkingStationController {
 	 */
 	public void setOutOfOrderSlot(int parkId,int level,int row,int col){
 		java.sql.PreparedStatement stmt = null;
-		
-			
-			try {
-				stmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 2 WHERE parking_id = ? AND level = ? AND row= ? AND col= ?");
-				stmt.setInt(1, parkId);
-				stmt.setInt(2, level);    
-				stmt.setInt(3, row);    
-				stmt.setInt(4, col);   
-				int rs = stmt.executeUpdate();
 
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}    
-			
+
+		try {
+			stmt =  sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 2 WHERE parking_id = ? AND level = ? AND row= ? AND col= ?");
+			stmt.setInt(1, parkId);
+			stmt.setInt(2, level);    
+			stmt.setInt(3, row);    
+			stmt.setInt(4, col);   
+			int rs = stmt.executeUpdate();
+
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}    
+
 		if (stmt != null) {
 			try {
 				stmt.close();
 			} catch (SQLException e) {
-				/* ignored */}
+			/* ignored */}
 		}
 	}
-/**
- * add new parking staion to DB
- * @param address
- * @param director
- * @param size
- * @return true if DB add success
- */
-public boolean addParkingStaion(String address,Worker director,int size){
-	Statement stmt;
+	/**
+	 * add new parking staion to DB
+	 * @param address
+	 * @param director
+	 * @param size
+	 * @return true if DB add success
+	 */
+	public boolean addParkingStaion(String address,Worker director,int size){
+		Statement stmt;
 
-	//add ParkingStation to db
-	try {
-		stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		ResultSet staion = stmt.executeQuery("SELECT * FROM ParkingStation WHERE parking_id=" + currentId + ";");
-		if (!staion.next()){
-			ResultSet uprs = stmt.executeQuery("SELECT * FROM ParkingStation");
-			uprs.moveToInsertRow();
-			uprs.updateString("parking_id", String.valueOf(currentId));
-			uprs.updateString("parking_address", address);
-			uprs.updateString("parking_size", String.valueOf(size));
-			uprs.insertRow();
+		//add ParkingStation to db
+		try {
+			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet staion = stmt.executeQuery("SELECT * FROM ParkingStation WHERE parking_id=" + currentId + ";");
+			if (!staion.next()){
+				ResultSet uprs = stmt.executeQuery("SELECT * FROM ParkingStation");
+				uprs.moveToInsertRow();
+				uprs.updateString("parking_id", String.valueOf(currentId));
+				uprs.updateString("parking_address", address);
+				uprs.updateString("parking_size", String.valueOf(size));
+				uprs.insertRow();
 
+				if (uprs != null) {
+					try {
+						uprs.close();
+					} catch (SQLException e) {
+					/* ignored */}
+				}
+				if (stmt != null) {
+					try {
+						stmt.close();
+					} catch (SQLException e) {
+					/* ignored */}
+				}
+			} else {
+				return (false);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		setupSlots(currentId, size);
+		currentId++;
+		return(true);
+	}
+
+	/**
+	 * add all parking slot of new parking staion to DB
+	 * @param parkId
+	 * @param size
+	 */
+	public void setupSlots(int parkId,int size){
+		Statement stmt;
+
+		try {
+			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet uprs = null;
+			for(int level=1;level<4;level++){
+				for(int col=1;col<4;col++){
+					for(int row=1;row<size+1;row++){
+						uprs = stmt.executeQuery("SELECT * FROM ParkingStationSlots");
+						uprs.moveToInsertRow();
+						uprs.updateInt("parking_id", parkId);
+						uprs.updateInt("level", level);
+						uprs.updateInt("row", row);
+						uprs.updateInt("col", col);
+						uprs.updateInt("car_ID", 0);
+						uprs.updateInt("ParkingStationSlot_status", 0);
+						uprs.insertRow();
+						uprs.moveToCurrentRow();
+					}
+				}
+			}
 			if (uprs != null) {
 				try {
 					uprs.close();
 				} catch (SQLException e) {
-					/* ignored */}
+				/* ignored */}
 			}
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					/* ignored */}
-			}
-		} else {
-			return (false);
-		}
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-
-	setupSlots(currentId, size);
-	currentId++;
-	return(true);
-}
-
-/**
- * add all parking slot of new parking staion to DB
- * @param parkId
- * @param size
- */
-public void setupSlots(int parkId,int size){
-	Statement stmt;
-
-	try {
-		stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		ResultSet uprs = null;
-		for(int level=1;level<4;level++){
-			for(int col=1;col<4;col++){
-				for(int row=1;row<size+1;row++){
-					uprs = stmt.executeQuery("SELECT * FROM ParkingStationSlots");
-					uprs.moveToInsertRow();
-					uprs.updateInt("parking_id", parkId);
-					uprs.updateInt("level", level);
-					uprs.updateInt("row", row);
-					uprs.updateInt("col", col);
-					uprs.updateInt("car_ID", 0);
-					uprs.updateInt("ParkingStationSlot_status", 0);
-					uprs.insertRow();
-					uprs.moveToCurrentRow();
-				}
-			}
-		}
-		if (uprs != null) {
-			try {
-				uprs.close();
-			} catch (SQLException e) {
 				/* ignored */}
-		}
-		if (stmt != null) {
-			try {
-				stmt.close();
-			} catch (SQLException e) {
-				/* ignored */}
-		}
+			}
 
-	} catch (SQLException e) {
-		e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
-}
-/**
- * return all slot status of given park station in form of [level][column][row]
- * @param parkId
- * @return 3d array options are 0=AVAILABLE 1=OCCUPIED 2=OUT_OF_ORDER 3=RESERVED
- */
-public static int [][][] getSlotStatus(int parkId){
-	java.sql.PreparedStatement stmt =null;
-	int parkSize = 0;
-	int[][][] result = null; 
-	try {
-		stmt =  sql.conn.prepareStatement("SELECT parking_size FROM ParkingStation WHERE parking_id = ?");
-		stmt.setInt(1,parkId);
+	/**
+	 * return all slot status of given park station in form of [level][column][row]
+	 * @param parkId
+	 * @return 3d array options are 0=AVAILABLE 1=OCCUPIED 2=OUT_OF_ORDER 3=RESERVED
+	 */
+	public static int [][][] getSlotStatus(int parkId){
+		java.sql.PreparedStatement stmt =null;
+		int parkSize = 0;
+		int[][][] result = null; 
+		try {
+			stmt =  sql.conn.prepareStatement("SELECT parking_size FROM ParkingStation WHERE parking_id = ?");
+			stmt.setInt(1,parkId);
 
 
-		ResultSet rs = stmt.executeQuery();
-		if (rs.next()) {
-			parkSize = rs.getInt(1);
-		}
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				parkSize = rs.getInt(1);
+			}
 
-		if(parkSize>0){
-			result = new int [3][3][parkSize];
-		}
-		stmt =  sql.conn.prepareStatement("SELECT * FROM ParkingStationSlots WHERE parking_id = ?");
-		stmt.setInt(1, parkId);
-		ResultSet rs_slots = stmt.executeQuery();
+			if(parkSize>0){
+				result = new int [3][3][parkSize];
+			}
+			stmt =  sql.conn.prepareStatement("SELECT * FROM ParkingStationSlots WHERE parking_id = ?");
+			stmt.setInt(1, parkId);
+			ResultSet rs_slots = stmt.executeQuery();
 
-		if (!rs_slots.next()) {
-			return null;
+			if (!rs_slots.next()) {
+				return null;
+			}
+			rs_slots.beforeFirst();
+			while(rs_slots.next()) {
+				result[rs_slots.getInt("level")-1][rs_slots.getInt("col")-1][rs_slots.getInt("row")-1] = rs_slots.getInt("ParkingStationSlot_status");
+			}
+			return result;
+
 		}
-		rs_slots.beforeFirst();
-		while(rs_slots.next()) {
-			result[rs_slots.getInt("level")-1][rs_slots.getInt("col")-1][rs_slots.getInt("row")-1] = rs_slots.getInt("ParkingStationSlot_status");
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return result;
+		return null;
 
 	}
-	catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	return null;
-	
-}
 }
