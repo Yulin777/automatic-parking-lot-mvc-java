@@ -1212,7 +1212,12 @@ public class PersonViewController {
 		} else {
 			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
+			return;
 		}
+		String succ = "order was added succesfully\n";
+		createMsg(event,succ, "succ msg");
+
+		
 	}
 
 
