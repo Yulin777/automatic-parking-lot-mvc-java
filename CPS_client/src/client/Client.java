@@ -592,6 +592,23 @@ public class Client {
 
 	}
 
+	public void responseToMessage(int response,int messages_id){
+		Socket socket;
+		try {
+			socket = new Socket(ip, 8080);
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("response Message " +String.valueOf(response)+" "+ String.valueOf(messages_id));
+			pw.flush();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public boolean updateParkingStaionPrices(String parking_id,String order_type, Double order_price_per_hour){
 		Socket socket;
 		boolean res = false;
@@ -600,7 +617,7 @@ public class Client {
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("ParkingStaion updatePrices " + parking_id +" "+ order_type +" "+ String.valueOf(order_price_per_hour)));
+			pw.println("ParkingStaion updatePrices " + parking_id +" "+ order_type +" "+ String.valueOf(order_price_per_hour));
 			pw.flush();
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (boolean) ois.readObject();

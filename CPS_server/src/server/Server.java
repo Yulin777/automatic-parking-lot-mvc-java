@@ -239,6 +239,9 @@ public class Server {
 		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
 			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
 		}
+		else if (cmd[0].equals("response") && cmd[1].equals("Message")) {
+			OrderController.responseToMessage(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]));	
+		}
 		 
 
 	}
