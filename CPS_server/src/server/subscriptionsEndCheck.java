@@ -24,7 +24,6 @@ public class subscriptionsEndCheck implements Runnable {
 					uprs.updateString("messages_text", "your subscription ends in a week");
 					uprs.updateInt("messages_confirmation", 0);
 					uprs.updateString("client_ID", rs.getString("client_ID"));
-
 					uprs.insertRow();
 					System.out.println("[auto] send subscriptions end message to client "+rs.getString("client_ID"));
 			}
@@ -35,6 +34,4 @@ public class subscriptionsEndCheck implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
-
 }
