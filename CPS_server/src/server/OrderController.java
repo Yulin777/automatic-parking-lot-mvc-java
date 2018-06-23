@@ -26,7 +26,7 @@ public class OrderController {
 
 
 	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
-											java.sql.Timestamp endDate) {
+			java.sql.Timestamp endDate) {
 		Statement stmt;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -92,7 +92,7 @@ public class OrderController {
 				stmt.setInt(5, getOrderParkingId(parkingName));
 				stmt.executeUpdate();
 
-				ResultSet uprs = stmt.getGeneratedKeys();
+				ResultSet uprs = stmt.getGeneratedKeys(); 
 				if (uprs.next()) {
 					calcAndUpdatePrice(uprs.getInt(1));
 				}
@@ -149,7 +149,7 @@ public class OrderController {
 				stmt.setInt(6, getOrderParkingId(parkingName));
 				stmt.executeUpdate();
 
-				ResultSet uprs = stmt.getGeneratedKeys();
+				ResultSet uprs = stmt.getGeneratedKeys(); 
 				if (uprs.next()) {
 					calcAndUpdatePrice(uprs.getInt(1));
 				}
@@ -233,13 +233,33 @@ public class OrderController {
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\"" + carID + "\" AND `order_status`=\"ONGOING\"");
-//			stmt.setString(1, carID);
+			//			stmt.setString(1, carID);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				flag = true;
 				System.out.println("order ongoing exists");
 			} else {
 				System.out.println("order ongoing doesnt exist");
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
+
+	public static boolean orderPendingExist(String carID) {
+		boolean flag = false;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\"" + carID + "\" AND `order_status`=\"PENDING\"");
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				flag = true;
+				System.out.println("order pending exists");
+			} else {
+				System.out.println("order pending doesnt exist");
 			}
 			rs.close();
 			stmt.close();
@@ -274,8 +294,10 @@ public class OrderController {
 		return price_per_hour;
 	}
 
+
 	public static double calcPriceOnEndOrder(String carID) {
 		double res = Double.MAX_VALUE, price_per_hour = 0, hours = 0;
+
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
@@ -347,7 +369,7 @@ public class OrderController {
 		java.sql.PreparedStatement stmt;
 		boolean return_res = false;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
+			stmt = sql.conn.prepareStatement("DELETE FROM orders WHERE order_id = ?");
 			stmt.setInt(1, order_id);
 
 			if (stmt.executeUpdate() == 1) {
@@ -394,35 +416,33 @@ public class OrderController {
 		return res;
 	}
 
-	public static boolean cancelOrder(String orderId) {
-		boolean res = false;
-//		java.sql.PreparedStatement stmt;
-//		String clientId = Car.getClientId(carID);
-//		if(Car.getClientCarsById(clientId).size() == 1) {
-//			if(CustomerController.removeCustomer(clientId)) {
-//				res=true;
-//			}
-//		}
-//		else {
-//			try {
-//				stmt = sql.conn.prepareStatement("DELETE FROM orders WHERE order_car_id = ? AND order_status = ?");
-//				stmt.setString(1, carID);
-//				stmt.setString(2, type);
-//				if(stmt.executeUpdate()==1) {
-//					res = true;
-//				}
-//				stmt.close();
-//									
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		if(res)
-//			System.out.println("order removed successfully");
-//		else
-//			System.out.println("remove order failed");
+	public static double cancelOrder(int orderId){
+		PreparedStatement stmt;
+		double diff=0, price=Double.MAX_VALUE;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
+			stmt.setInt(1, orderId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				Timestamp startTime = rs.getTimestamp("start_date");
+				Timestamp nowTime = new Timestamp(System.currentTimeMillis());
+				diff = getTimeDiffInHours(startTime, nowTime);
+				price = rs.getDouble(9);
 
-		return res;
+				if(diff <= 1)
+					;
+				else if(diff < 3 && diff > 1)
+					price *= 0.5;
+				else
+					price *= 0.9;
 
+				removeOrderById(orderId);
+			} 
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return price;
 	}
 }
