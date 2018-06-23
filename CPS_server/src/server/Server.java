@@ -152,15 +152,22 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		}
-		else if (cmd[0].equals("respond") && cmd[1].equals("compalint")) {
-			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
+		else if (cmd[0].equals("respond") && cmd[1].equals("compalint"))
+		{
+			StringBuffer respond_txt_builder = new StringBuffer();
+			for (int i = 3; i < cmd.length; i++) {
+				respond_txt_builder.append( cmd[i] );
+				respond_txt_builder.append(" ");
+			}
+			String respond_str = respond_txt_builder.toString();
+			String res = ComplaintController.respondToCompalint(cmd[2], respond_str);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 		}
 		else if (cmd[0].equals("add") && cmd[1].equals("compensation")) {
-			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
+			String res = ComplaintController.addCompensationToCompalint(cmd[2], Float.valueOf(cmd[3]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
