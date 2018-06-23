@@ -128,32 +128,38 @@ public class Server {
 			currentSocket.close();
 		}
 		//================complaint handle============================================
-		else if (cmd[0].equals("add") && cmd[1].equals("complaint")) {
+		else if (cmd[0].equals("add") && cmd[1].equals("complaint"))
+		{
 			StringBuffer complaint_txt_builder = new StringBuffer();
-			for (int i = 2; i < cmd.length; i++) {
+			for (int i = 3; i < cmd.length; i++) {
 				complaint_txt_builder.append( cmd[i] );
+				complaint_txt_builder.append(" ");
 			}
 			String complaint_str = complaint_txt_builder.toString();
-			
+//			System.out.println("new compaint str::" + complaint_str);
 			
 			boolean res = ComplaintController.addNewComplaint(cmd[2], complaint_str);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		} else if (cmd[0].equals("assign") && cmd[1].equals("attendant")) {
+		} 
+		else if (cmd[0].equals("assign") && cmd[1].equals("attendant"))
+		{
 			String res = ComplaintController.assignAttendantToComlaint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		} else if (cmd[0].equals("respond") && cmd[1].equals("compalint")) {
+		}
+		else if (cmd[0].equals("respond") && cmd[1].equals("compalint")) {
 			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		} else if (cmd[0].equals("add") && cmd[1].equals("compensation")) {
+		}
+		else if (cmd[0].equals("add") && cmd[1].equals("compensation")) {
 			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);

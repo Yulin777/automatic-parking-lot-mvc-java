@@ -19,6 +19,7 @@ public class ComplaintController
 	 * @return true for successful addition
 	 */
 	public static boolean addNewComplaint(String client_id, String description) {
+//		System.out.println("complaint controller-complaitn desc: "+ description);
 		boolean flag = false;
 		try {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -48,43 +49,28 @@ public class ComplaintController
 	 */
 	public static String assignAttendantToComlaint(String ComplaintID, String attendantID)
 	 {
-		Statement stmt;
+		java.sql.PreparedStatement stmt = null;
+
+
 		try {
-			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-			ResultSet c = stmt.executeQuery("SELECT * FROM complaints WHERE complaint_number=" + ComplaintID + ";");
-			if (!c.next()) {
-				System.err.println("There is no complaint with such id");
-				return ("There is no complaint with such id");
+			stmt =  sql.conn.prepareStatement("UPDATE complaints SET attendant_ID=? WHERE complaint_number=" + ComplaintID + ";");
+			stmt.setString(1, attendantID);
+			int rs = stmt.executeUpdate();
+			if (rs==0)
+			{
+				return ("error assigning attendent to complaint");
 			}
-//			ResultSet complaint = stmt.executeQuery("SELECT * FROM complaints WHERE complaint_number=" + ComplaintID + ";");
-//			if (!complaint.next()) {
-				ResultSet uprs = stmt.executeQuery("SELECT * FROM complaints");
-				uprs.moveToInsertRow();
-				uprs.updateString("attendant_ID", attendantID);
-				uprs.insertRow();
+			
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}    
 
-				System.out.println("Attendant " + attendantID + " was assigned successfully to complaint number "+ ComplaintID);
-
-				if (uprs != null) {
-					try {
-						uprs.close();
-					} catch (SQLException e) {
-						/* ignored */
-					}
-				}
-				if (stmt != null) {
-					try {
-						stmt.close();
-					} catch (SQLException e) {
-						/* ignored */
-					}
-				}
-//			} else {
-//				return ("client already has subscription");
-//			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			/* ignored */}
 		}
 
 		return ("Attendant " + attendantID + " was assigned successfully to complaint number "+ ComplaintID);
