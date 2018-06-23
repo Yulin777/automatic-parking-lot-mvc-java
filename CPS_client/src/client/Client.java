@@ -41,7 +41,6 @@ public class Client {
 		} catch (IOException ioe) {
 			System.out.println("login error");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return c;
@@ -68,7 +67,6 @@ public class Client {
 		} catch (IOException ioe) {
 			System.out.println("IOException exption");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return w;
@@ -95,7 +93,6 @@ public class Client {
 		} catch (IOException ioe) {
 			System.out.println("IOException exption");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stations;
@@ -122,7 +119,6 @@ public class Client {
 		} catch (IOException ioe) {
 			System.out.println("IOException exption");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return res;
