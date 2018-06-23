@@ -316,18 +316,41 @@ public class Client {
 			PrintWriter pw = new PrintWriter(osw);
 			pw.println("get price " + car_id);
 			pw.flush();
-			
+
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (double)ois.readObject();
 			if (res != Double.MAX_VALUE)
 				System.out.println("[response] get price succeeded");
 			else
 				System.out.println("[response] get price failed");
-			
+
 			socket.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return res;
-	}	
+	}
+	public int [][][]getParkSoltStatus(int parkId){
+		int[][][] res = null;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("get slots " + String.valueOf(parkId));
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (int[][][])ois.readObject();
+			if (res != null)
+				System.out.println("[response] get park solt status succeeded");
+			else
+				System.out.println("[response] get park solt status failed");
+
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+	}
+
 }

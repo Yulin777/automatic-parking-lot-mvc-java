@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingStationController {
-	int currentId = 0;
+	int currentId = 2;
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 
 	public static List<String> getParkingIDs() {
@@ -264,5 +264,48 @@ public void setupSlots(int parkId,int size){
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
+}
+/**
+ * return all slot status of given park station in form of [level][column][row]
+ * @param parkId
+ * @return 3d array options are 0=AVAILABLE 1=OCCUPIED 2=OUT_OF_ORDER 3=RESERVED
+ */
+public static int [][][] getSlotStatus(int parkId){
+	java.sql.PreparedStatement stmt =null;
+	int parkSize = 0;
+	int[][][] result = null; 
+	try {
+		stmt =  sql.conn.prepareStatement("SELECT parking_size FROM ParkingStation WHERE parking_id = ?");
+		stmt.setInt(1,parkId);
+
+
+		ResultSet rs = stmt.executeQuery();
+		if (rs.next()) {
+			parkSize = rs.getInt(1);
+		}
+
+		if(parkSize>0){
+			result = new int [3][3][parkSize];
+		}
+		stmt =  sql.conn.prepareStatement("SELECT * FROM ParkingStationSlots WHERE parking_id = ?");
+		stmt.setInt(1, parkId);
+		ResultSet rs_slots = stmt.executeQuery();
+
+		if (!rs_slots.next()) {
+			return null;
+		}
+		rs_slots.beforeFirst();
+		while(rs_slots.next()) {
+			result[rs_slots.getInt("level")-1][rs_slots.getInt("col")-1][rs_slots.getInt("row")-1] = rs_slots.getInt("ParkingStationSlot_status");
+		}
+		return result;
+
+	}
+	catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return null;
+	
 }
 }

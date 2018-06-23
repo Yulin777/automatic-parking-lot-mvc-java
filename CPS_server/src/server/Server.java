@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.List;
 
 public class Server {
@@ -138,6 +139,12 @@ public class Server {
 			osw.writeObject(res);
 			osw.flush();
 			OrderController.removeOrder(cmd[2]);
+			currentSocket.close();
+		} else if (cmd[0].equals("get") && cmd[1].equals("slots")) {
+			int[][][] res = ParkingStationController.getSlotStatus(Integer.parseInt(cmd[2]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
 			currentSocket.close();
 		}
 
