@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import server.Customer;
+import server.ParkingStation;
+import server.ParkingStationController;
 import server.Worker;
 
 public class Client {
@@ -590,8 +592,6 @@ public class Client {
 
 	}
 
-
-
 	public void responseToMessage(int response,int messages_id){
 		Socket socket;
 		try {
@@ -610,6 +610,7 @@ public class Client {
 		}
 	}
 
+	
 	public boolean updateParkingStaionPrices(String parking_id,String order_type, Double order_price_per_hour){
 		Socket socket;
 		boolean res = false;

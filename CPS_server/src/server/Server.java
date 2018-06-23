@@ -102,7 +102,7 @@ public class Server {
 			boolean flag = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			//PrintWriter pw = new PrintWriter(osw);
-			osw.writeObject(flag);
+			osw.writeObject(true);
 			osw.flush();
 			currentSocket.close();
 
@@ -179,13 +179,13 @@ public class Server {
 			if(Car.getClientId(cmd[2]).equals(cmd[3])) {
 				int parkId = ParkingStationController.getParkId(OrderController.orderOngoingExist(cmd[2]));
 				if(parkId != -1) {
-					ParkingStationController.removeCar(parkId, Integer.valueOf(cmd[2]));
-					ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
-					osw.writeObject(res);
-					osw.flush();
+//					ParkingStationController.removeCar(parkId, Integer.valueOf(cmd[2]));
 					res = true;
 				}
 			}
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
 			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
