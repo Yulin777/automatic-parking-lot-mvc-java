@@ -26,7 +26,7 @@ public class mainView extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         window = primaryStage;
-
+        window.setResizable(false);
         url = getClass().getResource(loginStr);
         pane = FXMLLoader.load(url);
         loginScene = new Scene(pane);
@@ -38,7 +38,7 @@ public class mainView extends Application {
         sceneList.add(workStationScene);
 
         window.setScene(loginScene);
-        window.setTitle("login page");
+        window.setTitle("Login page");
 
         window.show();
 

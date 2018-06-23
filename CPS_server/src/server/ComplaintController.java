@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class ComplaintController 
 {
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
-	
+
 
 	/**
 	 * Adding a new complaint to the db
@@ -20,7 +20,6 @@ public class ComplaintController
 	 */
 	public static boolean addNewComplaint(String client_id, String description) {
 		boolean flag = false;
-//		PreparedStatement stmt;
 		try {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet uprs = statement.executeQuery("SELECT * FROM complaints");

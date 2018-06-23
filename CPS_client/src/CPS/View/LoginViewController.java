@@ -180,12 +180,14 @@ public class LoginViewController {
 			return;
 		}
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		window.setResizable(false);
 		window.setScene(tableViewScene);
 		window.setTitle(title);
 		login_view_progress_bar.setVisible(false);
 
 		window.show();
 	}
+	
 
 	/* @FXML
 	    void login_view_end_parking(ActionEvent event) throws IOException {
@@ -244,6 +246,7 @@ public class LoginViewController {
 
 	void switchScene(ActionEvent event, String pageTitle) {
 		Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		window.setResizable(false);
 		window.setScene(tableViewScene);
 		window.setTitle(pageTitle);
 		window.show();
@@ -251,15 +254,17 @@ public class LoginViewController {
 
 
 	void createErrMsg(ActionEvent event, String errMsg) throws IOException {
-		Stage err_win;
+		Stage err_win = null;
+		
 		switchWindow("PopUpMsg.fxml");
 
 		PersonViewController controller = loader.getController();
 		controller.setErrLabel(errMsg);
 
 		err_win = new Stage();
+		err_win.setResizable(false);
 		err_win.setScene(tableViewScene);
-		err_win.setTitle("error window");
+		err_win.setTitle("Error");
 		err_win.show();
 
 
