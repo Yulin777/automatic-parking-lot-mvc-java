@@ -71,7 +71,7 @@ public class PersonViewController {
     	String err_msg="";
     	if(car_num.isEmpty())
     		err_msg +="please provide car number\n";
-    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), "customerId"))
+    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), "1111"))
     		err_msg +="car already exists\n";
     	
     	if(!err_msg.isEmpty())
