@@ -6,6 +6,7 @@ package CPS.View;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -147,16 +148,11 @@ public class PersonViewController {
 		}
 
 
-		double bill = client.cancelOrder(Integer.parseInt(order_id));
-
-
-		
-		double bill = client.cancelOrder( Integer.parseInt(order_id));
-		
+		double bill = client.cancelOrder(Integer.parseInt(order_id));		
 
 		//TODO need to delete order from database. DONE!
 		
-		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + Double.toString(bill);
+		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
 		createMsg(event, succ_msg, "succ msg");
 	}
 
@@ -474,8 +470,12 @@ public class PersonViewController {
 		}
 		else if(client.endParking(car_id, pid)) {
 			double bill = client.getPrice(car_id);
-			if (bill != Double.MAX_VALUE)
-				createBillMsg(event, String.valueOf(bill));
+			if (bill != Double.MAX_VALUE) {
+//				createBillMsg(event, String.valueOf(bill));
+				String succ_msg="order ended succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
+				createMsg(event, succ_msg, "succ msg");
+				
+			}
 		}
 		else
 			err_msg = err_msg + "invalid car number\n";

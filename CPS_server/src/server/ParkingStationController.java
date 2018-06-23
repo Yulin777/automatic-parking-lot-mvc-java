@@ -459,6 +459,36 @@ public class ParkingStationController {
 		}
 		return ("Price was updated succussfully");
 	}
+	
+	/**
+	 * Change Parking prices 
+	 * @param parking_id
+	 * @param order_type
+	 * @param yesORno - approve or no
+	 *
+	 */
+	public static String updateParkingStaionPricesCeoApprove(String parking_id,String order_type,String yesORno)
+	{
+		java.sql.PreparedStatement stmt = null;
+		try {
+			stmt =  sql.conn.prepareStatement("UPDATE order_prices SET ceo_approval = ? WHERE parking_id = "+ parking_id +" order_type = " + order_type);
+			stmt.setString(1, yesORno);
+			 
+			int rs = stmt.executeUpdate();
+			if (rs==0)
+			{
+				return ("error approving");
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}    
 
-
+		if (stmt != null) {
+			try {
+				stmt.close();
+			} catch (SQLException e) {
+			/* ignored */}
+		}
+		return ("Price was approved succussfully");
+	}
 }

@@ -179,13 +179,13 @@ public class Server {
 			if(Car.getClientId(cmd[2]).equals(cmd[3])) {
 				int parkId = ParkingStationController.getParkId(OrderController.orderOngoingExist(cmd[2]));
 				if(parkId != -1) {
-					ParkingStationController.removeCar(parkId, Integer.valueOf(cmd[2]));
-					ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
-					osw.writeObject(res);
-					osw.flush();
+//					ParkingStationController.removeCar(parkId, Integer.valueOf(cmd[2]));
 					res = true;
 				}
 			}
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
 			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
@@ -218,7 +218,7 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} 
-		
+		//====================parking staion prices===========================================================
 		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePrices")) {
 			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
@@ -227,6 +227,14 @@ public class Server {
 			currentSocket.close();
 		}
 		
+		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePricesCeoApprov")) {
+			String res = ParkingStationController.updateParkingStaionPricesCeoApprove(cmd[2],cmd[3],cmd[4]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
+		//====================parking staion prices end===========================================================	
 		else if (cmd[0].equals("logout") && cmd[1].equals("client")) {
 			CustomerController.logout(cmd[2]);
 		}
@@ -237,7 +245,7 @@ public class Server {
 			ParkingStationController.setOutOfOrderSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
 		}
 		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
-			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+//			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
 		}
 		else if (cmd[0].equals("response") && cmd[1].equals("Message")) {
 			OrderController.responseToMessage(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]));	

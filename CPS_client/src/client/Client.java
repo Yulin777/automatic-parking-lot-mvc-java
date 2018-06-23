@@ -609,6 +609,8 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+
+	
 	public boolean updateParkingStaionPrices(String parking_id,String order_type, Double order_price_per_hour){
 		Socket socket;
 		boolean res = false;
@@ -642,7 +644,46 @@ public class Client {
 
 	}
 
-	
+	/**
+	 * if the ceo wants to approve the praking price change
+	 * this function is used..
+	 * @param parking_id
+	 * @param order_type
+	 * @param order_price_per_hour
+	 * @return
+	 */
+	public boolean updateParkingStaionPricesCeoApprove(String parking_id,String order_type,String yesORno){
+		Socket socket;
+		boolean res = false;
+		try {
+			socket = new Socket(ip, 8080);
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("ParkingStaion updatePricesCeoApprov " + parking_id +" "+ order_type +" "+ yesORno);
+			pw.flush();
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (boolean) ois.readObject();
+			if (res != true)
+				System.out.println("[response] parking staion price update approve succes");
+			else
+				System.out.println("[response] parking staion price update approve failure");
+
+			socket.close();
+		} catch (UnknownHostException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return res;
+
+	}
 	
 }
 
