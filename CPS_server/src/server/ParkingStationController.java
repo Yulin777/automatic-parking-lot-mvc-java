@@ -395,7 +395,7 @@ public class ParkingStationController {
 	 * @param order_price_per_hour - double
 	 *
 	 */
-	public String setParkingPrices(String parking_id,String order_type, Double order_price_per_hour){
+	public static String setParkingPrices(String parking_id,String order_type, Double order_price_per_hour){
 		java.sql.PreparedStatement stmt = null;
 
 
