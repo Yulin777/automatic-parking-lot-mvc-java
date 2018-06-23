@@ -27,6 +27,7 @@ import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitMenuButton;
@@ -725,38 +726,41 @@ public class PersonViewController {
 	//---------------------------Occasional Customer----------------------------------
 
 
-	@FXML
-	private ToggleGroup money_toggle2;
+	 	@FXML
+	    private ToggleGroup money_toggle2;
 
-	@FXML
-	private TextField Occasional_Customer_email;
+	    @FXML
+	    private TextField Occasional_Customer_email;
 
-	@FXML
-	private Button Occasional_Customer_order;
+	    @FXML
+	    private Button Occasional_Customer_order;
 
-	@FXML
-	private DatePicker Occasional_Customer_end_date;
+	    @FXML
+	    private DatePicker Occasional_Customer_end_date;
 
-	@FXML
-	private Button Occasional_Customer_back_btn;
+	    @FXML
+	    private PasswordField Occasional_Customer_password;
 
-	@FXML
-	private RadioButton Occasional_Customer_cash;
+	    @FXML
+	    private Button Occasional_Customer_back_btn;
 
-	@FXML
-	private RadioButton Occasional_Customer_credit_card;
+	    @FXML
+	    private RadioButton Occasional_Customer_cash;
 
-	@FXML
-	private SplitMenuButton Occasional_Customer_parking_lot_btn;
+	    @FXML
+	    private RadioButton Occasional_Customer_credit_card;
 
-	@FXML
-	private TextField Occasional_Customer_id;
+	    @FXML
+	    private SplitMenuButton Occasional_Customer_parking_lot_btn;
 
-	@FXML
-	private TextField Occasional_Customer_car_number;
+	    @FXML
+	    private TextField Occasional_Customer_id;
 
-	@FXML
-	private TextField Occasional_Customer_end_time;
+	    @FXML
+	    private TextField Occasional_Customer_car_number;
+
+	    @FXML
+	    private TextField Occasional_Customer_end_time;
 
 
 	void createMsg(ActionEvent event, String Msg, String Title) throws IOException {
@@ -782,6 +786,7 @@ public class PersonViewController {
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
 		String end_time = Occasional_Customer_end_time.getText();
+		String password = Occasional_Customer_password.getText();
 
 		String payMethod = "";
 		if (Occasional_Customer_credit_card.isSelected())
@@ -789,7 +794,7 @@ public class PersonViewController {
 		if (Occasional_Customer_cash.isSelected())
 			payMethod = "CASH";
 
-		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time);
+		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time,password);
 		String first_name = "Occasional";
 		String last_name = "Occasional";
 		String phone = "Occasional";
@@ -830,7 +835,7 @@ public class PersonViewController {
 
 	}
 
-	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String email, LocalDate end_date, String end_time) throws ParseException {
+	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String email, LocalDate end_date, String end_time,String password) throws ParseException {
 		String msg = "";
 		int dateFlag = 1;
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //parse start and end time
@@ -843,6 +848,11 @@ public class PersonViewController {
 			msg = msg + "car_park is empty\n";
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
+		if (password.isEmpty())
+			msg = msg + "password is empty\n";
+		
+		
+		
 		/* if( end_date != null)
         {
             LocalDate today = LocalDate.now();
@@ -939,52 +949,55 @@ public class PersonViewController {
 
 
 	@FXML
-	private Button In_Advance_Customer_back_btn;
+    private Button In_Advance_Customer_back_btn;
 
-	@FXML
-	private TextField In_Advance_Customer_end_time;
+    @FXML
+    private TextField In_Advance_Customer_end_time;
 
-	@FXML
-	private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
+    @FXML
+    private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
 
-	@FXML
-	private TextField In_Advance_Customer_id;
+    @FXML
+    private TextField In_Advance_Customer_id;
 
-	@FXML
-	private RadioButton In_Advance_Customer_cash;
+    @FXML
+    private RadioButton In_Advance_Customer_cash;
 
-	@FXML
-	private ToggleGroup money_toggle;
+    @FXML
+    private ToggleGroup money_toggle;
 
-	@FXML
-	private TextField In_Advance_Customer_phone_number;
+    @FXML
+    private PasswordField In_Advance_Customer_password;
 
-	@FXML
-	private DatePicker In_Advance_Customer_end_date;
+    @FXML
+    private TextField In_Advance_Customer_phone_number;
 
-	@FXML
-	private TextField In_Advance_Customer_car_number;
+    @FXML
+    private DatePicker In_Advance_Customer_end_date;
 
-	@FXML
-	private TextField In_Advance_Customer_first_name;
+    @FXML
+    private TextField In_Advance_Customer_car_number;
 
-	@FXML
-	private TextField In_Advance_Customer_email;
+    @FXML
+    private TextField In_Advance_Customer_first_name;
 
-	@FXML
-	private RadioButton In_Advance_Customer_credit_card;
+    @FXML
+    private TextField In_Advance_Customer_email;
 
-	@FXML
-	private Button In_Advance_Customer_order;
+    @FXML
+    private RadioButton In_Advance_Customer_credit_card;
 
-	@FXML
-	private DatePicker In_Advance_Customer_start_date;
+    @FXML
+    private Button In_Advance_Customer_order;
 
-	@FXML
-	private TextField In_Advance_Customer_last_name;
+    @FXML
+    private DatePicker In_Advance_Customer_start_date;
 
-	@FXML
-	private TextField In_Advance_Customer_start_time;
+    @FXML
+    private TextField In_Advance_Customer_last_name;
+
+    @FXML
+    private TextField In_Advance_Customer_start_time;
 
 
 	@FXML
@@ -1013,9 +1026,9 @@ public class PersonViewController {
 		String end_time = In_Advance_Customer_end_time.getText();
 		String phone = In_Advance_Customer_phone_number.getText();
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
-
+		String password = In_Advance_Customer_password.getText();
 		//In_Advance_Customer_parking_lot_split_menu_btn.
-		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time);
+		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time,password);
 
 		if (!In_Advance_Customer_credit_card.isSelected() && !In_Advance_Customer_cash.isSelected())
 			err_msg = err_msg + "please select payment method\n";
@@ -1069,7 +1082,7 @@ public class PersonViewController {
 	}
 
 
-	private String In_Advance_Customer_inputIsValid(String id, String car_number, String email, LocalDate start_date, String start_time, LocalDate end_date, String end_time) throws ParseException {
+	private String In_Advance_Customer_inputIsValid(String id, String car_number, String email, LocalDate start_date, String start_time, LocalDate end_date, String end_time, String password) throws ParseException {
 
 
 		String msg = "";
@@ -1085,8 +1098,16 @@ public class PersonViewController {
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
 
+		if (password.isEmpty())
+		{
+			msg = msg + "password is empty\n";
+
+		}
+		
 		if (start_time.isEmpty())
 			msg = msg + "start time is empty\n";
+		
+		
 		else if (!check_hour_minute(start_time)) {
 			msg = msg + "fix starting hour and minute \n";
 			dateFlag = 0;
