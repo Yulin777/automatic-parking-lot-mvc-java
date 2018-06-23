@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="CPS.View.PersonViewController">
+   <children>
+      <Button fx:id="cancel_order_view_back_btn" layoutX="14.0" layoutY="261.0" mnemonicParsing="false" onAction="#cancel_order_view_back" text="&lt;&lt; back" />
+      <Text layoutX="64.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="order id:" />
+      <TextField fx:id="cancel_order_view_id_bar" layoutX="167.0" layoutY="90.0" promptText="order id:" />
+      <Text layoutX="37.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="please provide order id you like to cancel">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Button fx:id="cancel_order_view_cancel_order_btn" layoutX="198.0" layoutY="176.0" mnemonicParsing="false" onAction="#cancel_order_view_cancel_order" text="cancel order" />
+   </children>
+</AnchorPane>

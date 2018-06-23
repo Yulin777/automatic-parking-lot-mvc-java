@@ -213,8 +213,10 @@ public class Server {
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
+		} 
+		else if (cmd[0].equals("logout") && cmd[1].equals("client")) {
+			CustomerController.logout(cmd[2]);
 		}
-
 
 	}
 }
