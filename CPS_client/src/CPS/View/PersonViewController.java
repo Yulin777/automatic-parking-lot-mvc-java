@@ -278,26 +278,21 @@ public class PersonViewController {
 		// TODO calculate the price
 		String car_id = finished_parking_car_number_bar.getText();
 		String err_msg = "";
-		double bill;
 		if(car_id.isEmpty())
 		{
 			err_msg = err_msg + "please provide car number\n";
-			createMsg(event, err_msg, "error msg");
-
+		}
+		else if(client.endParking(car_id)) {
+			double bill = client.getPrice(car_id);
+			if(bill != Double.MAX_VALUE)
+				createBillMsg(event, String.valueOf(bill));
 		}
 		else
-		{
-
-
-			bill = client.endParking(car_id);
-			if(bill != Double.MAX_VALUE)
-			{
-				createBillMsg(event,String.valueOf(bill));
-			}
-
-
-
-
+			err_msg = err_msg + "ongoing order doesn't exists\n";
+		
+		if (!err_msg.isEmpty()) {
+			createMsg(event, err_msg, "error msg");
+			return;
 		}
 	}
 
