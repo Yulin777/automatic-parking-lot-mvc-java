@@ -9,7 +9,7 @@ public class subscriptionsEndCheck implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("[auto] start check for finish subscriptions");
+		System.out.println("[auto] start check for finished subscriptions");
 
 		server.sqlConnection sql = server.sqlConnection.getInstant();
 		java.sql.PreparedStatement stmt =null;
@@ -21,7 +21,7 @@ public class subscriptionsEndCheck implements Runnable {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet uprs = statement.executeQuery("SELECT * FROM Messages");
 					uprs.moveToInsertRow();
-					uprs.updateString("messages_text", "your subscription is end in a week");
+					uprs.updateString("messages_text", "your subscription ends in a week");
 					uprs.updateInt("messages_confirmation", 0);
 					uprs.updateString("client_ID", rs.getString("client_ID"));
 
