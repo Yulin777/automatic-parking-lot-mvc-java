@@ -220,7 +220,7 @@ public class Server {
 		} 
 		
 		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePrices")) {
-			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4])));
+			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();

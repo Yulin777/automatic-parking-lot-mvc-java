@@ -69,7 +69,7 @@ public class ParkingStationController {
 	 * @param parkId
 	 * @param carId
 	 */
-	public void removeCar(int parkId, int carId) {
+	public static void removeCar(int parkId, int carId) {
 		java.sql.PreparedStatement updatestmt = null;
 
 		try {
@@ -203,9 +203,9 @@ public class ParkingStationController {
 	 * @param size
 	 * @return true if DB add success
 	 */
-	public boolean addParkingStaion(String address, Worker director, int size) {
+	public static boolean addParkingStaion(String address,int size) {
 		Statement stmt;
-
+		int id  = 0;
 		//add ParkingStation to db
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -217,7 +217,7 @@ public class ParkingStationController {
 			uprs.insertRow();
 
 			uprs.last();
-			int id = uprs.getInt("parking_id");
+			id = uprs.getInt("parking_id");
 			int[] prices = {5, 4, (72 * 4)};
 			String[] type = {"OCCASIONAL", "IN_ADVANCE", "SUBSCRIBED"};
 
@@ -249,8 +249,7 @@ public class ParkingStationController {
 			e.printStackTrace();
 		}
 
-		setupSlots(currentId, size);
-		currentId++;
+		setupSlots(id, size);
 		return (true);
 	}
 
