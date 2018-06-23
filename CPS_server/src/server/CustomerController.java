@@ -151,7 +151,7 @@ public class CustomerController {
 		
 		return return_res;
 	}
-	public void logout(String id) {
+	public static void logout(String id) {
 		loggedCustomers.remove(id);
 	}
 

@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -505,6 +506,24 @@ public class Client {
 		return res;
 
 	}
+	public void logoutClient(String id){
+		Socket socket;
+		try {
+			socket = new Socket(ip, 8080);
+		
+		OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+		PrintWriter pw = new PrintWriter(osw);
+		pw.println("logout client " + id);
+		pw.flush();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
+
 
 
