@@ -132,22 +132,23 @@ public class PersonViewController {
 	}
 
 	@FXML
-	void cancel_order_view_cancel_order(ActionEvent event) throws IOException 
-	{
-		String err_msg ="";
-		
+	void cancel_order_view_cancel_order(ActionEvent event) throws IOException {
+		String err_msg = "";
+
 		String order_id = cancel_order_view_id_bar.getText();
-		
-		if(order_id.isEmpty())
-		{
-			err_msg+="please provide order id\n";
+
+		if (order_id.isEmpty()) {
+			err_msg += "please provide order id\n";
 		}
-		
-		if(!err_msg.isEmpty())
-		{
+
+		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
+
+
+		double bill = client.cancelOrder(Integer.parseInt(order_id));
+
 
 		
 		double bill = client.cancelOrder( Integer.parseInt(order_id));
@@ -160,17 +161,7 @@ public class PersonViewController {
 	}
 
 
-
 	//------------------^^^^cancel order-^^^^----------------------
-
-
-
-
-
-
-
-
-
 
 
 	//-----------------------add car view -------------------------------
@@ -221,9 +212,6 @@ public class PersonViewController {
 	//---------------------^^add car view ^^^--------------------
 
 
-
-
-
 	//------------------Complaint View----------------------------------
 
 
@@ -250,13 +238,12 @@ public class PersonViewController {
 	}
 
 	@FXML
-	void complaint_view_send_complaint(ActionEvent event) throws IOException
-	{
-		String err_msg="";
+	void complaint_view_send_complaint(ActionEvent event) throws IOException {
+		String err_msg = "";
 		String text_area = complaint_view_text_area.getText();
 		String id = complaint_view_id_bar.getText();
 
-		if(text_area.isEmpty())
+		if (text_area.isEmpty())
 			err_msg = err_msg + "please fill complaint\n";
 
 		if (id.isEmpty())
@@ -371,8 +358,7 @@ public class PersonViewController {
 
 
 	@FXML
-	void customer_view_read_massages(ActionEvent event) throws IOException
-	{
+	void customer_view_read_massages(ActionEvent event) throws IOException {
 		String msg = "no massages yet\n";
 		createMsg(event, msg, "error msg");
 	}
@@ -404,8 +390,7 @@ public class PersonViewController {
 
 
 	@FXML
-	void customer_view_add_car(ActionEvent event) throws IOException 
-	{
+	void customer_view_add_car(ActionEvent event) throws IOException {
 
 		String url = "AddCarView.fxml";
 		switchWindow(url);
@@ -867,15 +852,13 @@ public class PersonViewController {
 
 
 	@FXML
-	void manager_View_print_report(ActionEvent event) throws IOException 
-	{
-		String level =  manager_View_level_menu.getText();
-		String err_msg="";
-		err_msg=manager_Check_Valid_input_report(level);
+	void manager_View_print_report(ActionEvent event) throws IOException {
+		String level = manager_View_level_menu.getText();
+		String err_msg = "";
+		err_msg = manager_Check_Valid_input_report(level);
 
 
-		if(!err_msg.isEmpty())
-		{
+		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
@@ -889,11 +872,10 @@ public class PersonViewController {
 	}
 
 
-	String manager_Check_Valid_input_report(String level)
-	{
-		String err_msg="";
-		if(level.isEmpty())
-			err_msg+="please provide level\n";
+	String manager_Check_Valid_input_report(String level) {
+		String err_msg = "";
+		if (level.isEmpty())
+			err_msg += "please provide level\n";
 
 		return err_msg;
 	}
@@ -903,7 +885,7 @@ public class PersonViewController {
 		List<String> ls = Client.getStations();
 		manager_View_level_menu.getItems().clear();
 
-		String[] level_arr = {"0", "1", "2"};	
+		String[] level_arr = {"0", "1", "2"};
 		for (String i : level_arr) {
 			MenuItem mi = new MenuItem(i);
 			mi.setText(i);
@@ -919,13 +901,6 @@ public class PersonViewController {
 
 
 	}
-
-
-
-
-
-
-
 
 
 	//--------------------^MANAGER^----------------------------------------
@@ -1002,7 +977,7 @@ public class PersonViewController {
 		if (Occasional_Customer_cash.isSelected())
 			payMethod = "CASH";
 
-		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time,password);
+		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time, password);
 		String first_name = "Occasional";
 		String last_name = "Occasional";
 		String phone = "Occasional";
@@ -1024,26 +999,21 @@ public class PersonViewController {
 		timestamp.setHours(end_date_hours);
 		timestamp.setMinutes(end_date_minutes);
 
-		if (client.addNewCustomer(id, first_name, last_name, password, Customer.type.OCCASIONAL, email, phone)) {
-			if (client.addNewCar(car_number, id)) {
-				if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
+		client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone);
+		client.addNewCar(car_number, id);
+		if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
 
-					//TODO add success message to gui
-				}
-			}
+			//TODO add success message to gui
 		} else {
 			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
-
-
 		createMsg(event, "order complete.", "succ msg");
-
-
 	}
 
-	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String email, LocalDate end_date, String end_time,String password) throws ParseException {
+	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String
+			email, LocalDate end_date, String end_time, String password) throws ParseException {
 		String msg = "";
 		int dateFlag = 1;
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //parse start and end time
@@ -1236,7 +1206,7 @@ public class PersonViewController {
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
 		String password = In_Advance_Customer_password.getText();
 		//In_Advance_Customer_parking_lot_split_menu_btn.
-		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time,password);
+		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time, password);
 
 		if (!In_Advance_Customer_credit_card.isSelected() && !In_Advance_Customer_cash.isSelected())
 			err_msg = err_msg + "please select payment method\n";
@@ -1295,7 +1265,8 @@ public class PersonViewController {
 	}
 
 
-	private String In_Advance_Customer_inputIsValid(String id, String car_number, String email, LocalDate start_date, String start_time, LocalDate end_date, String end_time, String password) throws ParseException {
+	private String In_Advance_Customer_inputIsValid(String id, String car_number, String email, LocalDate
+			start_date, String start_time, LocalDate end_date, String end_time, String password) throws ParseException {
 
 
 		String msg = "";
@@ -1311,8 +1282,7 @@ public class PersonViewController {
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
 
-		if (password.isEmpty())
-		{
+		if (password.isEmpty()) {
 			msg = msg + "password is empty\n";
 
 		}
@@ -1449,16 +1419,14 @@ public class PersonViewController {
 	}
 
 	@FXML
-	void Ceo_View_print_report(ActionEvent event) throws IOException 
-	{
-		String level =  Ceo_View_level_menu.getText();
+	void Ceo_View_print_report(ActionEvent event) throws IOException {
+		String level = Ceo_View_level_menu.getText();
 		String location = Ceo_View_location_menu.getText();
-		String err_msg="";
-		err_msg=Ceo_Check_Valid_input_report(level,location);
+		String err_msg = "";
+		err_msg = Ceo_Check_Valid_input_report(level, location);
 
 
-		if(!err_msg.isEmpty())
-		{
+		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
@@ -1537,7 +1505,7 @@ public class PersonViewController {
 		return arr;
 	}
 
-	public void ShowReport( int Level,int park_lot_id) {
+	public void ShowReport(int Level, int park_lot_id) {
 		Stage st = new Stage();
 		GridPane root = new GridPane();
 		Client cli = new Client();
@@ -1649,7 +1617,7 @@ public class PersonViewController {
 		window.setTitle(pageTitle);
 		window.show();
 	}
-	//---------------------------------------------------------- 
+	//----------------------------------------------------------
 
 	void setWorkerName(String name) {
 		worker_name_label.setText("Hello " + name);
