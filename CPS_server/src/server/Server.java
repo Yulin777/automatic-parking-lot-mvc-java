@@ -164,11 +164,11 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
-			double res = OrderController.calcPrice(cmd[2]);
+			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
-			OrderController.removeOrder(cmd[2]);
+			OrderController.removeOrder(cmd[2], "ONGOING");
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("slots")) {
 			int[][][] res = ParkingStationController.getSlotStatus(Integer.parseInt(cmd[2]));
