@@ -220,7 +220,7 @@ public class Server {
 		} 
 		
 		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePrices")) {
-			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4])));
+			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
@@ -237,7 +237,7 @@ public class Server {
 			ParkingStationController.setOutOfOrderSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
 		}
 		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
-			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+//			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
 		}
 		else if (cmd[0].equals("response") && cmd[1].equals("Message")) {
 			OrderController.responseToMessage(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]));	
