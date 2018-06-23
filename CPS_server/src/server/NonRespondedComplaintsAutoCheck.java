@@ -26,14 +26,16 @@ public class NonRespondedComplaintsAutoCheck implements Runnable {
 			stmt2 =  sql.conn.prepareStatement("SELECT * FROM workers WHERE worker_type = 'CustomerService';");
 			ResultSet rs2 = stmt2.executeQuery();
 			rs2.next();//moving to result
-			System.out.println("rs2:: "+rs2.getString("worker_id") );
-			while(rs.next()) {
+		
+			
+			while(rs.next())//while there are unanswered complaints:: 
+			{
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet uprs = statement.executeQuery("SELECT * FROM workersMessages");
 					uprs.moveToInsertRow();
 					uprs.updateString("messages_text", "Conplaint ID:"+rs.getString("complaint_number")+" is one day old and still has no response!!");
 					uprs.updateInt("messages_confirmation", 0);
-					uprs.updateString("worker_ID", rs2.getString("worker_id"));
+					uprs.updateString("worker_ID", rs2.getString("worker_id"));//assigning the unresponded compliants bot id
 					uprs.insertRow();
 					System.out.println("[auto] there are unresponded complainets");
 			}
