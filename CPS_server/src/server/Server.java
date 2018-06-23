@@ -218,7 +218,7 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} 
-		
+		//====================parking staion prices===========================================================
 		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePrices")) {
 			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
@@ -227,6 +227,14 @@ public class Server {
 			currentSocket.close();
 		}
 		
+		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePricesCeoApprov")) {
+			String res = ParkingStationController.updateParkingStaionPricesCeoApprove(cmd[2],cmd[3],cmd[4]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
+		//====================parking staion prices end===========================================================	
 		else if (cmd[0].equals("logout") && cmd[1].equals("client")) {
 			CustomerController.logout(cmd[2]);
 		}
