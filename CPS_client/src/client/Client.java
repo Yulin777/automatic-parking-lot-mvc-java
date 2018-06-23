@@ -18,6 +18,8 @@ import server.Worker;
 
 public class Client {
 	public Client() {
+		System.out.println(cancelOrder(51));
+		
 	}
 
 	public Customer customerLogin(String id, String password) {
@@ -458,4 +460,27 @@ public class Client {
 		return res;
 	}
 
+	public double cancelOrder(int orderId) {
+		double res = Double.MAX_VALUE;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("cancel order " + String.valueOf(orderId));
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (double) ois.readObject();
+			if (res != Double.MAX_VALUE)
+				System.out.println("[response] order canceled succeessfully");
+			else
+				System.out.println("[response] order cancel failed");
+
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return res;
+
+	}
 }
