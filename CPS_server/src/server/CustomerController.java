@@ -101,6 +101,7 @@ public class CustomerController {
 			res = stmt.executeUpdate(); 
 			
 			if(res==1) {
+				System.out.println("client deleted successfully");
 				return_res = true;
 			}
 			stmt.close();
@@ -147,14 +148,5 @@ public class CustomerController {
 		return return_res;
 	}
 
-
-	public boolean addCarToCustomer(int sid, int carNumber, int customerPid) {
-		return false;
-	}
-
-	public boolean removeCar(int customerPid, int CarNumber) {
-		return true;
-		// test
-	}
 
 }

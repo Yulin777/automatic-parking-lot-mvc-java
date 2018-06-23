@@ -4,20 +4,6 @@
 
 package CPS.View;
 
-import client.Client;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import server.ComplaintController;
-import server.Customer;
-import server.OrderController;
-
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -27,12 +13,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import client.Client;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import server.ComplaintController;
+import server.Customer;
 import server.Customer.type;
 import server.CustomerController;
-import javafx.scene.control.MenuItem;
-import javafx.event.EventHandler;
-
-import javafx.scene.control.SplitMenuButton;
 
 public class PersonViewController {
 
