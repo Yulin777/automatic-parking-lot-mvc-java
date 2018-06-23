@@ -25,9 +25,8 @@ public class OrderController {
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 
 
-
 	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
-			java.sql.Timestamp endDate) {
+											java.sql.Timestamp endDate) {
 		Statement stmt;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -88,7 +87,7 @@ public class OrderController {
 				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
 				uprs.updateString("order_car_id", carID);
 				int order_parking_id = getOrderParkingId(parkingName);
-//				uprs.updateString("order_parking_id", parkingName);
+				uprs.updateInt("order_parking_id", order_parking_id);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("end_date", endDate);
 				uprs.insertRow();
@@ -125,7 +124,7 @@ public class OrderController {
 		return res;
 	}
 
-	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate) {
+	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -141,6 +140,8 @@ public class OrderController {
 				uprs.updateString("order_type", OrderType.IN_ADVANCE.toString());
 				uprs.updateString("start_date", startDate);
 				uprs.updateString("end_date", endDate);
+				int order_parking_id = getOrderParkingId(parkingName);
+				uprs.updateInt("order_parking_id", order_parking_id);
 				uprs.insertRow();
 
 				System.out.println("New order was added successfully");
@@ -159,17 +160,18 @@ public class OrderController {
 
 	/**
 	 * check for Available Order of given car in current time
+	 *
 	 * @param parkId
 	 * @param carId
 	 * @return true if there is order
 	 */
-	public boolean checkAvailableOrder(int parkId,int carId){
-		java.sql.PreparedStatement stmt =null;
+	public boolean checkAvailableOrder(int parkId, int carId) {
+		java.sql.PreparedStatement stmt = null;
 		int numOfOrders = 0;
 		try {
-			stmt =  sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
-			stmt.setInt(1,parkId);
-			stmt.setInt(2,carId);
+			stmt = sql.conn.prepareStatement("SELECT count(*) FROM orders WHERE order_parking_id = ? AND order_car_id	= ? AND start_date <= NOW() AND end_date > NOW()");
+			stmt.setInt(1, parkId);
+			stmt.setInt(2, carId);
 
 
 			ResultSet rs = stmt.executeQuery();
@@ -177,20 +179,19 @@ public class OrderController {
 				numOfOrders = rs.getInt(1);
 			}
 
-			if(numOfOrders>0){
+			if (numOfOrders > 0) {
 				return true;
 			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-	public static boolean startParking(String carID){
+	public static boolean startParking(String carID) {
 		boolean flag = false;
-		int res=0;
+		int res = 0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT order_id FROM orders WHERE order_car_id = ?");
@@ -199,15 +200,15 @@ public class OrderController {
 			if (rs.next()) {
 				String orderID = rs.getString(1);
 
-				stmt =  sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
+				stmt = sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
 				stmt.setString(1, OrderStatus.ONGOING.toString());
 				stmt.setInt(2, Integer.valueOf(orderID));
 				res = stmt.executeUpdate();
-			} 
-			if(res == 1) {
+			}
+			if (res == 1) {
 				System.out.println("parking started succsfully");
 				flag = true;
-			}else {
+			} else {
 				System.err.println("cannot start parking");
 			}
 			rs.close();
@@ -218,15 +219,15 @@ public class OrderController {
 		return flag;
 	}
 
-	public static boolean orderOngoingExist(String carID){
+	public static boolean orderOngoingExist(String carID) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\""+ carID +"\" AND `order_status`=\"ONGOING\"");
+			stmt = sql.conn.prepareStatement("SELECT * FROM `orders` WHERE `order_car_id`=\"" + carID + "\" AND `order_status`=\"ONGOING\"");
 //			stmt.setString(1, carID);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				flag=true;
+				flag = true;
 				System.out.println("order ongoing exists");
 			} else {
 				System.out.println("order ongoing doesnt exist");
@@ -239,8 +240,8 @@ public class OrderController {
 		return flag;
 	}
 
-	public static double calcPrice(String carID){
-		double res=Double.MAX_VALUE, price_per_hour=0, hours=0;
+	public static double calcPrice(String carID) {
+		double res = Double.MAX_VALUE, price_per_hour = 0, hours = 0;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ?");
@@ -252,7 +253,7 @@ public class OrderController {
 				Timestamp nowTime = new Timestamp(System.currentTimeMillis());
 				long end_diff = endTime.getTime() - startTime.getTime();
 				long now_diff = nowTime.getTime() - startTime.getTime();
-				hours = (now_diff-end_diff) / 3600000.0;
+				hours = (now_diff - end_diff) / 3600000.0;
 
 				String type = rs.getString(5);
 				int parking_id = rs.getInt(6);
@@ -261,7 +262,7 @@ public class OrderController {
 				stmt.setString(2, type);
 				rs = stmt.executeQuery();
 
-				if(rs.next()) {
+				if (rs.next()) {
 					price_per_hour = rs.getDouble(1);
 					res = hours * price_per_hour;
 					System.out.println("price calculated succsfully");
@@ -278,14 +279,13 @@ public class OrderController {
 		return res;
 	}
 
-	public static boolean removeOrder(String carID){
-		boolean res=false;
+	public static boolean removeOrder(String carID) {
+		boolean res = false;
 		String clientId = Car.getClientId(carID);
-		if(CustomerController.removeCustomer(clientId)) {
+		if (CustomerController.removeCustomer(clientId)) {
 			System.out.println("order removed succsfully");
-			res=true;
-		}
-		else
+			res = true;
+		} else
 			System.out.println("remove order failed");
 
 		return res;
