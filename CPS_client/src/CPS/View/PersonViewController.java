@@ -51,6 +51,66 @@ public class PersonViewController {
 	static String pid;
 
 
+	
+	
+	
+	
+	//-------------Order detail view -----------------
+	
+	@FXML
+    private TextField order_detail_view_id_bar;
+
+    @FXML
+    private TextArea order_detail_view_text_area;
+
+    @FXML
+    private Button order_detail_view_read_order_details_btn;
+
+    @FXML
+    private Button order_detail_view_back_btn;
+
+    @FXML
+    void order_detail_view_read_order_details(ActionEvent event) throws IOException 
+    {
+    	String order_id = order_detail_view_id_bar.getText();
+    	String err_msg ="";
+    	
+    	if(order_id.isEmpty())
+    		err_msg += "please provide order id\n"; 
+    	
+    	
+    	
+    	if(!err_msg.isEmpty())
+    	{
+			createMsg(event, err_msg, "error msg");
+			return;
+    	}
+
+    	String details = "";
+    	details=client.getOrderStatus(Integer.parseInt(order_id));
+    	
+    	if(details == null)
+    	{
+    		err_msg+= "wrong order id\n";
+			createMsg(event, err_msg, "error msg");
+			return;
+    	}
+    
+    	order_detail_view_text_area.setText(details);
+    	order_detail_view_text_area.setEditable(false);	
+    }
+
+    @FXML
+    void order_detail_view_back(ActionEvent event) throws IOException {
+    	String url = "CustomerView.fxml";
+		switchWindow(url);
+		switchScene(event, "customer page");
+
+
+    }
+	
+	
+	//-------------------^^^^^Order detail view^^^^^^^-------------------
 
 	//--------------------cancel order --------------------------
 
@@ -274,37 +334,40 @@ public class PersonViewController {
 	//----------------Customer View-------------------------------------
 
 	@FXML
-	private Label customer_view_label12;
+    private Label customer_view_label12;
 
-	@FXML
-	private Label customer_view_label;
+    @FXML
+    private Button customer_view_see_my_orders_btn;
 
-	@FXML
-	private Button customer_view_end_parking_btn;
+    @FXML
+    private Label customer_view_label;
 
-	@FXML
-	private Button customer_view_add_car_btn;
+    @FXML
+    private Button customer_view_end_parking_btn;
 
-	@FXML
-	private Label customer_view_num_msg_label;
+    @FXML
+    private Button customer_view_add_car_btn;
 
-	@FXML
-	private Button customer_view_cancel_btn;
+    @FXML
+    private Label customer_view_num_msg_label;
 
-	@FXML
-	private Label customer_view_label1;
+    @FXML
+    private Button customer_view_cancel_btn;
 
-	@FXML
-	private Button customer_view_read_massages_btn;
+    @FXML
+    private Button customer_view_log_out_btn;
 
-	@FXML
-	private Button customer_view_complaint_btn;
+    @FXML
+    private Label customer_view_label1;
 
-	@FXML
-	private Button customer_view_log_out_btn;
+    @FXML
+    private Button customer_view_read_massages_btn;
 
-	@FXML
-	private Button customer_view_start_parking_btn;
+    @FXML
+    private Button customer_view_complaint_btn;
+
+    @FXML
+    private Button customer_view_start_parking_btn;
 
 
 	@FXML
@@ -350,6 +413,17 @@ public class PersonViewController {
 
 	}
 
+	
+	 @FXML
+	    void customer_view_see_my_orders(ActionEvent event) throws IOException {
+		 	String url = "OrderDetailView.fxml";
+			switchWindow(url);
+			switchScene(event, "customer page");
+	    }
+
+	
+	
+	
 	//-------------------^^^-Customer View^^^-----------------------------------
 
 
