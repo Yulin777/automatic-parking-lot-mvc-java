@@ -204,13 +204,13 @@ public class Client {
 		return flag;
 	}
 
-	public boolean addOccasionalOrder(String car_id, Timestamp end_time, String car_park) {
+	public boolean addOccasionalOrder(String car_id, Timestamp end_time, String car_park, String payMethod) {
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park);
+			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park+ " " + payMethod);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -228,13 +228,13 @@ public class Client {
 		return flag;
 	}
 
-	public boolean addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time, String parkingName) {
+	public boolean addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		try {
 			Socket socket = new Socket("localhost", 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString() + " " + parkingName);
+			pw.println("add advanced " + car_id + " " + start_time.toString() + " " + end_time.toString() + " " + parkingName + " " + paymentMethod);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());

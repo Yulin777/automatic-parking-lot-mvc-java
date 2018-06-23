@@ -73,7 +73,7 @@ public class OrderController {
 		return ("New subscription was added succsfully");
 	}
 
-	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName) {
+	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -144,7 +144,7 @@ public class OrderController {
 		return res;
 	}
 
-	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName) {
+	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
