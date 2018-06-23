@@ -9,9 +9,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Server {
 	public static void main(String[] args) {
+		
+		 //run subscriptions End Check every day
+		 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		 scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+
 		ServerSocket socket = null;
 		try {
 			socket = new ServerSocket(8080);
