@@ -47,20 +47,6 @@ public class mainView extends Application {
     }
 
     public static void main(String[] args) {
-    	   Client myClient = new Client();
-           myClient.addNewComplaint("1", "some long long long long"
-           		+ "long long long longlong long long long long long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long"
-           		+ "long long long longlong long long longlong long long longlong long long long text"
-           		
-           		);
-           System.out.println("helllooooooooooooooo");
         launch(args);
      
     }

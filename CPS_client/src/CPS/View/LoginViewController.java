@@ -29,38 +29,43 @@ import server.Worker.WorkerType;
 public class LoginViewController {
 
 	
-	 @FXML
-	    private RadioButton manager_radio;
+	@FXML
+    private RadioButton manager_radio;
 
-	    @FXML
-	    private RadioButton worker_radio;
+    @FXML
+    private RadioButton worker_radio;
 
-	    @FXML
-	    private RadioButton customer_radio;
+    @FXML
+    private RadioButton customer_radio;
 
-	    @FXML
-	    private ProgressIndicator login_view_progress_bar;
+    @FXML
+    private ProgressIndicator login_view_progress_bar;
 
-	    @FXML
-	    private TextField id_bar;
+    @FXML
+    private TextField id_bar;
 
-	    @FXML
-	    private Button log_as_occasional_customer_btn;
+    @FXML
+    private Button log_as_occasional_customer_btn;
 
-	    @FXML
-	    private Button login_btn;
+    @FXML
+    private RadioButton ceo_radio;
 
-	    @FXML
-	    private ToggleGroup type;
+    @FXML
+    private Button login_btn;
 
-	    @FXML
-	    private PasswordField password_bar;
+    @FXML
+    private ToggleGroup type;
 
-	    @FXML
-	    private Button log_as_in_advance_customer_btn;
+    @FXML
+    private PasswordField password_bar;
 
-	    @FXML
-	    private Button login_view_customer_sign_in_btn;
+    @FXML
+    private Button log_as_in_advance_customer_btn;
+
+    @FXML
+    private Button login_view_customer_sign_in_btn;
+
+
 
 
 	    /*@FXML
@@ -169,7 +174,36 @@ public class LoginViewController {
 
 				//  controller.setWorkerInterfaceController(wIC);
 			}
-		} else {
+		}
+		else if (ceo_radio.isSelected())
+		{
+			if (isEmptyBars(id_bar, password_bar)) {
+				err_msg = err_msg + "missing password or user id\n";
+			} 
+			else {
+				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.CEO);
+			/*	if (w == null) {
+					err_msg = err_msg + "You are not a ceo\n";
+				} else {*/
+					url = "CeoView.fxml";
+					switchWindow(url);
+					PersonViewController controller = loader.getController();
+					controller.CeoLoad();
+					//controller.setCeo_name(w.getFirstName());
+					title = "Ceo Interface";
+				//}
+
+				//  controller.setWorkerInterfaceController(wIC);
+			}
+			
+			
+			
+			
+		}
+		
+		
+		
+		else {
 			err_msg = err_msg + "you need to select how to login\n";
 
 		}

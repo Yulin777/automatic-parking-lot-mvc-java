@@ -33,7 +33,7 @@
             <Insets />
          </opaqueInsets>
       </ProgressIndicator>
-      <RadioButton layoutX="19.0" layoutY="196.0" mnemonicParsing="false" text="log as CEO" />
+      <RadioButton fx:id="ceo_radio" layoutX="19.0" layoutY="196.0" mnemonicParsing="false" text="log as CEO" toggleGroup="$type" />
    </children>
    <opaqueInsets>
       <Insets />
