@@ -198,14 +198,27 @@ public class ParkingStationController {
 		//add ParkingStation to db
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet staion = stmt.executeQuery("SELECT * FROM ParkingStation WHERE parking_id=" + currentId + ";");
-			if (!staion.next()){
 				ResultSet uprs = stmt.executeQuery("SELECT * FROM ParkingStation");
 				uprs.moveToInsertRow();
-				uprs.updateString("parking_id", String.valueOf(currentId));
+				//uprs.updateString("parking_id", String.valueOf(currentId));
 				uprs.updateString("parking_address", address);
 				uprs.updateString("parking_size", String.valueOf(size));
 				uprs.insertRow();
+				
+				uprs.last();
+				int id = uprs.getInt("parking_id");
+				int [] prices = {5,4,(72*4)};
+				String [] type = {"OCCASIONAL","IN_ADVANCE", "SUBSCRIBED"}; 
+				
+				uprs = stmt.executeQuery("SELECT * FROM order_prices"); //create new park prices
+				for(int i=0;i<3;i++){
+					uprs.moveToInsertRow();
+					uprs.updateInt("parking_id", id);
+					uprs.updateString("order_type", type[i]);
+					uprs.updateDouble("order_price_per_hour", prices[i]);
+					uprs.insertRow();
+				}
+				
 
 				if (uprs != null) {
 					try {
@@ -219,10 +232,7 @@ public class ParkingStationController {
 					} catch (SQLException e) {
 					/* ignored */}
 				}
-			} else {
-				return (false);
-			}
-		} catch (SQLException e) {
+			} catch (SQLException e) {
 			e.printStackTrace();
 		}
 

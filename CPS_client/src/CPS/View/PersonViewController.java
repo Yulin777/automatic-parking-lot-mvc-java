@@ -679,7 +679,10 @@ public class PersonViewController {
 	//---------------------------Occasional Customer----------------------------------
 
 
-	@FXML
+    @FXML
+    private ToggleGroup money_toggle2;
+
+    @FXML
     private TextField Occasional_Customer_email;
 
     @FXML
@@ -690,6 +693,12 @@ public class PersonViewController {
 
     @FXML
     private Button Occasional_Customer_back_btn;
+
+    @FXML
+    private RadioButton Occasional_Customer_cash;
+
+    @FXML
+    private RadioButton Occasional_Customer_credit_card;
 
     @FXML
     private SplitMenuButton Occasional_Customer_parking_lot_btn;
@@ -729,9 +738,9 @@ public class PersonViewController {
 		String end_time = Occasional_Customer_end_time.getText();
 
 		String payMethod="";
-		if(In_Advance_Customer_credit_card.isSelected())
+		if(Occasional_Customer_credit_card.isSelected())
 			payMethod="CREDIT";
-		if(In_Advance_Customer_cash.isSelected())
+		if(Occasional_Customer_cash.isSelected())
 			payMethod="CASH";
 
 		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time);
@@ -772,7 +781,11 @@ public class PersonViewController {
 		} else {
 			//TODO error msg
 			createMsg(event, "could not add order.","error msg");
+			return;
 		}
+		
+		
+		createMsg(event, "order complete.","succ msg");
 
 
 	}
@@ -1176,13 +1189,19 @@ public class PersonViewController {
     }
 
     @FXML
-    void Ceo_View_print_report(ActionEvent event) 
+    void Ceo_View_print_report(ActionEvent event) throws IOException 
     {
     	String level =  Ceo_View_level_menu.getText();
     	String location = Ceo_View_location_menu.getText();
     	String err_msg="";
     	err_msg=Ceo_Check_Valid_input_report(level,location);
     	
+    	
+    	if(!err_msg.isEmpty())
+    	{
+    		createMsg(event, err_msg, "error msg");
+			return;
+    	}
     	int location_id = OrderController.getOrderParkingId(location);
     	int level_int = Integer.parseInt(level);
 
@@ -1190,7 +1209,10 @@ public class PersonViewController {
     	
     	
     }
-    
+    void setCeo_name(String name)
+    {
+    	Ceo_View_hello_label.setText("hello "+name);
+    }
     
     String Ceo_Check_Valid_input_report(String level, String location)
     {
@@ -1205,6 +1227,57 @@ public class PersonViewController {
     	
     	return err_msg;
     }
+    
+    void CeoLoad()
+    {
+    	List<String> ls = Client.getStations();
+    	Ceo_View_location_menu.getItems().clear();
+    	Ceo_View_level_menu.getItems().clear();
+    	
+    	String[] level_arr = {"0","1","2"};
+    	
+		for (String str :  ls)
+		{
+			MenuItem mi = new MenuItem(str);
+			mi.setText(str);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+                
+ @Override
+ public void handle(ActionEvent event) 
+ {
+	 Ceo_View_location_menu.setText( mi.getText());
+ }
+});
+			Ceo_View_location_menu.getItems().add(mi);
+		}
+	
+    
+    
+		for (String i :  level_arr)
+		{
+			MenuItem mi = new MenuItem(i);
+			mi.setText(i);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+                
+ @Override
+ public void handle(ActionEvent event) 
+ {
+	 Ceo_View_level_menu.setText( mi.getText());
+ }
+});
+			Ceo_View_level_menu.getItems().add(mi);
+		}
+    
+    
+    
+    }
+    
+
+    	
+    
+
+    
+    
     
     
     //---------------------^^^^^-Ceo View-^-^^-^^^^^------------------------------------
@@ -1241,12 +1314,13 @@ public class PersonViewController {
        GridPane root = new GridPane();       
        Client cli = new Client();
        int[][][] c = cli.getParkSoltStatus(park_lot_id);
-        
+                  
        int maxRow=0;
-       	for(int i = 0; i< c[0].length; i++)
+       	for(int i = 0; i< c[Level].length; i++)
        			if(c[Level][i].length > maxRow)
        				maxRow = c[Level].length;
        		
+       	
        	
        	int[]arr_col = fillArray(maxRow);
        	int []arr_row = fillArray(c[Level].length);

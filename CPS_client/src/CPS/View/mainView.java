@@ -47,9 +47,6 @@ public class mainView extends Application {
     }
 
     public static void main(String[] args) {
-    	   Client myClient = new Client();
-           myClient.assignAttendantToCOmplaint("18", "3");
-           System.out.println("helllooooooooooooooo");
         launch(args);
      
     }

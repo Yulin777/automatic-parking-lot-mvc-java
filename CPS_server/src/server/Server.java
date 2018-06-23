@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
 public class Server {
 	public static void main(String[] args) {
 		ParkingStationController psc = new ParkingStationController();
-		int[][][] arr = psc.getSlotStatus(1);
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+		scheduler.scheduleAtFixedRate(new lateOrderCheck(), 0, 5, TimeUnit.MINUTES);
 
 		ServerSocket socket = null;
 		try {
@@ -114,52 +114,46 @@ public class Server {
 
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
-			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);
+			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 
 		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
-			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7], cmd[8]);
+			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 		}
 		//================complaint handle============================================
-		else if (cmd[0].equals("add") && cmd[1].equals("complaint"))
-		{
+		else if (cmd[0].equals("add") && cmd[1].equals("complaint")) {
 			StringBuffer complaint_txt_builder = new StringBuffer();
-			for (int i = 3; i < cmd.length; i++) {
+			for (int i = 2; i < cmd.length; i++) {
 				complaint_txt_builder.append( cmd[i] );
-				complaint_txt_builder.append(" ");
 			}
 			String complaint_str = complaint_txt_builder.toString();
-//			System.out.println("new compaint str::" + complaint_str);
+			
 			
 			boolean res = ComplaintController.addNewComplaint(cmd[2], complaint_str);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		} 
-		else if (cmd[0].equals("assign") && cmd[1].equals("attendant"))
-		{
+		} else if (cmd[0].equals("assign") && cmd[1].equals("attendant")) {
 			String res = ComplaintController.assignAttendantToComlaint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		}
-		else if (cmd[0].equals("respond") && cmd[1].equals("compalint")) {
+		} else if (cmd[0].equals("respond") && cmd[1].equals("compalint")) {
 			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		}
-		else if (cmd[0].equals("add") && cmd[1].equals("compensation")) {
+		} else if (cmd[0].equals("add") && cmd[1].equals("compensation")) {
 			String res = ComplaintController.respondToCompalint(cmd[2], cmd[3]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
@@ -175,11 +169,11 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
-			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
+			double res = OrderController.calcPrice(cmd[2]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
-			OrderController.removeOrder(cmd[2], "ONGOING");
+			OrderController.removeOrder(cmd[2]);
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("slots")) {
 			int[][][] res = ParkingStationController.getSlotStatus(Integer.parseInt(cmd[2]));

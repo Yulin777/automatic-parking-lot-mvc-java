@@ -188,7 +188,8 @@ public class LoginViewController {
 					url = "CeoView.fxml";
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
-					controller.setCustomerName(w.getFirstName());
+					controller.CeoLoad();
+					//controller.setCeo_name(w.getFirstName());
 					title = "Ceo Interface";
 				}
 
