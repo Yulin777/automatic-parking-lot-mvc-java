@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="CPS.View.PersonViewController">
+   <children>
+      <Button fx:id="Ceo_View_back_btn" layoutX="25.0" layoutY="253.0" mnemonicParsing="false" onAction="#Ceo_View_back" text="&lt;&lt; back" />
+      <Button fx:id="Ceo_View_print_report_btn" layoutX="360.0" layoutY="88.0" mnemonicParsing="false" onAction="#Ceo_View_print_report" prefHeight="25.0" prefWidth="130.0" text="print report" />
+      <Text fx:id="Ceo_View_hello_label" layoutX="33.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="hello manger_name" />
+      <SplitMenuButton fx:id="Ceo_View_location_menu" layoutX="360.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Location">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </SplitMenuButton>
+      <Text layoutX="261.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="choose location:" />
+      <Text layoutX="261.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="choose level:" />
+      <SplitMenuButton fx:id="Ceo_View_level_menu" layoutX="360.0" layoutY="50.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Level">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Action 1" />
+            <MenuItem mnemonicParsing="false" text="Action 2" />
+         </items>
+      </SplitMenuButton>
+   </children>
+</AnchorPane>

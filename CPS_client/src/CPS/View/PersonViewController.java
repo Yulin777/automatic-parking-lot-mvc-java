@@ -1176,13 +1176,19 @@ public class PersonViewController {
     }
 
     @FXML
-    void Ceo_View_print_report(ActionEvent event) 
+    void Ceo_View_print_report(ActionEvent event) throws IOException 
     {
     	String level =  Ceo_View_level_menu.getText();
     	String location = Ceo_View_location_menu.getText();
     	String err_msg="";
     	err_msg=Ceo_Check_Valid_input_report(level,location);
     	
+    	
+    	if(!err_msg.isEmpty())
+    	{
+    		createMsg(event, err_msg, "error msg");
+			return;
+    	}
     	int location_id = OrderController.getOrderParkingId(location);
     	int level_int = Integer.parseInt(level);
 
@@ -1190,7 +1196,10 @@ public class PersonViewController {
     	
     	
     }
-    
+    void setCeo_name(String name)
+    {
+    	Ceo_View_hello_label.setText("hello "+name);
+    }
     
     String Ceo_Check_Valid_input_report(String level, String location)
     {
@@ -1205,6 +1214,57 @@ public class PersonViewController {
     	
     	return err_msg;
     }
+    
+    void CeoLoad()
+    {
+    	List<String> ls = Client.getStations();
+    	Ceo_View_location_menu.getItems().clear();
+    	Ceo_View_level_menu.getItems().clear();
+    	
+    	String[] level_arr = {"0","1","2"};
+    	
+		for (String str :  ls)
+		{
+			MenuItem mi = new MenuItem(str);
+			mi.setText(str);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+                
+ @Override
+ public void handle(ActionEvent event) 
+ {
+	 Ceo_View_location_menu.setText( mi.getText());
+ }
+});
+			Ceo_View_location_menu.getItems().add(mi);
+		}
+	
+    
+    
+		for (String i :  level_arr)
+		{
+			MenuItem mi = new MenuItem(i);
+			mi.setText(i);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+                
+ @Override
+ public void handle(ActionEvent event) 
+ {
+	 Ceo_View_level_menu.setText( mi.getText());
+ }
+});
+			Ceo_View_level_menu.getItems().add(mi);
+		}
+    
+    
+    
+    }
+    
+
+    	
+    
+
+    
+    
     
     
     //---------------------^^^^^-Ceo View-^-^^-^^^^^------------------------------------

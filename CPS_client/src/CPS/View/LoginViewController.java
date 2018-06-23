@@ -182,15 +182,16 @@ public class LoginViewController {
 			} 
 			else {
 				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.CEO);
-				if (w == null) {
+			/*	if (w == null) {
 					err_msg = err_msg + "You are not a ceo\n";
-				} else {
+				} else {*/
 					url = "CeoView.fxml";
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
-					controller.setCustomerName(w.getFirstName());
+					controller.CeoLoad();
+					//controller.setCeo_name(w.getFirstName());
 					title = "Ceo Interface";
-				}
+				//}
 
 				//  controller.setWorkerInterfaceController(wIC);
 			}
