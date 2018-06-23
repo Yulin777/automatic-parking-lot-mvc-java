@@ -320,6 +320,13 @@ public class Client {
 		return c;
 	}
 	
+	
+	/**
+	 * client function - respond to complaint
+	 * @param ComplaintID
+	 * @param response
+	 * @return true for success
+	 */
 	public boolean respondToCompalint(String ComplaintID, String response)
 	{
 		boolean c = false;
@@ -346,6 +353,39 @@ public class Client {
 		return c;
 	}
 	
+	/**
+	 * client function - add compensation to complaint
+	 * @param ComplaintID
+	 * @param compnsationAmount
+	 * @return true for success
+	 */
+	public boolean addCompensationToCompalint(String ComplaintID, float compnsationAmount)
+	{
+		boolean c = false;
+		try {
+			Socket socket = new Socket("localhost", 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("add compensation " + ComplaintID + " " + compnsationAmount);
+			pw.flush();
+
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			c = (boolean)ois.readObject();
+			if (c == true)
+				System.out.println("[response] complaint responded ");
+			else
+				System.out.println("[response] error respondeing to complaint");
+
+			socket.close();
+		} catch (IOException ioe) {
+			System.out.println("responding to complaint error");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return c;
+	}
+	
+	//==============================end of compliant handling=====================================
 	
 	public boolean endParking(String car_id) {
 		boolean res = false;
