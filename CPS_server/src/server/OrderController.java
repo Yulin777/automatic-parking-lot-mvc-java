@@ -25,6 +25,25 @@ public class OrderController {
 	private static server.sqlConnection sql = server.sqlConnection.getInstant();
 
 
+	public static String getOrderStatus(int order_id){
+		java.sql.PreparedStatement stmt =null;
+
+		try {
+			stmt =  sql.conn.prepareStatement("SELECT * FROM orders WHERE order_id = ?");
+		
+		stmt.setInt(1, order_id);
+		ResultSet rs = stmt.executeQuery();
+
+		if (!rs.next()) {
+			return null;
+		}
+		return rs.getString("order_status");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
 			java.sql.Timestamp endDate) {
 		Statement stmt;
