@@ -48,7 +48,7 @@ import server.OrderController;
 public class PersonViewController {
 
 	Client client = new Client();
-
+	static String pid;
 
 
 
@@ -93,7 +93,7 @@ public class PersonViewController {
 		double bill = client.cancelOrder( Integer.parseInt(order_id));
 		
 
-		//TODO need to delete order from database
+		//TODO need to delete order from database. DONE!
 		
 		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + Double.toString(bill);
 		createMsg(event, succ_msg, "succ msg");
@@ -131,7 +131,7 @@ public class PersonViewController {
     	String err_msg="";
     	if(car_num.isEmpty())
     		err_msg +="please provide car number\n";
-    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), "1111"))
+    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), pid))
     		err_msg +="car already exists\n";
     	
     	if(!err_msg.isEmpty())
@@ -332,6 +332,11 @@ public class PersonViewController {
 
 	void setCustomerName(String name) {
 		customer_view_label.setText("Hello " + name);
+		
+	}
+	
+	void setCustomerID(String id) {
+		pid = id;
 	}
 
 
@@ -408,7 +413,7 @@ public class PersonViewController {
 		if (car_id.isEmpty()) {
 			err_msg = err_msg + "please provide car number\n";
 		}
-		else if(client.endParking(car_id, "3232")) {
+		else if(client.endParking(car_id, pid)) {
 			double bill = client.getPrice(car_id);
 			if (bill != Double.MAX_VALUE)
 				createBillMsg(event, String.valueOf(bill));
@@ -1535,6 +1540,9 @@ public class PersonViewController {
 
 
 	void log_out(ActionEvent event) throws IOException {
+		//TODO: call client logout method
+		
+		
 		String url = "LoginView.fxml";
 		switchWindow(url);
 		switchScene(event, "login page");
