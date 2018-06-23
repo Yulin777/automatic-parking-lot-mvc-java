@@ -28,16 +28,21 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import server.ComplaintController;
 import server.Customer;
 import server.Customer.type;
 import server.CustomerController;
+import server.OrderController;
 
 public class PersonViewController {
 
@@ -1142,6 +1147,186 @@ public class PersonViewController {
 	//--------------------------------^^^^^In Advance Customer^^^^--------------------------
 
 
+	//----------------------------Ceo view-----------------------------
+	
+	@FXML
+    private SplitMenuButton Ceo_View_level_menu;
+
+    @FXML
+    private Button Ceo_View_back_btn;
+
+    @FXML
+    private SplitMenuButton Ceo_View_location_menu;
+
+    @FXML
+    private Text Ceo_View_hello_label;
+
+    @FXML
+    private Button Ceo_View_print_report_btn;
+
+    @FXML
+    void Ceo_View_back(ActionEvent event) throws IOException {
+    			String url = "LoginView.fxml";
+    			switchWindow(url);
+    			switchScene(event, "login page");
+
+    }
+
+    @FXML
+    void Ceo_View_print_report(ActionEvent event) 
+    {
+    	String level =  Ceo_View_level_menu.getText();
+    	String location = Ceo_View_location_menu.getText();
+    	String err_msg="";
+    	err_msg=Ceo_Check_Valid_input_report(level,location);
+    	
+    	int location_id = OrderController.getOrderParkingId(location);
+    	int level_int = Integer.parseInt(level);
+
+    	ShowReport(level_int,location_id);
+    	
+    	
+    }
+    
+    
+    String Ceo_Check_Valid_input_report(String level, String location)
+    {
+    	String err_msg="";
+    	
+    	if(level.equals("Level"))
+    		err_msg+="please provide level\n";
+    	if(location.equals("Location"))
+    		err_msg+="please provide location\n";
+
+    	
+    	
+    	return err_msg;
+    }
+    
+    
+    //---------------------^^^^^-Ceo View-^-^^-^^^^^------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//-----------------------------------Report----------------------------------
+	
+	public int[] fillArray(int length) {
+	    int[] arr = new int[length];
+	    for (int i = 0; i < length; ++i) {
+	        arr[i] = i;
+	    }
+	    return arr;
+	}
+	
+    public void ShowReport(int park_lot_id ,int Level) 
+    {
+	   Stage st = new Stage();
+       GridPane root = new GridPane();       
+       Client cli = new Client();
+       int[][][] c = cli.getParkSoltStatus(park_lot_id);
+        
+       int maxRow=0;
+       	for(int i = 0; i< c[0].length; i++)
+       			if(c[Level][i].length > maxRow)
+       				maxRow = c[Level].length;
+       		
+       	
+       	int[]arr_col = fillArray(maxRow);
+       	int []arr_row = fillArray(c[Level].length);
+       	
+       for(int x= 0; x < maxRow; x++)
+       {
+    	   TextField tf = new TextField();
+           
+           tf.setPrefHeight(25);
+           tf.setPrefWidth(25);
+           tf.setEditable(false);
+           tf.setText("" + arr_col[x] + "");
+           tf.setMinSize(25, 25);
+           root.setRowIndex(tf,0);
+           root.setColumnIndex(tf,x+1); 
+           root.getChildren().add(tf);
+       }
+    
+        for(int y = 0; y < c[Level].length; y++)
+        {
+            for(int x = 0; x < c[Level][y].length; x++)
+            {
+            	if(x==0)
+            	{
+            		TextField tf = new TextField();
+                    tf.setPrefHeight(25);
+                    tf.setPrefWidth(25);
+                    tf.setMinSize(25, 25);
+                    tf.setEditable(false);
+                    tf.setText("" + arr_row[y] + "");
+                    root.setRowIndex(tf,y+1);
+                    root.setColumnIndex(tf,0); 
+                    root.getChildren().add(tf);
+            	}
+            	
+                Rectangle r = new Rectangle();
+                r.setWidth(50);
+                r.setHeight(50);
+                r.setArcWidth(70);
+                r.setArcHeight(70);
+                r.setStroke(Color.BLACK);
+                
+                if(c[Level][y][x] == 0)
+                	r.setFill(Color.BLUE);
+                if(c[Level][y][x] == 1)
+                    r.setFill(Color.RED);
+                if(c[Level][y][x] == 2)
+                    r.setFill(Color.GREEN);
+                if(c[Level][y][x] == 3)
+                	r.setFill(Color.BLACK);  
+                root.setRowIndex(r,y+1);
+                root.setColumnIndex(r,x+1); 
+                root.getChildren().add(r);    
+            }
+        }
+
+        ScrollPane sp = new ScrollPane(root);
+        sp.setFitToWidth(true);
+
+        Scene scene = new Scene(sp, 550, 550);    
+        st.setTitle("Report");
+        st.setScene(scene);
+        st.show();
+    }
+
+	
+	
+	
+	
+	//-----------------------------------^^Report^^----------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	void log_out(ActionEvent event) throws IOException {
 		String url = "LoginView.fxml";
 		switchWindow(url);
