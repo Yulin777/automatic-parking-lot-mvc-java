@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import client.Client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -46,7 +47,22 @@ public class mainView extends Application {
     }
 
     public static void main(String[] args) {
+    	   Client myClient = new Client();
+           myClient.addNewComplaint("1", "some long long long long"
+           		+ "long long long longlong long long long long long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long"
+           		+ "long long long longlong long long longlong long long longlong long long long text"
+           		
+           		);
+           System.out.println("helllooooooooooooooo");
         launch(args);
+     
     }
 
 
