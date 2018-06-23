@@ -19,7 +19,7 @@ public class Server {
 		int[][][] arr = psc.getSlotStatus(1);
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+//		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
 
 		ServerSocket socket = null;
 		try {
@@ -169,11 +169,11 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
-			double res = OrderController.calcPrice(cmd[2]);
+			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
-			OrderController.removeOrder(cmd[2]);
+			OrderController.removeOrder(cmd[2], "ONGOING");
 			currentSocket.close();
 		} else if (cmd[0].equals("get") && cmd[1].equals("slots")) {
 			int[][][] res = ParkingStationController.getSlotStatus(Integer.parseInt(cmd[2]));
