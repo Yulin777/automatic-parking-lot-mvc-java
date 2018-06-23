@@ -18,6 +18,6 @@
       <Button fx:id="customer_view_complaint_btn" layoutX="320.0" layoutY="267.0" mnemonicParsing="false" onAction="#customer_view_complaint" prefHeight="25.0" prefWidth="178.0" text="complaints" />
       <Button fx:id="customer_view_start_parking_btn" layoutX="320.0" layoutY="204.0" mnemonicParsing="false" onAction="#customer_view_start_parking" prefHeight="25.0" prefWidth="178.0" text="start parking" />
       <Button fx:id="customer_view_end_parking_btn" layoutX="320.0" layoutY="236.0" mnemonicParsing="false" onAction="#customer_view_end_parking" prefHeight="25.0" prefWidth="178.0" text="end parking" />
-      <Button fx:id="customer_view_cancel_btn" layoutX="309.0" layoutY="130.0" mnemonicParsing="false" onAction="#customer_view_cancel" prefHeight="25.0" prefWidth="178.0" text="start parking" />
+      <Button fx:id="customer_view_cancel_btn" layoutX="309.0" layoutY="130.0" mnemonicParsing="false" onAction="#customer_view_cancel" prefHeight="25.0" prefWidth="178.0" text="cancel parking" />
    </children>
 </AnchorPane>

@@ -38,162 +38,164 @@ public class PersonViewController {
 
 	Client client = new Client();
 
-	
-	
+
+
 	//------------------Complaint View----------------------------------
-	
-	
-	
-	 	@FXML
-	    private Button complaint_view_back_btn;
-
-	    @FXML
-	    private TextField complaint_view_id_bar;
-
-	    @FXML
-	    private TextArea complaint_view_text_area;
-
-	    @FXML
-	    private Button complaint_view_send_complaint_btn;
-
-	    @FXML
-	    void complaint_view_back(ActionEvent event) throws IOException {
-	    	String url = "LoginView.fxml";
-			switchWindow(url);
-			switchScene(event, "login page");
 
 
 
-	    }
-
-	    @FXML
-	    void complaint_view_send_complaint(ActionEvent event) throws IOException 
-	    {
-	    	String err_msg="";
-	    	String text_area = complaint_view_text_area.getText();
-	    	String id = complaint_view_id_bar.getText();
-	    	
-	    	if(text_area.isEmpty())
-	    	 err_msg = err_msg + "please fill complaint\n";
-	    	
-	    	if(id.isEmpty())
-		    	 err_msg =err_msg +  "please enter your id\n";
-	    	
-	    	else
-	    	{
-	    		Customer c;
-	    		c = CustomerController.getClientById(id );
-	    		if(c == null)
-	    			err_msg =err_msg +  "you are not a customer\n";
-	    				
-	    	}
-	    	
-	    	if(!err_msg.isEmpty() && !ComplaintController.addNewComplaint(id,  text_area))
-	    	{
-	    		err_msg +="New complaint failed to be added\n";
-	    	}
-	    	
-	    	if(!err_msg.isEmpty())
-	    	{
-    		createMsg(event, err_msg, "error msg");
-    		return;
-	    	}
-	    	
-	    	
-	    	
-	    	//TODO write complaints to the server
-	    	String succ = "New complaint was added successfully\n";
-	    	createMsg(event, succ, "succ msg");
-	    }
-
-	
-	//-----------------^^Complaint View^^^-----------------------------
-	
-	//---------------------Start Parking---------------------------
-	
-	
 	@FXML
-    private Button start_parking_start_parking_btn;
+	private Button complaint_view_back_btn;
 
-    @FXML
-    private TextField start_parking_car_number_bar;
+	@FXML
+	private TextField complaint_view_id_bar;
 
-    @FXML
-    private Button start_parking_back_btn;
+	@FXML
+	private TextArea complaint_view_text_area;
 
-    @FXML
-    void start_parking_back(ActionEvent event) throws IOException {
-    	String url = "LoginView.fxml";
+	@FXML
+	private Button complaint_view_send_complaint_btn;
+
+	@FXML
+	void complaint_view_back(ActionEvent event) throws IOException {
+		//String url = "LoginView.fxml";
+		String url = "CustomerView.fxml";
 		switchWindow(url);
 		switchScene(event, "login page");
 
 
-    }
 
-    @FXML
-    void start_parking_start_parking(ActionEvent event) throws IOException 
-    {
-    	String car_num = start_parking_car_number_bar.getText();
-    	if(car_num.isEmpty())
-    	{
-    		String err_msg = "please provide car number\n";
-    		createMsg(event, err_msg, "error msg");
-    		return;
-    	}
-    	
-    	//TODO check if parking available + if this car number is signed + if customer is late (will pay fine)
-    	
-    	
-    	String succ_msg = "still in progress\n";
-    	createMsg(event, succ_msg, "succes msg");
-    	
-    }
-	
-	
-	
-	
+	}
+
+	@FXML
+	void complaint_view_send_complaint(ActionEvent event) throws IOException 
+	{
+		String err_msg="";
+		String text_area = complaint_view_text_area.getText();
+		String id = complaint_view_id_bar.getText();
+
+		if(text_area.isEmpty())
+			err_msg = err_msg + "please fill complaint\n";
+
+		if(id.isEmpty())
+			err_msg =err_msg +  "please enter your id\n";
+
+		else
+		{
+			Customer c;
+			c = CustomerController.getClientById(id );
+			if(c == null)
+				err_msg =err_msg +  "you are not a customer\n";
+
+		}
+
+		if(!err_msg.isEmpty() && !ComplaintController.addNewComplaint(id,  text_area))
+		{
+			err_msg +="New complaint failed to be added\n";
+		}
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+
+
+
+		//TODO write complaints to the server
+		String succ = "New complaint was added successfully\n";
+		createMsg(event, succ, "succ msg");
+	}
+
+
+	//-----------------^^Complaint View^^^-----------------------------
+
+	//---------------------Start Parking---------------------------
+
+
+	@FXML
+	private Button start_parking_start_parking_btn;
+
+	@FXML
+	private TextField start_parking_car_number_bar;
+
+	@FXML
+	private Button start_parking_back_btn;
+
+	@FXML
+	void start_parking_back(ActionEvent event) throws IOException {
+		//String url = "LoginView.fxml";
+		String url = "CustomerView.fxml";
+		switchWindow(url);
+		switchScene(event, "login page");
+
+
+	}
+
+	@FXML
+	void start_parking_start_parking(ActionEvent event) throws IOException 
+	{
+		String car_num = start_parking_car_number_bar.getText();
+		if(car_num.isEmpty())
+		{
+			String err_msg = "please provide car number\n";
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+
+		//TODO check if parking available + if this car number is signed + if customer is late (will pay fine)
+
+
+		String succ_msg = "still in progress\n";
+		createMsg(event, succ_msg, "succes msg");
+
+	}
+
+
+
+
 	//------------------^^Start Parking ^^---------------------------
-	
-	
-	
+
+
+
 	//----------------Customer View-------------------------------------
 
-    @FXML
-    private Label customer_view_label12;
+	@FXML
+	private Label customer_view_label12;
 
-    @FXML
-    private Label customer_view_label;
+	@FXML
+	private Label customer_view_label;
 
-    @FXML
-    private Button customer_view_end_parking_btn;
+	@FXML
+	private Button customer_view_end_parking_btn;
 
-    @FXML
-    private Label customer_view_num_msg_label;
+	@FXML
+	private Label customer_view_num_msg_label;
 
-    @FXML
-    private Button customer_view_cancel_btn;
+	@FXML
+	private Button customer_view_cancel_btn;
 
-    @FXML
-    private Label customer_view_label1;
+	@FXML
+	private Label customer_view_label1;
 
-    @FXML
-    private Button customer_view_read_massages_btn;
+	@FXML
+	private Button customer_view_read_massages_btn;
 
-    @FXML
-    private Button customer_view_complaint_btn;
+	@FXML
+	private Button customer_view_complaint_btn;
 
-    @FXML
-    private Button customer_view_log_out;
+	@FXML
+	private Button customer_view_log_out;
 
-    @FXML
-    private Button customer_view_start_parking_btn;
+	@FXML
+	private Button customer_view_start_parking_btn;
 
-    @FXML
-    void customer_view_read_massages(ActionEvent event) throws IOException 
-    {
-    	String msg = "no massages yet\n";
-    	createMsg(event, msg, "error msg");
-    }
+	@FXML
+	void customer_view_read_massages(ActionEvent event) throws IOException 
+	{
+		String msg = "no massages yet\n";
+		createMsg(event, msg, "error msg");
+	}
 
 	@FXML
 	void customer_view_log_out(ActionEvent event) throws IOException {
@@ -264,7 +266,8 @@ public class PersonViewController {
 
 	@FXML
 	void finish_parking_back(ActionEvent event) throws IOException {
-		String url = "LoginView.fxml";
+		//String url = "LoginView.fxml";
+		String url = "CustomerView.fxml";
 		switchWindow(url);
 		switchScene(event, "login page");
 
@@ -273,20 +276,29 @@ public class PersonViewController {
 	@FXML
 	void finish_parking_pay(ActionEvent event) throws IOException {
 		// TODO calculate the price
-		String id = finished_parking_car_number_bar.getText();
+		String car_id = finished_parking_car_number_bar.getText();
 		String err_msg = "";
-		if(id.isEmpty())
+		double bill;
+		if(car_id.isEmpty())
 		{
 			err_msg = err_msg + "please provide car number\n";
 			createMsg(event, err_msg, "error msg");
 
 		}
-			/*if(client.
+		else
+		{
+
+
+			bill = client.endParking(car_id);
+			if(bill != Double.MAX_VALUE)
 			{
-				
-			}*/
-			
-		createBillMsg(event, "0");
+				createBillMsg(event,String.valueOf(bill));
+			}
+
+
+
+
+		}
 	}
 
 
@@ -322,9 +334,9 @@ public class PersonViewController {
 
 	@FXML // fx:id="customer_sign_up_phone_number"
 	private TextField customer_sign_up_phone_number; // Value injected by FXMLLoader
-	
+
 	@FXML
-    private TextField customer_sign_up_password;
+	private TextField customer_sign_up_password;
 
 
 	@FXML
@@ -336,20 +348,20 @@ public class PersonViewController {
 		String car_number = customer_sign_up_car_number.getText();
 		String email = customer_sign_up_email.getText();
 		LocalDate start_date = customer_sign_up_date_picker.getValue();
-		
+
 		String firstName = customer_sign_up_first_name.getText();
 		String lastName = customer_sign_up_last_name.getText();
 		String password = customer_sign_up_password.getText();
 		String phone = customer_sign_up_phone_number.getText();
-		
+
 		String err_msg = Customer_Sign_Up_InputIsValid(firstName,lastName,password,phone, id, car_number, email, start_date);
 
-		
+
 		//TODO check also this new parameters
-		
-		
-		
-		
+
+
+
+
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			createMsg(event, err_msg, "error msg");
@@ -362,11 +374,11 @@ public class PersonViewController {
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
-		
+
 		String succ_msg = "Sign up succed\n";
 		createMsg(event, succ_msg,"succes msg");
 		return;
-		
+
 	}
 
 	private String Customer_Sign_Up_InputIsValid(String firstName,String lastName,String password,String phone,String id, String car_number, String email, LocalDate end_date) {
@@ -377,7 +389,7 @@ public class PersonViewController {
 			msg = msg + "car_number is empty\n";
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
-		
+
 		if(firstName.isEmpty())
 			msg = msg + "first name is empty\n";
 		if(lastName.isEmpty())
@@ -386,7 +398,7 @@ public class PersonViewController {
 			msg = msg + "password is empty\n";
 		if(phone.isEmpty())
 			msg = msg + "phone is empty\n";
-		
+
 		if (end_date != null) {
 			LocalDate today = LocalDate.now();
 			if (today.isAfter(end_date))
@@ -419,6 +431,48 @@ public class PersonViewController {
 
 
 
+	
+	
+	
+	
+	
+	
+	@FXML
+    void customer_view_end_parking(ActionEvent event) throws IOException {
+	 String url = "FinishedParking.fxml";
+		switchWindow(url);
+		switchScene(event,"Finish Parking");
+    }
+
+    @FXML
+    void customer_view_start_parking(ActionEvent event) throws IOException 
+    {
+    	
+    	String url = "StartParking.fxml";
+		switchWindow(url);
+		switchScene(event,"Start Parking");
+    }
+    
+
+
+
+    @FXML
+    void customer_view_complaint(ActionEvent event) throws IOException {
+    	String url = "ComplaintView.fxml";
+		switchWindow(url);
+		switchScene(event,"complaint section");
+    }
+
+	
+    @FXML
+    void customer_view_cancel(ActionEvent event) {
+
+    }
+	
+	
+	
+	
+	
 
 
 
@@ -624,29 +678,30 @@ public class PersonViewController {
 	//---------------------------Occasional Customer----------------------------------
 
 
-	@FXML // fx:id="Occasional_Customer_car_park"
-	private TextField Occasional_Customer_car_park; // Value injected by FXMLLoader
+	@FXML
+    private TextField Occasional_Customer_email;
 
-	@FXML // fx:id="Occasional_Customer_email"
-	private TextField Occasional_Customer_email; // Value injected by FXMLLoader
+    @FXML
+    private Button Occasional_Customer_order;
 
-	@FXML // fx:id="Occasional_Customer_order"
-	private Button Occasional_Customer_order; // Value injected by FXMLLoader
+    @FXML
+    private DatePicker Occasional_Customer_end_date;
 
-	@FXML // fx:id="Occasional_Customer_back_btn"
-	private Button Occasional_Customer_back_btn; // Value injected by FXMLLoader
+    @FXML
+    private Button Occasional_Customer_back_btn;
 
-	@FXML // fx:id="Occasional_Customer_end_date"
-	private DatePicker Occasional_Customer_end_date; // Value injected by FXMLLoader
+    @FXML
+    private SplitMenuButton Occasional_Customer_parking_lot_btn;
 
-	@FXML // fx:id="Occasional_Customer_id"
-	private TextField Occasional_Customer_id; // Value injected by FXMLLoader
+    @FXML
+    private TextField Occasional_Customer_id;
 
-	@FXML // fx:id="Occasional_Customer_car_number"
-	private TextField Occasional_Customer_car_number; // Value injected by FXMLLoader
+    @FXML
+    private TextField Occasional_Customer_car_number;
 
-	@FXML // fx:id="Occasional_Customer_end_time"
-	private TextField Occasional_Customer_end_time; // Value injected by FXMLLoader
+    @FXML
+    private TextField Occasional_Customer_end_time;
+
 
 	void createMsg(ActionEvent event, String Msg,String Title) throws IOException {
 		switchWindow("PopUpMsg.fxml");
@@ -665,23 +720,24 @@ public class PersonViewController {
 
 		String id = Occasional_Customer_id.getText();
 		String car_number = Occasional_Customer_car_number.getText();
-		String car_park = Occasional_Customer_car_park.getText();
+		String car_park = Occasional_Customer_parking_lot_btn.getText();
+		//= Occasional_Customer_car_park.getText();
 		String email = Occasional_Customer_email.getText();
 		LocalDate end_date = Occasional_Customer_end_date.getValue();
-		String end_date_string = Occasional_Customer_end_date.getValue().toString();
 		String end_time = Occasional_Customer_end_time.getText();
 		String err_msg = Occasional_Customer_inputIsValid(id, car_number, car_park, email, end_date, end_time);
 		String first_name = "Occasional";
 		String last_name = "Occasional";
 		String phone = "Occasional";
-		String[] end_time_by_parts = end_time.split(":");
-		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
-		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
-		Timestamp timestamp = Timestamp.valueOf(end_date_string+" "+end_date_hours+":"+end_date_minutes+":00.0");
-		timestamp.setHours(end_date_hours);
-		timestamp.setMinutes(end_date_minutes);
+		
+		
+		
+		
+		
+		
+		
 
-//		Timestamp end_time_overall = new Timestamp(end_date_year, end_date_month, end_date_day, end_date_hours, end_date_minutes, 0, 0);
+		//		Timestamp end_time_overall = new Timestamp(end_date_year, end_date_month, end_date_day, end_date_hours, end_date_minutes, 0, 0);
 
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
@@ -689,6 +745,13 @@ public class PersonViewController {
 
 			return;
 		}
+		String[] end_time_by_parts = end_time.split(":");
+		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
+		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
+		String end_date_string = Occasional_Customer_end_date.getValue().toString();
+		Timestamp timestamp = Timestamp.valueOf(end_date_string+" "+end_date_hours+":"+end_date_minutes+":00.0");
+		timestamp.setHours(end_date_hours);
+		timestamp.setMinutes(end_date_minutes);
 
 		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(car_number, id)) {
@@ -783,6 +846,15 @@ public class PersonViewController {
 			}
 		});
 	}
+	
+	public void Occasional_Customer_load_car_lots() 
+	{
+		List<String> ls = Client.getStations();
+		Occasional_Customer_parking_lot_btn.getItems().clear();
+
+		for (String str :  ls)
+			Occasional_Customer_parking_lot_btn.getItems().add(new MenuItem(str));	
+	}
 
 
 	//---------------------------^^Occasional Customer^^----------------------------------
@@ -792,54 +864,54 @@ public class PersonViewController {
 
 
 	@FXML
-    private Button In_Advance_Customer_back_btn;
+	private Button In_Advance_Customer_back_btn;
 
-    @FXML
-    private TextField In_Advance_Customer_end_time;
+	@FXML
+	private TextField In_Advance_Customer_end_time;
 
-    @FXML
-    private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
+	@FXML
+	private SplitMenuButton In_Advance_Customer_parking_lot_split_menu_btn;
 
-    @FXML
-    private TextField In_Advance_Customer_id;
+	@FXML
+	private TextField In_Advance_Customer_id;
 
-    @FXML
-    private RadioButton In_Advance_Customer_cash;
+	@FXML
+	private RadioButton In_Advance_Customer_cash;
 
-    @FXML
-    private ToggleGroup money_toggle;
+	@FXML
+	private ToggleGroup money_toggle;
 
-    @FXML
-    private TextField In_Advance_Customer_phone_number;
+	@FXML
+	private TextField In_Advance_Customer_phone_number;
 
-    @FXML
-    private DatePicker In_Advance_Customer_end_date;
+	@FXML
+	private DatePicker In_Advance_Customer_end_date;
 
-    @FXML
-    private TextField In_Advance_Customer_car_number;
+	@FXML
+	private TextField In_Advance_Customer_car_number;
 
-    @FXML
-    private TextField In_Advance_Customer_first_name;
+	@FXML
+	private TextField In_Advance_Customer_first_name;
 
-    @FXML
-    private TextField In_Advance_Customer_email;
+	@FXML
+	private TextField In_Advance_Customer_email;
 
-    @FXML
-    private RadioButton In_Advance_Customer_credit_card;
+	@FXML
+	private RadioButton In_Advance_Customer_credit_card;
 
-    @FXML
-    private Button In_Advance_Customer_order;
+	@FXML
+	private Button In_Advance_Customer_order;
 
-    @FXML
-    private DatePicker In_Advance_Customer_start_date;
+	@FXML
+	private DatePicker In_Advance_Customer_start_date;
 
-    @FXML
-    private TextField In_Advance_Customer_last_name;
+	@FXML
+	private TextField In_Advance_Customer_last_name;
 
-    @FXML
-    private TextField In_Advance_Customer_start_time;
+	@FXML
+	private TextField In_Advance_Customer_start_time;
 
-    
+
 
 	@FXML
 	void DatePicked(ActionEvent event) {
@@ -868,16 +940,16 @@ public class PersonViewController {
 		String phone = In_Advance_Customer_phone_number.getText();
 		String car_park = In_Advance_Customer_parking_lot_split_menu_btn.getText();
 		String err_msg = In_Advance_Customer_inputIsValid(clientID, carID, email, start_date, start_time, end_date, end_time);
-		
+
 		if(!In_Advance_Customer_credit_card.isSelected() && !In_Advance_Customer_cash.isSelected())
 			err_msg = err_msg + "please select payment method\n";
-		
+
 		String payMethod="";
 		if(In_Advance_Customer_credit_card.isSelected())
 			payMethod="CREDIT";
 		if(In_Advance_Customer_cash.isSelected())
 			payMethod="CASH";
-			
+
 		if (!err_msg.isEmpty()) {
 			//TODO error msg
 			//System.out.println(err_msg);
@@ -885,31 +957,31 @@ public class PersonViewController {
 
 			return;
 		}
-		
+
 		int status = client.AdvanceOneTimeOrder(clientID, carID, car_park, email, start_date, start_time, end_date, end_time);
-		
+
 		String start_date_string =""+ start_date.toString();// In_Advance_Customer_start_date.getValue();
 		String end_date_string =""+ end_date.toString();// In_Advance_Customer_end_date.getValue();
-		
-		
+
+
 		String[] end_time_by_parts = end_time.split(":");
 		String[] start_time_by_parts = end_time.split(":"); 
 		int start_date_hours = Integer.valueOf(start_time_by_parts[0]);
 		int start_date_minutes = Integer.valueOf(start_time_by_parts[1]);
 		int end_date_hours = Integer.valueOf(end_time_by_parts[0]);
 		int end_date_minutes = Integer.valueOf(end_time_by_parts[1]);
-		
+
 		Timestamp start_timestamp = Timestamp.valueOf(start_date_string+" "+start_date_hours+":"+start_date_minutes+":00.0");
-		
+
 		start_timestamp.setHours(start_date_hours);
 		start_timestamp.setMinutes(start_date_minutes);
-		
+
 		Timestamp end_timestamp = Timestamp.valueOf(end_date_string+" "+end_date_hours+":"+end_date_minutes+":00.0");
 		end_timestamp.setHours(end_date_hours);
 		end_timestamp.setMinutes(end_date_minutes);
-		
-		
-		
+
+
+
 		if (client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone)) {
 			if (client.addNewCar(carID, clientID)) {
 				if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp)) {
@@ -936,7 +1008,7 @@ public class PersonViewController {
 			msg = msg + "id is empty\n";
 		if (car_number.isEmpty())
 			msg = msg + "car_number is empty\n";
-		
+
 		if (email.isEmpty())
 			msg = msg + "email is empty\n";
 
@@ -997,11 +1069,11 @@ public class PersonViewController {
 	{
 		List<String> ls = Client.getStations();
 		In_Advance_Customer_parking_lot_split_menu_btn.getItems().clear();
-		
+
 		for (String str :  ls)
 			In_Advance_Customer_parking_lot_split_menu_btn.getItems().add(new MenuItem(str));	
 	}
-	
+
 
 	public void In_Advance_Customer_loadDates() {
 		In_Advance_Customer_start_date.setDayCellFactory(picker -> new DateCell() {

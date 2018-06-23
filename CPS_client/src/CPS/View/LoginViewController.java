@@ -29,55 +29,46 @@ import server.Worker.WorkerType;
 public class LoginViewController {
 
 	
-	@FXML
-    private Button login_view_complaint_btn;
-	
-	@FXML
-    private RadioButton manager_radio;
+	 @FXML
+	    private RadioButton manager_radio;
 
-    @FXML
-    private RadioButton worker_radio;
+	    @FXML
+	    private RadioButton worker_radio;
 
-    @FXML
-    private RadioButton customer_radio;
+	    @FXML
+	    private RadioButton customer_radio;
 
-    @FXML
-    private ProgressIndicator login_view_progress_bar;
+	    @FXML
+	    private ProgressIndicator login_view_progress_bar;
 
-    @FXML
-    private Button log_as_occasional_customer_btn;
+	    @FXML
+	    private TextField id_bar;
 
-    @FXML
-    private Button login_btn;
+	    @FXML
+	    private Button log_as_occasional_customer_btn;
 
-    @FXML
-    private ToggleGroup type;
+	    @FXML
+	    private Button login_btn;
 
-    @FXML
-    private Button log_as_in_advance_customer_btn;
+	    @FXML
+	    private ToggleGroup type;
 
-    @FXML
-    private Button login_view_end_parking_btn;
+	    @FXML
+	    private PasswordField password_bar;
 
-    @FXML
-    private Button login_view_start_parking_btn;
+	    @FXML
+	    private Button log_as_in_advance_customer_btn;
 
-    @FXML
-    private TextField id_bar;
-
-    @FXML
-    private PasswordField password_bar;
-
-    @FXML
-    private Button login_view_customer_sign_in_btn;
+	    @FXML
+	    private Button login_view_customer_sign_in_btn;
 
 
-	@FXML
+	    /*@FXML
 	void login_view_finished_parking(ActionEvent event) throws IOException {
 		String url = "FinishedParking.fxml";
 		switchWindow(url);
 		switchScene(event, "Finish Parking");
-	}
+	}*/
 
 
 	@FXML
@@ -89,6 +80,7 @@ public class LoginViewController {
 		// switchWindow(url);
 		PersonViewController controller = loader.getController();
 		controller.Occasional_Customer_loadDates();
+		controller.Occasional_Customer_load_car_lots();
 		// switchScene(event,"occasional customer");
 	}
 
@@ -195,7 +187,7 @@ public class LoginViewController {
 		window.show();
 	}
 
-	 @FXML
+	/* @FXML
 	    void login_view_end_parking(ActionEvent event) throws IOException {
 		 String url = "FinishedParking.fxml";
 			switchWindow(url);
@@ -221,7 +213,7 @@ public class LoginViewController {
 			switchScene(event,"complaint section");
 	    }
 	
-	
+	*/
 	
 	//----------------------------------------------------------------------------
 

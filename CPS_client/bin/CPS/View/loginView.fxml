@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.PasswordField?>
@@ -9,7 +13,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.LoginViewController">
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.LoginViewController">
    <children>
       <Button fx:id="login_btn" layoutX="20.0" layoutY="257.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="106.0" text="Log in" />
       <RadioButton fx:id="manager_radio" layoutX="18.0" layoutY="129.0" mnemonicParsing="false" text="log as manager ">
@@ -28,9 +32,6 @@
             <Insets />
          </opaqueInsets>
       </ProgressIndicator>
-      <Button fx:id="login_view_end_parking_btn" layoutX="310.0" layoutY="226.0" mnemonicParsing="false" onAction="#login_view_end_parking" prefHeight="25.0" prefWidth="178.0" text="end parking" />
-      <Button fx:id="login_view_start_parking_btn" layoutX="310.0" layoutY="194.0" mnemonicParsing="false" onAction="#login_view_start_parking" prefHeight="25.0" prefWidth="178.0" text="start parking" />
-      <Button fx:id="login_view_complaint_btn" layoutX="310.0" layoutY="257.0" mnemonicParsing="false" onAction="#login_view_complaint" prefHeight="25.0" prefWidth="178.0" text="complaints" />
       <RadioButton layoutX="19.0" layoutY="196.0" mnemonicParsing="false" text="log as CEO" />
    </children>
    <opaqueInsets>
