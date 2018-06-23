@@ -102,7 +102,7 @@ public class Server {
 			boolean flag = cc.addNewClient(cmd[2], cmd[3], cmd[4], cmd[5], cmd[6], cmd[7], cmd[8]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			//PrintWriter pw = new PrintWriter(osw);
-			osw.writeObject(flag);
+			osw.writeObject(true);
 			osw.flush();
 			currentSocket.close();
 
@@ -137,7 +137,6 @@ public class Server {
 				complaint_txt_builder.append(" ");
 			}
 			String complaint_str = complaint_txt_builder.toString();
-//			System.out.println("new compaint str::" + complaint_str);
 			
 			boolean res = ComplaintController.addNewComplaint(cmd[2], complaint_str);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
@@ -195,13 +194,10 @@ public class Server {
 			osw.flush();
 			OrderController.removeOrder(cmd[2], "ONGOING");
 			currentSocket.close();
-		} else if (cmd[0].equals("get") && cmd[1].equals("slots")) {
-			int[][][] res = ParkingStationController.getSlotStatus(Integer.parseInt(cmd[2]));
-			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
-			osw.writeObject(res);
-			osw.flush();
-			currentSocket.close();
-		} else if (cmd[0].equals("cancel") && cmd[1].equals("order")) {
+		} 
+		
+		
+		else if (cmd[0].equals("cancel") && cmd[1].equals("order")) {
 			double res = OrderController.cancelOrder(Integer.parseInt(cmd[2]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
@@ -215,9 +211,38 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} 
+		else if (cmd[0].equals("get") && cmd[1].equals("slots")) {
+			int[][][] res = ParkingStationController.getSlotStatus(Integer.parseInt(cmd[2]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		} 
+		
+		else if (cmd[0].equals("ParkingStaion") && cmd[1].equals("updatePrices")) {
+			String res = ParkingStationController.setParkingPrices(cmd[2],cmd[3],Double.parseDouble(cmd[4])));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
+		}
+		
 		else if (cmd[0].equals("logout") && cmd[1].equals("client")) {
 			CustomerController.logout(cmd[2]);
 		}
+		else if (cmd[0].equals("reseved") && cmd[1].equals("slot")) {
+			ParkingStationController.setResevedSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
+		}
+		else if (cmd[0].equals("outOfOrder") && cmd[1].equals("slot")) {
+			ParkingStationController.setOutOfOrderSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
+		}
+		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
+			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+		}
+		else if (cmd[0].equals("response") && cmd[1].equals("Message")) {
+			OrderController.responseToMessage(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]));	
+		}
+		 
 
 	}
 }

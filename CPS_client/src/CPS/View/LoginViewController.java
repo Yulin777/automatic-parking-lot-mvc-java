@@ -122,7 +122,9 @@ public class LoginViewController {
 				err_msg = err_msg + "missing password or user id\n";
 			} else {
 				Worker w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.ParkingWorker);
-
+				if (w == null) {
+					w = client.workerLogin(id_bar.getText(), password_bar.getText(), WorkerType.CustomerService);
+				}
 				if (w == null) {
 					err_msg = err_msg + "You are not a worker\n";
 				} else {
