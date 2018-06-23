@@ -25,7 +25,8 @@ public class NonRespondedComplaintsAutoCheck implements Runnable {
 			//selecting custumer service rep
 			stmt2 =  sql.conn.prepareStatement("SELECT * FROM workers WHERE worker_type = 'CustomerService';");
 			ResultSet rs2 = stmt2.executeQuery();
-			
+			rs2.next();//moving to result
+			System.out.println("rs2:: "+rs2.getString("worker_id") );
 			while(rs.next()) {
 				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				ResultSet uprs = statement.executeQuery("SELECT * FROM workersMessages");
