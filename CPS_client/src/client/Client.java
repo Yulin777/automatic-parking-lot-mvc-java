@@ -280,7 +280,7 @@ public class Client {
 
 			socket.close();
 		} catch (IOException ioe) {
-			System.out.println("complaint error");
+			System.out.println("adding new complaint error");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -309,7 +309,7 @@ public class Client {
 			if (c == true)
 				System.out.println("[response] Attendant assigned to complaint ");
 			else
-				System.out.println("[response] error assigning  assigned to complaint");
+				System.out.println("[response] error assigning attendant to complaint");
 
 			socket.close();
 		} catch (IOException ioe) {
@@ -372,13 +372,13 @@ public class Client {
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			c = (boolean)ois.readObject();
 			if (c == true)
-				System.out.println("[response] complaint responded ");
+				System.out.println("[response] compensation added ");
 			else
-				System.out.println("[response] error respondeing to complaint");
+				System.out.println("[response] error adding compensation");
 
 			socket.close();
 		} catch (IOException ioe) {
-			System.out.println("responding to complaint error");
+			System.out.println("adding compensation error");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
