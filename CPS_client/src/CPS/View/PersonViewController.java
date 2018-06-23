@@ -343,7 +343,6 @@ public class PersonViewController {
 	void Customer_Sign_up_Sign_up(ActionEvent event) throws IOException {
 
 
-		//TODO ceck extra parameters
 		String id = customer_sign_up_id.getText();
 		String car_number = customer_sign_up_car_number.getText();
 		String email = customer_sign_up_email.getText();
@@ -355,10 +354,6 @@ public class PersonViewController {
 		String phone = customer_sign_up_phone_number.getText();
 
 		String err_msg = Customer_Sign_Up_InputIsValid(firstName,lastName,password,phone, id, car_number, email, start_date);
-
-
-		//TODO check also this new parameters
-
 
 
 
@@ -374,6 +369,7 @@ public class PersonViewController {
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
+		c.addNewCar(car_number,id);
 
 		String succ_msg = "Sign up succed\n";
 		createMsg(event, succ_msg,"succes msg");
