@@ -74,7 +74,7 @@ public class OrderController {
 		return ("New subscription was added succsfully");
 	}
 
-	public static boolean addOccasionalOrder(String carID, String endDate, String parkingID) {
+	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName) {
 		boolean flag = false;
 		PreparedStatement stmt;
 		try {
@@ -87,7 +87,8 @@ public class OrderController {
 				uprs.moveToInsertRow();
 				uprs.updateString("order_status", OrderStatus.ONGOING.toString());
 				uprs.updateString("order_car_id", carID);
-				uprs.updateString("order_parking_id", parkingID);
+				int order_parking_id = getOrderParkingId(parkingName);
+//				uprs.updateString("order_parking_id", parkingName);
 				uprs.updateString("order_type", OrderType.OCCASIONAL.toString());
 				uprs.updateString("end_date", endDate);
 				uprs.insertRow();
@@ -104,6 +105,24 @@ public class OrderController {
 			e.printStackTrace();
 		}
 		return flag;
+	}
+
+	public static int getOrderParkingId(String parkingName) {
+		int res = -1;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT parking_id FROM ParkingStation WHERE parking_address=?;");
+			stmt.setString(1, parkingName);
+			ResultSet client = stmt.executeQuery();
+			if (client.next()) {
+				return client.getInt(1);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return res;
 	}
 
 	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate) {
