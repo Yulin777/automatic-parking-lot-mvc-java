@@ -523,6 +523,12 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+	public void setResevedSlot(int parkId,int level,int row,int col){}
+	public void setOutOfOrderSlot(int parkId,int level,int row,int col){}
+	public boolean addParkingStaion(String address,Worker director,int size){return true;}
+
+
+
 }
 
 

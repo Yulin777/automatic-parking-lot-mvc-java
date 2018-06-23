@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class OrderController {
+	ParkingStationController psc =new ParkingStationController();
 	public enum OrderStatus {
 		PENDING, ONGOING;
 	}
@@ -96,33 +99,39 @@ public class OrderController {
 	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		PreparedStatement stmt;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id=?");
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
 			if (!client.next()) {
+				
+				if(ParkingStationController.insertCar(getOrderParkingId(parkingName),LocalDateTime.parse(endDate, formatter), Integer.parseInt(carID))==true){
+					stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,end_date,order_parking_id) VALUES (?,?,?,?,?)"
+							, Statement.RETURN_GENERATED_KEYS);
 
-				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,end_date,order_parking_id) VALUES (?,?,?,?,?)"
-						, Statement.RETURN_GENERATED_KEYS);
+					stmt.setString(1, OrderStatus.PENDING.toString());
+					stmt.setString(2, carID);
+					stmt.setString(3, OrderType.IN_ADVANCE.toString());
+					stmt.setString(4, endDate);
+					stmt.setInt(5, getOrderParkingId(parkingName));
+					stmt.executeUpdate();
 
-				stmt.setString(1, OrderStatus.PENDING.toString());
-				stmt.setString(2, carID);
-				stmt.setString(3, OrderType.IN_ADVANCE.toString());
-				stmt.setString(4, endDate);
-				stmt.setInt(5, getOrderParkingId(parkingName));
-				stmt.executeUpdate();
+					ResultSet uprs = stmt.getGeneratedKeys();
+					if (uprs.next()) {
+						calcAndUpdatePrice(uprs.getInt(1));
+					}
 
-				ResultSet uprs = stmt.getGeneratedKeys();
-				if (uprs.next()) {
-					calcAndUpdatePrice(uprs.getInt(1));
+					System.out.println("New order was added succsfully");
+					flag = true;
+
+					uprs.close();
+					stmt.close();
+				}
 				}
 
-				System.out.println("New order was added succsfully");
-				flag = true;
-
-				uprs.close();
-				stmt.close();
-			} else {
+				 else {
 				System.out.println("order already exists for current car");
 			}
 		} catch (SQLException e) {
@@ -156,7 +165,7 @@ public class OrderController {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id=?");
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
-			if (/*!client.next()*/ OrderOverlaps(carID, startDate, endDate, parkingName) == false) {
+			if ((OrderOverlaps(carID, startDate, endDate, parkingName) == false)&&(ParkingStationController.checkAvilablePlace(getOrderParkingId(parkingName), startDate, endDate)==true)) {
 
 				stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,start_date,end_date,order_parking_id,order_payment_method ) VALUES (?,?,?,?,?,?,?)"
 						, Statement.RETURN_GENERATED_KEYS);

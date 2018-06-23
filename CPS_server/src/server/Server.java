@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -20,7 +21,7 @@ public class Server {
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 //		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
-
+		ParkingStationController.checkAvilablePlace(1,"2018-06-25 11:11:00", "2018-06-25 11:19:00");
 		ServerSocket socket = null;
 		try {
 			socket = new ServerSocket(8080);
