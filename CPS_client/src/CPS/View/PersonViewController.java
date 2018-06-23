@@ -1024,7 +1024,7 @@ public class PersonViewController {
 		timestamp.setHours(end_date_hours);
 		timestamp.setMinutes(end_date_minutes);
 
-		if (client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone)) {
+		if (client.addNewCustomer(id, first_name, last_name, password, Customer.type.OCCASIONAL, email, phone)) {
 			if (client.addNewCar(car_number, id)) {
 				if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
 
@@ -1278,7 +1278,7 @@ public class PersonViewController {
 		end_timestamp.setMinutes(end_date_minutes);
 
 
-		client.addNewCustomer(clientID, first_name, last_name, "Advanced", Customer.type.ADVANCED, email, phone);
+		client.addNewCustomer(clientID, first_name, last_name, password, Customer.type.ADVANCED, email, phone);
 		client.addNewCar(carID, clientID);
 		if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod)) {
 
