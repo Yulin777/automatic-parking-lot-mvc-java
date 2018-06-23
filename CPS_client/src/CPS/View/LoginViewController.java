@@ -151,6 +151,8 @@ public class LoginViewController {
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
 					controller.setManagerName(w.getFirstName());
+					controller.ManagerLoad();
+
 					title = "Manager Interface";
 				}
 			}
