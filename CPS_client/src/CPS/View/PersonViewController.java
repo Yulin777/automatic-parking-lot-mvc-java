@@ -86,8 +86,10 @@ public class PersonViewController {
     	 * 
     	 * 
     	 */
+    	String succ_msg = "car was added succsecfully\n";
     	
-    	
+    	createMsg(event, succ_msg, "succ msg");
+		return;
     	
     }
 
@@ -246,7 +248,7 @@ public class PersonViewController {
     private Button customer_view_complaint_btn;
 
     @FXML
-    private Button customer_view_log_out;
+    private Button customer_view_log_out_btn;
 
     @FXML
     private Button customer_view_start_parking_btn;
@@ -390,8 +392,8 @@ public class PersonViewController {
 	@FXML // fx:id="customer_sign_up_back_btn"
 	private Button customer_sign_up_back_btn; // Value injected by FXMLLoader
 
-	@FXML // fx:id="customer_sign_up_date_picker"
-	private DatePicker customer_sign_up_date_picker; // Value injected by FXMLLoader
+	//@FXML // fx:id="customer_sign_up_date_picker"
+	//private DatePicker customer_sign_up_date_picker; // Value injected by FXMLLoader
 
 	@FXML // fx:id="customer_sign_up_first_name"
 	private TextField customer_sign_up_first_name; // Value injected by FXMLLoader
@@ -410,14 +412,14 @@ public class PersonViewController {
 		String id = customer_sign_up_id.getText();
 		String car_number = customer_sign_up_car_number.getText();
 		String email = customer_sign_up_email.getText();
-		LocalDate start_date = customer_sign_up_date_picker.getValue();
+		//LocalDate start_date = customer_sign_up_date_picker.getValue();
 
 		String firstName = customer_sign_up_first_name.getText();
 		String lastName = customer_sign_up_last_name.getText();
 		String password = customer_sign_up_password.getText();
 		String phone = customer_sign_up_phone_number.getText();
 
-		String err_msg = Customer_Sign_Up_InputIsValid(firstName, lastName, password, phone, id, car_number, email, start_date);
+		String err_msg = Customer_Sign_Up_InputIsValid(firstName, lastName, password, phone, id, car_number, email);
 
 
 		if (!err_msg.isEmpty()) {
@@ -439,7 +441,7 @@ public class PersonViewController {
 
 	}
 
-	private String Customer_Sign_Up_InputIsValid(String firstName, String lastName, String password, String phone, String id, String car_number, String email, LocalDate end_date) {
+	private String Customer_Sign_Up_InputIsValid(String firstName, String lastName, String password, String phone, String id, String car_number, String email) {
 		String msg = "";
 		if (id.isEmpty())
 			msg = msg + "id is empty\n";
@@ -457,12 +459,12 @@ public class PersonViewController {
 		if (phone.isEmpty())
 			msg = msg + "phone is empty\n";
 
-		if (end_date != null) {
+		/*if (end_date != null) {
 			LocalDate today = LocalDate.now();
 			if (today.isAfter(end_date))
 				msg = msg + "choose only future dates\n";
 		} else
-			msg = msg + "date is empty\n";
+			msg = msg + "date is empty\n";*/
 
 		return msg;
 	}
@@ -477,14 +479,14 @@ public class PersonViewController {
 	}
 
 	public void Customer_Sign_Up_loadDates() {
-		customer_sign_up_date_picker.setDayCellFactory(picker -> new DateCell() {
+		/*customer_sign_up_date_picker.setDayCellFactory(picker -> new DateCell() {
 			public void updateItem(LocalDate date, boolean empty) {
 				super.updateItem(date, empty);
 				LocalDate today = LocalDate.now();
 
 				setDisable(empty || date.compareTo(today) < 0);
 			}
-		});
+		});*/
 	}
 
 
