@@ -53,10 +53,14 @@ public class Person implements Serializable{
 	//private static sqlConnection sql; = sqlConnection.getInstant();
 
 	/**
-	 * @param pid
-	 *            the id of the person
-	 * @param panme
-	 *            the name of the person
+	 * constructor
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param password
+	 * @param type
+	 * @param email
+	 * @param telephone
 	 */
 	public Person(String id, String firstName, String lastName, String password, String type, String email,
 			String telephone) {
