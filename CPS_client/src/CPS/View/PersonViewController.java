@@ -1174,7 +1174,7 @@ public class PersonViewController {
 	{
 		String url = "UpdatePricesView.fxml";
 		switchWindow(url);
-		switchScene(event, "login page");
+		switchScene(event, "update prices");
 	}
 
 
