@@ -25,9 +25,12 @@ import server.WorkerController;
 public class Client {
 	public Client() {
 	}
+
 	static String ip = "localhost";
+
 	/**
 	 * call CustomerController login function
+	 *
 	 * @param id
 	 * @param password
 	 * @return customer if succeed
@@ -60,6 +63,7 @@ public class Client {
 
 	/**
 	 * call server WorkerController login function
+	 *
 	 * @param email
 	 * @param password
 	 * @param type
@@ -92,7 +96,8 @@ public class Client {
 	}
 
 	/**
-	 * call server ParkingStationController getParkingIDs function 
+	 * call server ParkingStationController getParkingIDs function
+	 *
 	 * @return list of all ParkingStation name
 	 */
 	public static List<String> getStations() {
@@ -120,8 +125,10 @@ public class Client {
 		}
 		return stations;
 	}
+
 	/**
 	 * call server OrderController startParking function
+	 *
 	 * @param carID
 	 * @param clientID
 	 * @return true if update db succeed
@@ -151,8 +158,8 @@ public class Client {
 		}
 		return res;
 	}
+
 	/**
-	 * 
 	 * @param id
 	 * @param car_number
 	 * @param car_park
@@ -164,7 +171,7 @@ public class Client {
 	 * @return
 	 */
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
-			String start_time, LocalDate end_date, String end_time) {
+								   String start_time, LocalDate end_date, String end_time) {
 		int result;
 
 		// TODO: input validation
@@ -192,8 +199,10 @@ public class Client {
 
 		return 0;
 	}
+
 	/**
 	 * call CustomerController addNewClient function
+	 *
 	 * @param id
 	 * @param firstName
 	 * @param lastName
@@ -204,7 +213,7 @@ public class Client {
 	 * @return true if add to db succeed
 	 */
 	public boolean addNewCustomer(String id, String firstName, String lastName, String password, Customer.type type,
-			String email, String phone) {
+								  String email, String phone) {
 		boolean flag = false;
 
 		try {
@@ -231,6 +240,7 @@ public class Client {
 
 	/**
 	 * call Car addNewCarToClient function
+	 *
 	 * @param carId
 	 * @param customerId
 	 * @return true if add to db succeed
@@ -261,6 +271,7 @@ public class Client {
 
 	/**
 	 * call OrderController addOccasionalOrder function
+	 *
 	 * @param car_id
 	 * @param end_time
 	 * @param car_park
@@ -273,13 +284,13 @@ public class Client {
 			Socket socket = new Socket(ip, 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park+ " " + payMethod);
+			pw.println("add occasional " + car_id + " " + end_time.toString() + " " + car_park + " " + payMethod);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (int) ois.readObject();
 
-			if (res>0) {
+			if (res > 0) {
 				System.out.println("[response] order was added successfully");
 			} else
 				System.out.println("[response] adding order was failed");
@@ -293,6 +304,7 @@ public class Client {
 
 	/**
 	 * call OrderController addInAdvanceOrder function
+	 *
 	 * @param car_id
 	 * @param start_time
 	 * @param end_time
@@ -312,7 +324,7 @@ public class Client {
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (int) ois.readObject();
 
-			if (res>0) {
+			if (res > 0) {
 				System.out.println("[response] in advance order was added successfully");
 			} else
 				System.out.println("[response] adding in advance order was failed");
@@ -382,13 +394,9 @@ public class Client {
 				System.out.println("[response] error assigning attendant to complaint");
 
 			socket.close();
-		} 
-		catch (IOException ioe) 
-		{
+		} catch (IOException ioe) {
 			System.out.println("assigning to complaint error");
-		}
-		catch (ClassNotFoundException e)
-		{
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return c;
@@ -463,9 +471,10 @@ public class Client {
 
 	/**
 	 * call OrderController orderOngoingExist function
+	 *
 	 * @param car_id
 	 * @param client_id
-	 * @return  true if update db succeed
+	 * @return true if update db succeed
 	 */
 	public boolean endParking(String car_id, String client_id) {
 		boolean res = false;
@@ -473,7 +482,7 @@ public class Client {
 			Socket socket = new Socket(ip, 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("end parking " + car_id + " "+ client_id);
+			pw.println("end parking " + car_id + " " + client_id);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
@@ -512,10 +521,11 @@ public class Client {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * call OrderController calcPriceOnEndOrder function
-	 * @param car_id
+	 *
+	 * @param order_id
 	 * @return price
 	 */
 	public double getPrice(int order_id) {
@@ -543,6 +553,7 @@ public class Client {
 
 	/**
 	 * call ParkingStaionController getParkSoltStatus function
+	 *
 	 * @param parkId
 	 * @return 3d array options are 0=AVAILABLE 1=OCCUPIED 2=OUT_OF_ORDER 3=RESERVED
 	 */
@@ -571,6 +582,7 @@ public class Client {
 
 	/**
 	 * call OrderController cancelOrder function
+	 *
 	 * @param orderId
 	 * @return price of cancel order
 	 */
@@ -600,6 +612,7 @@ public class Client {
 
 	/**
 	 * call OrderController getOrderStatus function
+	 *
 	 * @param orderId
 	 * @return status of orderId
 	 */
@@ -615,7 +628,7 @@ public class Client {
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (String) ois.readObject();
 			if (res != null)
-				System.out.println("[response] order Status "+res);
+				System.out.println("[response] order Status " + res);
 			else
 				System.out.println("[response] order not found");
 
@@ -629,9 +642,10 @@ public class Client {
 
 	/**
 	 * call CustomerController logout function
+	 *
 	 * @param id
 	 */
-	public void logoutClient(String id){
+	public void logoutClient(String id) {
 		Socket socket;
 		try {
 			socket = new Socket(ip, 8080);
@@ -651,19 +665,20 @@ public class Client {
 
 	/**
 	 * call ParkingStaionController setResevedSlot function
+	 *
 	 * @param parkId
 	 * @param level
 	 * @param row
 	 * @param col
 	 */
-	public void setResevedSlot(int parkId,int level,int row,int col){
+	public void setResevedSlot(int parkId, int level, int row, int col) {
 		Socket socket;
 		try {
 			socket = new Socket(ip, 8080);
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("reseved slot " +String.valueOf(parkId)+" "+ String.valueOf(level)+" "+ String.valueOf(row)+" "+  String.valueOf(col));
+			pw.println("reseved slot " + String.valueOf(parkId) + " " + String.valueOf(level) + " " + String.valueOf(row) + " " + String.valueOf(col));
 			pw.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -676,19 +691,20 @@ public class Client {
 
 	/**
 	 * call ParkingStaionController setOutOfOrderSlot function
+	 *
 	 * @param parkId
 	 * @param level
 	 * @param row
 	 * @param col
 	 */
-	public void setOutOfOrderSlot(int parkId,int level,int row,int col){
+	public void setOutOfOrderSlot(int parkId, int level, int row, int col) {
 		Socket socket;
 		try {
 			socket = new Socket(ip, 8080);
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("outOfOrder slot " +String.valueOf(parkId)+" "+ String.valueOf(level)+" "+ String.valueOf(row)+" "+  String.valueOf(col));
+			pw.println("outOfOrder slot " + String.valueOf(parkId) + " " + String.valueOf(level) + " " + String.valueOf(row) + " " + String.valueOf(col));
 			pw.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -701,11 +717,12 @@ public class Client {
 
 	/**
 	 * call ParkingStaionController addParkingStaion function
+	 *
 	 * @param address
 	 * @param size
 	 * @return true if update db succeed
 	 */
-	public boolean addParkingStaion(String address,int size){
+	public boolean addParkingStaion(String address, int size) {
 		Socket socket;
 		boolean res = false;
 		try {
@@ -713,7 +730,7 @@ public class Client {
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("add ParkingStaion " +address+" "+ String.valueOf(size));
+			pw.println("add ParkingStaion " + address + " " + String.valueOf(size));
 			pw.flush();
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (boolean) ois.readObject();
@@ -729,8 +746,7 @@ public class Client {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -740,17 +756,18 @@ public class Client {
 
 	/**
 	 * call OrderController responseToMessage function
+	 *
 	 * @param response
 	 * @param messages_id
 	 */
-	public void responseToMessage(int response,int messages_id){
+	public void responseToMessage(int response, int messages_id) {
 		Socket socket;
 		try {
 			socket = new Socket(ip, 8080);
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("response Message " +String.valueOf(response)+" "+ String.valueOf(messages_id));
+			pw.println("response Message " + String.valueOf(response) + " " + String.valueOf(messages_id));
 			pw.flush();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -794,16 +811,17 @@ public class Client {
 	//		return res;
 	//
 	//	}
-	
+
 	/**
 	 * call WorkerController updatePrices function
+	 *
 	 * @param worker_id
 	 * @param occasional
 	 * @param advanced
 	 * @param subscribed
 	 * @return true if update db succeed
 	 */
-	public boolean updateParkingStaionPrices(String worker_id,String occasional, String advanced, String subscribed){
+	public boolean updateParkingStaionPrices(String worker_id, String occasional, String advanced, String subscribed) {
 		Socket socket;
 		boolean res = false;
 		try {
@@ -811,7 +829,7 @@ public class Client {
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("ParkingStaion updatePrices " + worker_id +" "+ occasional +" "+ advanced +" "+ subscribed);
+			pw.println("ParkingStaion updatePrices " + worker_id + " " + occasional + " " + advanced + " " + subscribed);
 			pw.flush();
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (boolean) ois.readObject();
@@ -821,15 +839,11 @@ public class Client {
 				System.out.println("[response] parking staion price update failure");
 
 			socket.close();
-		} catch (UnknownHostException e) 
-		{
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return res;
@@ -839,12 +853,13 @@ public class Client {
 	/**
 	 * if the ceo wants to approve the praking price change
 	 * this function is used..
+	 *
 	 * @param parking_id
 	 * @param order_type
-	 * @param order_price_per_hour
+	 * @param yesORno
 	 * @return
 	 */
-	public boolean updateParkingStaionPricesCeoApprove(String parking_id,String order_type,String yesORno){
+	public boolean updateParkingStaionPricesCeoApprove(String parking_id, String order_type, String yesORno) {
 		Socket socket;
 		boolean res = false;
 		try {
@@ -852,7 +867,7 @@ public class Client {
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("ParkingStaion updatePricesCeoApprov " + parking_id +" "+ order_type +" "+ yesORno);
+			pw.println("ParkingStaion updatePricesCeoApprov " + parking_id + " " + order_type + " " + yesORno);
 			pw.flush();
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (boolean) ois.readObject();
@@ -862,27 +877,24 @@ public class Client {
 				System.out.println("[response] parking staion price update approve failure");
 
 			socket.close();
-		} catch (UnknownHostException e) 
-		{
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return res;
 
 	}
-	
+
 	/**
 	 * call WorkerController checkWorkerStaion function
+	 *
 	 * @param worker_id
 	 * @return name of WorkerStaion
 	 */
-	public  String checkWorkerStaion(String worker_id){
+	public String checkWorkerStaion(String worker_id) {
 		Socket socket;
 		String res = null;
 		try {
@@ -890,12 +902,12 @@ public class Client {
 
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("Worker Staion " +worker_id);
+			pw.println("Worker Staion " + worker_id);
 			pw.flush();
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (String) ois.readObject();
 			if (res != null)
-				System.out.println("[response] checkWorkerStaion "+res);
+				System.out.println("[response] checkWorkerStaion " + res);
 			else
 				System.out.println("[response] checkWorkerStaion fail");
 
@@ -906,8 +918,7 @@ public class Client {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
