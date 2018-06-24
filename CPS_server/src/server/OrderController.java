@@ -284,17 +284,22 @@ public class OrderController {
 		int res = 0;
 		PreparedStatement stmt;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT order_id FROM orders WHERE order_car_id = ? AND order_status = ?");
+			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id = ? AND order_status = ?");
 			stmt.setString(1, carID);
 			stmt.setString(2, OrderStatus.PENDING.toString());
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				int orderID = rs.getInt(1);
-
-				stmt = sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
-				stmt.setString(1, OrderStatus.ONGOING.toString());
-				stmt.setInt(2, orderID);
-				res = stmt.executeUpdate();
+				Timestamp startTime = rs.getTimestamp(7);
+				Timestamp endTime = rs.getTimestamp(8);
+				Timestamp nowTime = new Timestamp(System.currentTimeMillis());
+				if(getTimeDiffInHours(startTime, nowTime) >= 0 && getTimeDiffInHours(nowTime, endTime) > 0) {
+	
+					stmt = sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
+					stmt.setString(1, OrderStatus.ONGOING.toString());
+					stmt.setInt(2, orderID);
+					res = stmt.executeUpdate();
+				}
 			}
 			if (res == 1) {
 				System.out.println("parking started succsfully");
