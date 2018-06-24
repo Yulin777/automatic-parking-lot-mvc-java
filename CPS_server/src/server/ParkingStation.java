@@ -8,7 +8,15 @@ public class ParkingStation {
 	/*ParkingStationSize size;*/ 
 	int size; 
 	//ParkingSlot[] parkingSlots;
-	
+
+	/**
+	 * constructor
+	 * @param number
+	 * @param address
+	 * @param director
+	 * @param workers
+	 * @param size
+	 */
 	public ParkingStation(int number, String address, Worker director, int[] workers,
 			int size) {
 		this.number = number;
