@@ -33,4 +33,14 @@ public class OrderControllerTest {
 		boolean res = OrderController.OrderOverlaps("gdf","2018-06-24 11:11:00","2018-06-25 23:00:00","Haifa");
 		assertEquals("check OrderOverlapstest should be overlap",res,true);
 	}
+	@Test 
+	public void orderOngoingExisttest() {
+		int res = OrderController.orderOngoingExist("sw");
+		assertEquals("check orderOngoingExist should return ture",res,true);
+	}
+	@Test 
+	public void orderPendingExisttest() {
+		boolean res = OrderController.orderPendingExist("qq2");
+		assertEquals("check orderPendingExist should return ture",res,true);
+	}
 }
