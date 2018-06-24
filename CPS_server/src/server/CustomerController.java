@@ -16,6 +16,18 @@ public class CustomerController {
 	public CustomerController() {
 	}
 
+	/**
+	 * method adds new client to db
+	 *
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param password
+	 * @param type
+	 * @param email
+	 * @param telephone
+	 * @return true if add was successful. otherwise false
+	 */
 	public boolean addNewClient(String id, String firstName, String lastName, String password, String type,
 								String email, String telephone) {
 		boolean flag = false;
@@ -24,32 +36,27 @@ public class CustomerController {
 			stmt = sql.conn.prepareStatement("SELECT * FROM clients WHERE client_ID=?");  // createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			stmt.setString(1, id);
 			ResultSet client = stmt.executeQuery();
-			if (/*!client.next()*/ true) {
-				Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-				ResultSet uprs = statement.executeQuery("SELECT * FROM clients");
-				uprs.moveToInsertRow();
-				uprs.updateString("client_ID", id);
-				uprs.updateString("client_first_name", firstName);
-				uprs.updateString("client_last_name", lastName);
-				uprs.updateString("client_type", type);
-				uprs.updateString("client_email", email);
-				uprs.updateString("client_telephone", telephone);
-				uprs.updateString("client_password", password);
-				uprs.insertRow();
+			Statement statement = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet uprs = statement.executeQuery("SELECT * FROM clients");
+			uprs.moveToInsertRow();
+			uprs.updateString("client_ID", id);
+			uprs.updateString("client_first_name", firstName);
+			uprs.updateString("client_last_name", lastName);
+			uprs.updateString("client_type", type);
+			uprs.updateString("client_email", email);
+			uprs.updateString("client_telephone", telephone);
+			uprs.updateString("client_password", password);
+			uprs.insertRow();
 
-				System.out.println("New client was added succsfully");
-				flag = true;
+			System.out.println("New client was added succsfully");
+			flag = true;
 
-				uprs.close();
-				stmt.close();
-			} else {
-//				System.out.println("Client already exists");
-			}
+			uprs.close();
+			stmt.close();
 		} catch (SQLException e) {
-//			e.printStackTrace();
-			System.err.println("Client id "+id+" already exists");
+			System.err.println("Client id " + id + " already exists");
 		}
-		return flag; //Customer(id, firstName, lastName, password, type, email, telephone);
+		return flag;
 	}
 
 	public static Customer getClientById(String id) {
@@ -62,30 +69,13 @@ public class CustomerController {
 			System.out.println("SELECT * FROM clients WHERE client_ID=" + id + ";");
 
 			ResultSet rs = stmt.executeQuery();
-			if (!rs.next()) {
-				//return null;
-			}
-			//rs.next();
-			//while (rs.next()) {
+			rs.next();
+
 			// Print out the values
 			return_res = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), "");
 
-			//}
-
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					/* ignored */
-				}
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					/* ignored */
-				}
-			}
+			rs.close();
+			stmt.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -94,6 +84,12 @@ public class CustomerController {
 		return return_res;
 	}
 
+	/**
+	 * removes customer from db
+	 *
+	 * @param id of customer
+	 * @return true if remove was successful. false otherwise
+	 */
 	public static boolean removeCustomer(String id) {
 		int res = 0;
 		java.sql.PreparedStatement stmt;
@@ -116,6 +112,14 @@ public class CustomerController {
 		return return_res;
 	}
 
+	/**
+	 * logs in a client. client may log only once until he logs of, meaning, a client can not log in twice
+	 * from two different computers. it is being updated in db
+	 *
+	 * @param id       of the client
+	 * @param password of the client
+	 * @return true if log in was successful.
+	 */
 	public Customer login(String id, String password) {
 		java.sql.PreparedStatement stmt;
 		Customer return_res = null;
@@ -154,10 +158,22 @@ public class CustomerController {
 		return return_res;
 	}
 
-	public static void logout(String id) {
-		loggedCustomers.remove(id);
+	/**
+	 * logs out a client from db
+	 *
+	 * @param id of a client
+	 * @return true if log out was successful. false otherwise
+	 */
+	public static boolean logout(String id) {
+		return loggedCustomers.remove(id);
 	}
 
+	/**
+	 * checks if client is logged in
+	 *
+	 * @param id of a client
+	 * @return true if a client is logged in
+	 */
 	private boolean checkIfLogin(String id) {
 		for (String c : loggedCustomers) {
 			if (c.equals(id))
@@ -165,5 +181,5 @@ public class CustomerController {
 		}
 		return false;
 	}
-	
+
 }
