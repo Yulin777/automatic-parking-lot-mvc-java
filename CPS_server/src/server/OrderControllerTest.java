@@ -43,4 +43,9 @@ public class OrderControllerTest {
 		boolean res = OrderController.orderPendingExist("qq2");
 		assertEquals("check orderPendingExist should return ture",res,true);
 	}
+	@Test 
+	public void getPricePerHourtest() {
+		double res = OrderController.getPricePerHour(2,"SUBSCRIBED");
+		assertTrue("check orderPendingExist should return ture", (res==230));
+	}
 }
