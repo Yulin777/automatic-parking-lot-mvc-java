@@ -97,17 +97,16 @@ public class PersonViewController {
     		createMsg(event, err_msg, "error msg");
     		return;
     	}
-    	String location = "TelAviv";
+    	String location =  client.checkWorkerStaion(pid);
 		int location_id = OrderController.getOrderParkingId(location);
-		int level_int = Integer.parseInt(level);
     	int[][][] c = client.getParkSoltStatus(location_id);
     	
     	
-    	int level_Int = Integer.parseInt(level);
+    	int level_int = Integer.parseInt(level);
     	int row_int = Integer.parseInt(row);
     	int column_int = Integer.parseInt(column);
     	int flag = 0;
-    	if(c[level_Int][row_int].length <= column_int)
+    	if(c[level_int][row_int].length <= column_int)
     	{
     		err_msg +="there is no such parking\n";
     	}
@@ -137,10 +136,6 @@ public class PersonViewController {
     		createMsg(event, err_msg, "error msg");
     		return;
     	}
-    	//get the size of [level][row] - check if in place V
-    	//check all radio buttons and act acordinly        V
-    	//get the city 
-    	
     	String succ_msg = "change commited succsesfully\n";
     	createMsg(event, succ_msg, "succ msg");
     	
@@ -554,7 +549,7 @@ public class PersonViewController {
 		
 	}
 	
-	void setCustomerID(String id) {
+	void setPID(String id) {
 		pid = id;
 	}
 

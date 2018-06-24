@@ -13,13 +13,24 @@ public class Car implements Serializable {
 	private String carID;
 	private static sqlConnection sql = sqlConnection.getInstant();
 
+	/**
+	 * constructor
+	 *
+	 * @param carID   unique key for each car
+	 * @param ownerID must have field for each car
+	 */
 	public Car(String carID, String ownerID) {
 		this.ownerID = ownerID;
 		this.carID = carID;
 	}
 
+	/**
+	 * associates new car to existing client
+	 *
+	 * @return true if add was successful. false otherwise
+	 */
 	public boolean addNewCarToClient() {
-		boolean res=false;
+		boolean res = false;
 		java.sql.PreparedStatement stmt;
 		ResultSet car;
 		try {
@@ -36,9 +47,9 @@ public class Car implements Serializable {
 			newCar.updateString("car_ID", carID);
 			newCar.insertRow();
 
-			if(car.next())
-				res=true;
-			
+			if (car.next())
+				res = true;
+
 			car.close();
 			stmt.close();
 
@@ -51,6 +62,10 @@ public class Car implements Serializable {
 		return true;
 	}
 
+	/**
+	 * @param carID
+	 * @return the car owner id
+	 */
 	public static String getClientId(String carID) {
 		Statement stmt;
 		String return_res = "";
@@ -104,6 +119,10 @@ public class Car implements Serializable {
 //		return return_res;
 //	}
 
+	/**
+	 * @param client_id
+	 * @return list of car ids that belong to specific owner
+	 */
 	public static List<String> getClientCarsById(String client_id) {
 		java.sql.PreparedStatement stmt;
 		List<String> results = new ArrayList<String>();
@@ -141,6 +160,12 @@ public class Car implements Serializable {
 		return results;
 	}
 
+	/**
+	 * removes a car from db. removes all associated orders
+	 *
+	 * @param car_id
+	 * @return true if the car was removed
+	 */
 	public static boolean removeCar(String car_id) {
 		int res = 0;
 		java.sql.PreparedStatement stmt;

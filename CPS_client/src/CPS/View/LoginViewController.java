@@ -132,6 +132,8 @@ public class LoginViewController {
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
 					controller.setWorkerName(w.getFirstName());
+					controller.setPID(w.getPid());
+
 					controller.setWorkerInterfaceController(wIC);
 					title = "Worker Interface";
 				}
@@ -153,6 +155,8 @@ public class LoginViewController {
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
 					controller.setManagerName(w.getFirstName());
+					controller.setPID(w.getPid());
+
 					controller.ManagerLoad();
 
 					title = "Manager Interface";
@@ -173,7 +177,7 @@ public class LoginViewController {
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
 					controller.setCustomerName(c.getFirstName());
-					controller.setCustomerID(c.getPid());
+					controller.setPID(c.getPid());
 					title = "Customer Interface";
 				}
 
@@ -194,6 +198,8 @@ public class LoginViewController {
 					switchWindow(url);
 					PersonViewController controller = loader.getController();
 					controller.CeoLoad();
+					controller.setPID(w.getPid());
+
 					//controller.setCeo_name(w.getFirstName());
 					title = "Ceo Interface";
 				}
