@@ -728,9 +728,8 @@ public class PersonViewController {
 		else if(client.endParking(car_id, pid)) {
 			double bill = client.getEndPrice(car_id);
 			if (bill != Double.MAX_VALUE) {
-				//				createBillMsg(event, String.valueOf(bill));
-				String succ_msg="order ended succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-				createMsg(event, succ_msg, "succ msg");
+				String succ_msg="Order was added successfully\nYour bill is: " + new DecimalFormat("##.##").format(bill);
+				createMsg(event,succ_msg, "succ msg");
 
 			}
 		}
@@ -1175,7 +1174,7 @@ public class PersonViewController {
 	{
 		String url = "UpdatePricesView.fxml";
 		switchWindow(url);
-		switchScene(event, "login page");
+		switchScene(event, "update prices");
 	}
 
 
