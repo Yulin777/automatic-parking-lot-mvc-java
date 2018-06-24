@@ -15,6 +15,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Server {
+	/**
+	 * main method - instantiates the server side
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		ParkingStationController psc = new ParkingStationController();
 		int[][][] arr = psc.getSlotStatus(1);
