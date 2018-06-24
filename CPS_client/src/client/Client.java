@@ -655,7 +655,7 @@ public class Client {
 			pw.flush();
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 			res = (boolean) ois.readObject();
-			if (res != true)
+			if (res)
 				System.out.println("[response] parking staion price update success");
 			else
 				System.out.println("[response] parking staion price update failure");
