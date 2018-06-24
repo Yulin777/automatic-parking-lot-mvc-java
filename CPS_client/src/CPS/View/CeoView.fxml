@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CPS.View.PersonViewController">
    <children>
       <Button fx:id="Ceo_View_back_btn" layoutX="25.0" layoutY="253.0" mnemonicParsing="false" onAction="#Ceo_View_back" text="&lt;&lt; back" />
       <Button fx:id="Ceo_View_print_report_btn" layoutX="143.0" layoutY="164.0" mnemonicParsing="false" onAction="#Ceo_View_print_report" prefHeight="25.0" prefWidth="130.0" text="print report" />
@@ -25,5 +29,8 @@
             <MenuItem mnemonicParsing="false" text="Action 2" />
          </items>
       </SplitMenuButton>
+      <Button fx:id="Ceo_View_create_parking_station_btn" layoutX="341.0" layoutY="164.0" mnemonicParsing="false" onAction="#Ceo_View_create_parking_station" prefHeight="25.0" prefWidth="120.0" text="Creat parkig station" />
+      <TextField fx:id="Ceo_View_create_station_size_bar" layoutX="341.0" layoutY="126.0" prefHeight="25.0" prefWidth="120.0" promptText="station size:" />
+      <TextField fx:id="Ceo_View_create_station_address_bar" layoutX="341.0" layoutY="98.0" prefHeight="25.0" prefWidth="120.0" promptText="station address" />
    </children>
 </AnchorPane>

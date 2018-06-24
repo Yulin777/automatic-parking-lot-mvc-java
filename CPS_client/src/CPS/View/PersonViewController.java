@@ -1670,19 +1670,30 @@ public class PersonViewController {
 	//----------------------------Ceo view-----------------------------
 
 	@FXML
-	private SplitMenuButton Ceo_View_level_menu;
+    private Button Ceo_View_create_parking_station_btn;
 
-	@FXML
-	private Button Ceo_View_back_btn;
+    @FXML
+    private SplitMenuButton Ceo_View_level_menu;
 
-	@FXML
-	private SplitMenuButton Ceo_View_location_menu;
+    @FXML
+    private TextField Ceo_View_create_station_size_bar;
 
-	@FXML
-	private Text Ceo_View_hello_label;
+    @FXML
+    private Button Ceo_View_back_btn;
 
-	@FXML
-	private Button Ceo_View_print_report_btn;
+    @FXML
+    private TextField Ceo_View_create_station_address_bar;
+
+    @FXML
+    private SplitMenuButton Ceo_View_location_menu;
+
+    @FXML
+    private Text Ceo_View_hello_label;
+
+    @FXML
+    private Button Ceo_View_print_report_btn;
+
+    
 
 	@FXML
 	void Ceo_View_back(ActionEvent event) throws IOException {
@@ -1761,11 +1772,49 @@ public class PersonViewController {
 			});
 			Ceo_View_level_menu.getItems().add(mi);
 		}
-
-
 	}
 
+	   @FXML
+	    void Ceo_View_create_parking_station(ActionEvent event) throws IOException 
+	   {
+		   String size = Ceo_View_create_station_size_bar.getText();
+		   String address = Ceo_View_create_station_address_bar.getText();
+		   String err_msg="";
+		   
+		   err_msg =  Ceo_View_create_parking_validate(size,address);
+		   if(!err_msg.isEmpty())
+			{
+				createMsg(event, err_msg, "error msg");
+				return;
+			}	
+		   int size_int = Integer.parseInt(size);
+		   if(!client.addParkingStaion(address, size_int))
+		   {
+			   err_msg+="couldnt create new parking station\n";
+			   createMsg(event, err_msg, "error msg");
+			return;
+		   }
+		   
+		   String succ_msg = "parking station created succsefully\n";
+			createMsg(event, succ_msg, "succ msg");
 
+		   
+	    }
+
+	
+	   String Ceo_View_create_parking_validate(String size,String address)
+	   {
+		   String err_msg="";
+		   if(size.isEmpty())
+			   err_msg+="please write size\n";
+		   if(address.isEmpty())
+			   err_msg+="please write address\n";
+		   
+					 
+		   return err_msg;
+	   }
+	
+	
 	//---------------------^^^^^-Ceo View-^-^^-^^^^^------------------------------------
 
 
