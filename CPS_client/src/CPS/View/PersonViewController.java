@@ -52,122 +52,211 @@ public class PersonViewController {
 	static String pid;
 
 
+
+	//-------------------Updated prices-----------------
+	@FXML
+	private TextField update_prices_view_ocassional_price_bar;
+
+	@FXML
+	private Button update_prices_view_back_btn;
+
+	@FXML
+	private Button update_prices_view_commit_btn;
+
+	@FXML
+	private TextField update_prices_view_in_advance_price_bar;
+
+	@FXML
+	private TextField update_prices_view_subscription_price_bar;
+
+	@FXML
+	void update_prices_view_back(ActionEvent event) throws IOException {
+		String url = "ManagerView.fxml";
+		switchWindow(url);
+		switchScene(event, "Worker page");
+	}
+
+	@FXML
+	void update_prices_view_commit(ActionEvent event) throws IOException 
+	{
+
+		String ocassional_price = update_prices_view_ocassional_price_bar.getText();
+		String subscription_price = update_prices_view_subscription_price_bar.getText();
+		String in_advanced_price = update_prices_view_in_advance_price_bar.getText();
+
+		String err_msg = "";
+		err_msg = updated_price_InputIsValid(ocassional_price,subscription_price,in_advanced_price);
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+		
+		
+		Double ocassional_price_double = Double.parseDouble(ocassional_price);
+		Double subscription_price_double = Double.parseDouble(subscription_price);
+		Double in_advanced_price_double = Double.parseDouble(in_advanced_price);
 	
-	
-	
-	
-	
+		
+		int location_id = OrderController.getOrderParkingId(pid);
+		
+		//if(!client.updateParkingStaionPrices(location_id, order_type,  ocassional_price_double))
+		{
+			err_msg+="couldnt update orice\n";
+			createMsg(event, err_msg, "error msg");
+		}
+		/*
+		 * 
+		 * 
+		 * talyyyyya
+		 */
+		
+		
+		
+		String succ_msg = "prices have changed successfully\n";
+		
+		
+		createMsg(event, succ_msg, "succ msg");
+
+		
+	}
+
+
+
+	private String updated_price_InputIsValid(String ocassional_price, String subscription_price, String in_advanced_price) 
+	{
+		String msg = "";
+		if (ocassional_price.isEmpty())
+			msg = msg + "please provide ocassional price\n";
+		if (subscription_price.isEmpty())
+			msg = msg + "please provide subscription price\n";
+		if (in_advanced_price.isEmpty())
+			msg = msg + "please provide in advanced price\n";
+		return msg;
+	}
+
+
+
+
+	//---------------^^^^^-Updated prices^^^^-------------------------
+
+
+
+
+
+
 	//------------Reserve Parking--------------
-	
-	 @FXML
-	    private Button reserve_parking_back_btn;
 
-	    @FXML
-	    private RadioButton reserve_parking_saved_btn;
+	@FXML
+	private Button reserve_parking_back_btn;
 
-	    @FXML
-	    private ToggleGroup status_parking;
+	@FXML
+	private RadioButton reserve_parking_saved_btn;
 
-	    @FXML
-	    private SplitMenuButton reserve_parking_level_menu;
+	@FXML
+	private ToggleGroup status_parking;
 
-	    @FXML
-	    private Button reserve_parking_commit_change_btn;
+	@FXML
+	private SplitMenuButton reserve_parking_level_menu;
 
-	    @FXML
-	    private RadioButton reserve_parking_broken_btn;
+	@FXML
+	private Button reserve_parking_commit_change_btn;
 
-	    @FXML
-	    private SplitMenuButton reserve_parking_row_menu;
+	@FXML
+	private RadioButton reserve_parking_broken_btn;
 
-	    @FXML
-	    private TextField reserve_parking_column_bar;
+	@FXML
+	private SplitMenuButton reserve_parking_row_menu;
 
-    @FXML
-    void reserve_parking_commit_change_btn(ActionEvent event) throws IOException 
-    {
-    	String level = reserve_parking_level_menu.getText();
-    	String row = reserve_parking_row_menu.getText();
-    	String column = reserve_parking_column_bar.getText();
+	@FXML
+	private TextField reserve_parking_column_bar;
 
-    	String err_msg = Reserve_Parking_InputIsValid( level,  row,  column) ;
-    	
-    	if(!err_msg.isEmpty())
-    	{
-    		createMsg(event, err_msg, "error msg");
-    		return;
-    	}
-    	String location =  client.checkWorkerStaion(pid);
+	@FXML
+	void reserve_parking_commit_change_btn(ActionEvent event) throws IOException 
+	{
+		String level = reserve_parking_level_menu.getText();
+		String row = reserve_parking_row_menu.getText();
+		String column = reserve_parking_column_bar.getText();
+
+		String err_msg = Reserve_Parking_InputIsValid( level,  row,  column) ;
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+		String location =  client.checkWorkerStaion(pid);
 		int location_id = OrderController.getOrderParkingId(location);
-    	int[][][] c = client.getParkSoltStatus(location_id);
-    	
-    	
-    	int level_int = Integer.parseInt(level);
-    	int row_int = Integer.parseInt(row);
-    	int column_int = Integer.parseInt(column);
-    	int flag = 0;
-    	if(c[level_int][row_int].length <= column_int)
-    	{
-    		err_msg +="there is no such parking\n";
-    	}
-    	
-    	else
-    	{
-    	if(reserve_parking_saved_btn.isSelected())
-    	{
-    		client.setResevedSlot( location_id, level_int,row_int, column_int);
-    		flag=1;
-    	}
-    	
-    	if(reserve_parking_broken_btn.isSelected())
-    	{
-    		client.setOutOfOrderSlot(location_id, level_int,row_int, column_int);
-    	}
-    	
-    	
-    	if(flag==0)
-    	{
-    		err_msg +="no button was selected\n";
-    	}
-    	}
-    	
-    	if(!err_msg.isEmpty())
-    	{
-    		createMsg(event, err_msg, "error msg");
-    		return;
-    	}
-    	String succ_msg = "change commited succsesfully\n";
-    	createMsg(event, succ_msg, "succ msg");
-    	
-    }
-    
-    private String Reserve_Parking_InputIsValid(String level, String row, String column) 
-    	{
+		int[][][] c = client.getParkSoltStatus(location_id);
+
+
+		int level_int = Integer.parseInt(level);
+		int row_int = Integer.parseInt(row);
+		int column_int = Integer.parseInt(column);
+		int flag = 0;
+		if(c[level_int][row_int].length <= column_int)
+		{
+			err_msg +="there is no such parking\n";
+		}
+
+		else
+		{
+			if(reserve_parking_saved_btn.isSelected())
+			{
+				client.setResevedSlot( location_id, level_int,row_int, column_int);
+				flag=1;
+			}
+
+			if(reserve_parking_broken_btn.isSelected())
+			{
+				client.setOutOfOrderSlot(location_id, level_int,row_int, column_int);
+			}
+
+
+			if(flag==0)
+			{
+				err_msg +="no button was selected\n";
+			}
+		}
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+		String succ_msg = "change commited succsesfully\n";
+		createMsg(event, succ_msg, "succ msg");
+
+	}
+
+	private String Reserve_Parking_InputIsValid(String level, String row, String column) 
+	{
 		String msg = "";
 		if (level.equals("Select Level"))
 			msg = msg + "level is not selected\n";
 		if (row.equals("Select Row"))
 			msg = msg + "row is not selected\n";
-		
+
 		//TODO check column is an integer
 		if (column.isEmpty())
 			msg = msg + "column is not selected\n";
 		return msg;
 	}
 
-    @FXML
-    void reserve_parking_back(ActionEvent event) throws IOException {
-    	String url = "WorkerView.fxml";
+	@FXML
+	void reserve_parking_back(ActionEvent event) throws IOException {
+		String url = "WorkerView.fxml";
 		switchWindow(url);
 		switchScene(event, "Worker page");
 
 
-    }
+	}
 	public void Reserve_Parking_load_car_lots() {
 
 		reserve_parking_level_menu.getItems().clear();
 		reserve_parking_row_menu.getItems().clear();
-		
+
 		String[] level_arr = {"0", "1", "2"};	
 		String[] row_arr = {"0", "1", "2"};	
 		for (String i : level_arr) {
@@ -182,7 +271,7 @@ public class PersonViewController {
 			});
 			reserve_parking_level_menu.getItems().add(mi);
 		}
-		
+
 		for (String i : row_arr) {
 			MenuItem mi = new MenuItem(i);
 			mi.setText(i);
@@ -195,71 +284,71 @@ public class PersonViewController {
 			});
 			reserve_parking_row_menu.getItems().add(mi);
 		}
-		
-		
-		
+
+
+
 
 	}
 
 	//-------------^^^^Reserve Parking^^^^^------------
-	
-    
-    
+
+
+
 	//-------------Order detail view -----------------
-	
+
 	@FXML
-    private TextField order_detail_view_id_bar;
+	private TextField order_detail_view_id_bar;
 
-    @FXML
-    private TextArea order_detail_view_text_area;
+	@FXML
+	private TextArea order_detail_view_text_area;
 
-    @FXML
-    private Button order_detail_view_read_order_details_btn;
+	@FXML
+	private Button order_detail_view_read_order_details_btn;
 
-    @FXML
-    private Button order_detail_view_back_btn;
+	@FXML
+	private Button order_detail_view_back_btn;
 
-    @FXML
-    void order_detail_view_read_order_details(ActionEvent event) throws IOException 
-    {
-    	String order_id = order_detail_view_id_bar.getText();
-    	String err_msg ="";
-    	
-    	if(order_id.isEmpty())
-    		err_msg += "please provide order id\n"; 
-    	
-    	
-    	
-    	if(!err_msg.isEmpty())
-    	{
+	@FXML
+	void order_detail_view_read_order_details(ActionEvent event) throws IOException 
+	{
+		String order_id = order_detail_view_id_bar.getText();
+		String err_msg ="";
+
+		if(order_id.isEmpty())
+			err_msg += "please provide order id\n"; 
+
+
+
+		if(!err_msg.isEmpty())
+		{
 			createMsg(event, err_msg, "error msg");
 			return;
-    	}
+		}
 
-    	String details = "";
-    	details=client.getOrderStatus(Integer.parseInt(order_id));
-    	
-    	if(details == null)
-    	{
-    		err_msg+= "wrong order id\n";
+		String details = "";
+		details=client.getOrderStatus(Integer.parseInt(order_id));
+
+		if(details == null)
+		{
+			err_msg+= "wrong order id\n";
 			createMsg(event, err_msg, "error msg");
 			return;
-    	}
-    
-    	order_detail_view_text_area.setText(details);
-    	order_detail_view_text_area.setEditable(false);	
-    }
+		}
 
-    @FXML
-    void order_detail_view_back(ActionEvent event) throws IOException {
-    	String url = "CustomerView.fxml";
+		order_detail_view_text_area.setText(details);
+		order_detail_view_text_area.setEditable(false);	
+	}
+
+	@FXML
+	void order_detail_view_back(ActionEvent event) throws IOException {
+		String url = "CustomerView.fxml";
 		switchWindow(url);
 		switchScene(event, "customer page");
 
 
-    }
-	
-	
+	}
+
+
 	//-------------------^^^^^Order detail view^^^^^^^-------------------
 
 	//--------------------cancel order --------------------------
@@ -300,14 +389,14 @@ public class PersonViewController {
 		double bill = client.cancelOrder(Integer.parseInt(order_id));		
 
 		//TODO need to delete order from database. DONE!
-		
+
 		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
 		createMsg(event, succ_msg, "succ msg");
 	}
 
 
-	
-	
+
+
 
 	//------------------^^^^cancel order-^^^^----------------------
 
@@ -332,27 +421,27 @@ public class PersonViewController {
 	@FXML
 	private Button add_car_view_back_btn;
 
-    @FXML
-    void add_car_view_add(ActionEvent event) throws IOException {
-    			
-    	String car_num = add_car_view_car_number_bar.getText();
-    	String err_msg="";
-    	if(car_num.isEmpty())
-    		err_msg +="please provide car number\n";
-    	else if(!client.addNewCar(add_car_view_car_number_bar.getText(), pid))
-    		err_msg +="car already exists\n";
-    	
-    	if(!err_msg.isEmpty())
-    	{
-    		createMsg(event, err_msg, "error msg");
+	@FXML
+	void add_car_view_add(ActionEvent event) throws IOException {
+
+		String car_num = add_car_view_car_number_bar.getText();
+		String err_msg="";
+		if(car_num.isEmpty())
+			err_msg +="please provide car number\n";
+		else if(!client.addNewCar(add_car_view_car_number_bar.getText(), pid))
+			err_msg +="car already exists\n";
+
+		if(!err_msg.isEmpty())
+		{
+			createMsg(event, err_msg, "error msg");
 			return;
-    	}
-    	else {
-    		String succ_msg = "car was added succsecfully\n";
-    		createMsg(event, succ_msg, "succ msg");
-    	}
-    }
-    
+		}
+		else {
+			String succ_msg = "car was added succsecfully\n";
+			createMsg(event, succ_msg, "succ msg");
+		}
+	}
+
 
 	@FXML
 	void add_car_view_back(ActionEvent event) throws IOException {
@@ -460,12 +549,12 @@ public class PersonViewController {
 		String err_msg="";
 		if (car_num.isEmpty()) {
 			err_msg += "please provide car number\n";
-//			createMsg(event, err_msg, "error msg");
+			//			createMsg(event, err_msg, "error msg");
 			return;
 		}
 		else if(client.startParking(car_num, pid)) {
 			//TODO check if parking available + if this car number is signed + if customer is late (will pay fine)
-			
+
 			String succ_msg = "parking started successfully\n";
 			createMsg(event, succ_msg, "succes msg");							
 		}
@@ -486,40 +575,40 @@ public class PersonViewController {
 	//----------------Customer View-------------------------------------
 
 	@FXML
-    private Label customer_view_label12;
+	private Label customer_view_label12;
 
-    @FXML
-    private Button customer_view_see_my_orders_btn;
+	@FXML
+	private Button customer_view_see_my_orders_btn;
 
-    @FXML
-    private Label customer_view_label;
+	@FXML
+	private Label customer_view_label;
 
-    @FXML
-    private Button customer_view_end_parking_btn;
+	@FXML
+	private Button customer_view_end_parking_btn;
 
-    @FXML
-    private Button customer_view_add_car_btn;
+	@FXML
+	private Button customer_view_add_car_btn;
 
-    @FXML
-    private Label customer_view_num_msg_label;
+	@FXML
+	private Label customer_view_num_msg_label;
 
-    @FXML
-    private Button customer_view_cancel_btn;
+	@FXML
+	private Button customer_view_cancel_btn;
 
-    @FXML
-    private Button customer_view_log_out_btn;
+	@FXML
+	private Button customer_view_log_out_btn;
 
-    @FXML
-    private Label customer_view_label1;
+	@FXML
+	private Label customer_view_label1;
 
-    @FXML
-    private Button customer_view_read_massages_btn;
+	@FXML
+	private Button customer_view_read_massages_btn;
 
-    @FXML
-    private Button customer_view_complaint_btn;
+	@FXML
+	private Button customer_view_complaint_btn;
 
-    @FXML
-    private Button customer_view_start_parking_btn;
+	@FXML
+	private Button customer_view_start_parking_btn;
 
 
 	@FXML
@@ -546,9 +635,9 @@ public class PersonViewController {
 
 	void setCustomerName(String name) {
 		customer_view_label.setText("Hello " + name);
-		
+
 	}
-	
+
 	void setPID(String id) {
 		pid = id;
 	}
@@ -563,17 +652,17 @@ public class PersonViewController {
 
 	}
 
-	
-	 @FXML
-	    void customer_view_see_my_orders(ActionEvent event) throws IOException {
-		 	String url = "OrderDetailView.fxml";
-			switchWindow(url);
-			switchScene(event, "customer page");
-	    }
 
-	
-	
-	
+	@FXML
+	void customer_view_see_my_orders(ActionEvent event) throws IOException {
+		String url = "OrderDetailView.fxml";
+		switchWindow(url);
+		switchScene(event, "customer page");
+	}
+
+
+
+
 	//-------------------^^^-Customer View^^^-----------------------------------
 
 
@@ -640,10 +729,10 @@ public class PersonViewController {
 		else if(client.endParking(car_id, pid)) {
 			double bill = client.getPrice(car_id);
 			if (bill != Double.MAX_VALUE) {
-//				createBillMsg(event, String.valueOf(bill));
+				//				createBillMsg(event, String.valueOf(bill));
 				String succ_msg="order ended succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
 				createMsg(event, succ_msg, "succ msg");
-				
+
 			}
 		}
 		else
@@ -929,20 +1018,20 @@ public class PersonViewController {
 
 	//------------------------------WORKER------------------------------------------
 	@FXML
-    private Button worker_log_out_btn;
+	private Button worker_log_out_btn;
 
-    @FXML
-    private Label worker_name_label;
+	@FXML
+	private Label worker_name_label;
 
-    @FXML
-    private Button worker_availability_btn;
+	@FXML
+	private Button worker_availability_btn;
 
-    @FXML
-    private Button worker_reserve_parking_btn;
+	@FXML
+	private Button worker_reserve_parking_btn;
 
 	@FXML
 	void worker_resreve_parking(ActionEvent event) throws IOException {
-		
+
 		String url = "ReserveParking.fxml";
 		switchWindow(url);
 		PersonViewController controller = loader.getController();
@@ -969,12 +1058,12 @@ public class PersonViewController {
         window.show();*/
 
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	//----------------------------^WORKER^--------------------------------
 
 	//------------------------------------------------------------------------------------------------  
@@ -983,22 +1072,26 @@ public class PersonViewController {
 	//--------------------MANAGER----------------------------------------
 
 	@FXML
-	private Button manager_current_state_btn;
+    private Button manager_view_update_price_btn;
 
-	@FXML
-	private Label manager_name_label;
+    @FXML
+    private Button manager_current_state_btn;
 
-	@FXML
-	private Button manager_View_print_report_btn;
+    @FXML
+    private Label manager_name_label;
 
-	@FXML
-	private Button manager_log_out_btn;
+    @FXML
+    private Button manager_View_print_report_btn;
 
-	@FXML
-	private Button manager_performance_report_btn;
+    @FXML
+    private Button manager_log_out_btn;
 
-	@FXML
-	private SplitMenuButton manager_View_level_menu;
+    @FXML
+    private Button manager_performance_report_btn;
+
+    @FXML
+    private SplitMenuButton manager_View_level_menu;
+
 
 
 	@FXML
@@ -1036,10 +1129,12 @@ public class PersonViewController {
 		}
 		//int location_id = OrderController.getOrderParkingId(location);
 		int level_int = Integer.parseInt(level);
+		String location =  client.checkWorkerStaion(pid);
+		int location_id = OrderController.getOrderParkingId(location);
 
 
 		//TODO get the location number from manager person
-		ShowReport(level_int, 1);
+		ShowReport(level_int, location_id);
 
 	}
 
@@ -1074,6 +1169,14 @@ public class PersonViewController {
 
 	}
 
+	 	@FXML
+	    void manager_view_update_price(ActionEvent event) throws IOException
+	 	{
+	 		String url = "UpdatePricesView.fxml";
+			switchWindow(url);
+			switchScene(event, "login page");
+	    }
+	
 
 	//--------------------^MANAGER^----------------------------------------
 
@@ -1433,7 +1536,7 @@ public class PersonViewController {
 		String succ = "order was added succesfully\n";
 		createMsg(event,succ, "succ msg");
 
-		
+
 	}
 
 
@@ -1755,7 +1858,7 @@ public class PersonViewController {
 
 	void log_out(ActionEvent event) throws IOException {
 		client.logoutClient(pid);
-		
+
 		String url = "LoginView.fxml";
 		switchWindow(url);
 		switchScene(event, "login page");
