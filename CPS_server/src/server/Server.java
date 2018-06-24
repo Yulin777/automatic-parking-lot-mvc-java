@@ -24,7 +24,8 @@ public class Server {
 		int[][][] arr = psc.getSlotStatus(1);
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
+		scheduler.scheduleAtFixedRate(new lateOrderCheck(), 0, 15, TimeUnit.MINUTES);
 		ServerSocket socket = null;
 		try {
 			socket = new ServerSocket(8080);
@@ -259,7 +260,11 @@ public class Server {
 			ParkingStationController.setOutOfOrderSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
 		}
 		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
-//			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+			boolean res = ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
 		}
 		else if (cmd[0].equals("response") && cmd[1].equals("Message")) {
 			OrderController.responseToMessage(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]));	

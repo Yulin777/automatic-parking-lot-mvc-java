@@ -15,14 +15,23 @@ import java.util.Date;
 import java.util.List;
 
 import server.Customer;
+import server.CustomerController;
+import server.OrderController;
 import server.ParkingStation;
 import server.ParkingStationController;
 import server.Worker;
+import server.WorkerController;
 
 public class Client {
 	public Client() {
 	}
 	static String ip = "localhost";
+	/**
+	 * call CustomerController login function
+	 * @param id
+	 * @param password
+	 * @return customer if succeed
+	 */
 	public Customer customerLogin(String id, String password) {
 		Customer c = null;
 
@@ -49,6 +58,13 @@ public class Client {
 		return c;
 	}
 
+	/**
+	 * call server WorkerController login function
+	 * @param email
+	 * @param password
+	 * @param type
+	 * @return Worker if succeed
+	 */
 	public Worker workerLogin(String email, String password, Worker.WorkerType type) {
 		Worker w = null;
 
@@ -75,6 +91,10 @@ public class Client {
 		return w;
 	}
 
+	/**
+	 * call server ParkingStationController getParkingIDs function 
+	 * @return list of all ParkingStation name
+	 */
 	public static List<String> getStations() {
 		List<String> stations = new ArrayList<String>();
 
@@ -100,7 +120,12 @@ public class Client {
 		}
 		return stations;
 	}
-
+	/**
+	 * call server OrderController startParking function
+	 * @param carID
+	 * @param clientID
+	 * @return true if update db succeed
+	 */
 	public boolean startParking(String carID, String clientID) {
 		boolean res = false;
 
@@ -126,7 +151,18 @@ public class Client {
 		}
 		return res;
 	}
-
+	/**
+	 * 
+	 * @param id
+	 * @param car_number
+	 * @param car_park
+	 * @param email
+	 * @param start_date
+	 * @param start_time
+	 * @param end_date
+	 * @param end_time
+	 * @return
+	 */
 	public int AdvanceOneTimeOrder(String id, String car_number, String car_park, String email, LocalDate start_date,
 			String start_time, LocalDate end_date, String end_time) {
 		int result;
@@ -156,7 +192,17 @@ public class Client {
 
 		return 0;
 	}
-
+	/**
+	 * call CustomerController addNewClient function
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param password
+	 * @param type
+	 * @param email
+	 * @param phone
+	 * @return true if add to db succeed
+	 */
 	public boolean addNewCustomer(String id, String firstName, String lastName, String password, Customer.type type,
 			String email, String phone) {
 		boolean flag = false;
@@ -183,6 +229,12 @@ public class Client {
 		return flag;
 	}
 
+	/**
+	 * call Car addNewCarToClient function
+	 * @param carId
+	 * @param customerId
+	 * @return true if add to db succeed
+	 */
 	public boolean addNewCar(String carId, String customerId) {
 		boolean flag = false;
 		try {
@@ -207,6 +259,14 @@ public class Client {
 		return flag;
 	}
 
+	/**
+	 * call OrderController addOccasionalOrder function
+	 * @param car_id
+	 * @param end_time
+	 * @param car_park
+	 * @param payMethod
+	 * @return true if add to db succeed
+	 */
 	public int addOccasionalOrder(String car_id, Timestamp end_time, String car_park, String payMethod) {
 		int res = -1;
 		try {
@@ -231,6 +291,15 @@ public class Client {
 		return res;
 	}
 
+	/**
+	 * call OrderController addInAdvanceOrder function
+	 * @param car_id
+	 * @param start_time
+	 * @param end_time
+	 * @param parkingName
+	 * @param paymentMethod
+	 * @return true if add to db succeed
+	 */
 	public int addInAdvanceOrder(String car_id, Timestamp start_time, Timestamp end_time, String parkingName, String paymentMethod) {
 		int res = -1;
 		try {
@@ -392,6 +461,12 @@ public class Client {
 
 	//==============================end of compliant handling=====================================
 
+	/**
+	 * call OrderController orderOngoingExist function
+	 * @param car_id
+	 * @param client_id
+	 * @return  true if update db succeed
+	 */
 	public boolean endParking(String car_id, String client_id) {
 		boolean res = false;
 		try {
@@ -438,6 +513,11 @@ public class Client {
 		return res;
 	}
 	
+	/**
+	 * call OrderController calcPriceOnEndOrder function
+	 * @param car_id
+	 * @return price
+	 */
 	public double getPrice(int order_id) {
 		double res = Double.MAX_VALUE;
 		try {
@@ -461,6 +541,11 @@ public class Client {
 		return res;
 	}
 
+	/**
+	 * call ParkingStaionController getParkSoltStatus function
+	 * @param parkId
+	 * @return 3d array options are 0=AVAILABLE 1=OCCUPIED 2=OUT_OF_ORDER 3=RESERVED
+	 */
 	public int[][][] getParkSoltStatus(int parkId) {
 		int[][][] res = null;
 		try {
@@ -484,6 +569,11 @@ public class Client {
 		return res;
 	}
 
+	/**
+	 * call OrderController cancelOrder function
+	 * @param orderId
+	 * @return price of cancel order
+	 */
 	public double cancelOrder(int orderId) {
 		double res = Double.MAX_VALUE;
 		try {
@@ -507,6 +597,12 @@ public class Client {
 		return res;
 
 	}
+
+	/**
+	 * call OrderController getOrderStatus function
+	 * @param orderId
+	 * @return status of orderId
+	 */
 	public String getOrderStatus(int orderId) {
 		String res = "";
 		try {
@@ -530,6 +626,11 @@ public class Client {
 		return res;
 
 	}
+
+	/**
+	 * call CustomerController logout function
+	 * @param id
+	 */
 	public void logoutClient(String id){
 		Socket socket;
 		try {
@@ -547,6 +648,14 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * call ParkingStaionController setResevedSlot function
+	 * @param parkId
+	 * @param level
+	 * @param row
+	 * @param col
+	 */
 	public void setResevedSlot(int parkId,int level,int row,int col){
 		Socket socket;
 		try {
@@ -564,6 +673,14 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * call ParkingStaionController setOutOfOrderSlot function
+	 * @param parkId
+	 * @param level
+	 * @param row
+	 * @param col
+	 */
 	public void setOutOfOrderSlot(int parkId,int level,int row,int col){
 		Socket socket;
 		try {
@@ -581,6 +698,13 @@ public class Client {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * call ParkingStaionController addParkingStaion function
+	 * @param address
+	 * @param size
+	 * @return true if update db succeed
+	 */
 	public boolean addParkingStaion(String address,int size){
 		Socket socket;
 		boolean res = false;
@@ -614,6 +738,11 @@ public class Client {
 
 	}
 
+	/**
+	 * call OrderController responseToMessage function
+	 * @param response
+	 * @param messages_id
+	 */
 	public void responseToMessage(int response,int messages_id){
 		Socket socket;
 		try {
@@ -632,40 +761,48 @@ public class Client {
 		}
 	}
 
-	
-//	public boolean updateParkingStaionPrices(String parking_id,String order_type, Double order_price_per_hour){
-//		Socket socket;
-//		boolean res = false;
-//		try {
-//			socket = new Socket(ip, 8080);
-//
-//			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
-//			PrintWriter pw = new PrintWriter(osw);
-//			pw.println("ParkingStaion updatePrices " + parking_id +" "+ order_type +" "+ String.valueOf(order_price_per_hour));
-//			pw.flush();
-//			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-//			res = (boolean) ois.readObject();
-//			if (res != true)
-//				System.out.println("[response] parking staion price update succes");
-//			else
-//				System.out.println("[response] parking staion price update failure");
-//
-//			socket.close();
-//		} catch (UnknownHostException e) 
-//		{
-//			e.printStackTrace();
-//		}
-//		catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
-//		catch (ClassNotFoundException e) {
-//			e.printStackTrace();
-//		}
-//		return res;
-//
-//	}
 
+	//	public boolean updateParkingStaionPrices(String parking_id,String order_type, Double order_price_per_hour){
+	//		Socket socket;
+	//		boolean res = false;
+	//		try {
+	//			socket = new Socket(ip, 8080);
+	//
+	//			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+	//			PrintWriter pw = new PrintWriter(osw);
+	//			pw.println("ParkingStaion updatePrices " + parking_id +" "+ order_type +" "+ String.valueOf(order_price_per_hour));
+	//			pw.flush();
+	//			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+	//			res = (boolean) ois.readObject();
+	//			if (res != true)
+	//				System.out.println("[response] parking staion price update succes");
+	//			else
+	//				System.out.println("[response] parking staion price update failure");
+	//
+	//			socket.close();
+	//		} catch (UnknownHostException e) 
+	//		{
+	//			e.printStackTrace();
+	//		}
+	//		catch (IOException e)
+	//		{
+	//			e.printStackTrace();
+	//		}
+	//		catch (ClassNotFoundException e) {
+	//			e.printStackTrace();
+	//		}
+	//		return res;
+	//
+	//	}
+	
+	/**
+	 * call WorkerController updatePrices function
+	 * @param worker_id
+	 * @param occasional
+	 * @param advanced
+	 * @param subscribed
+	 * @return true if update db succeed
+	 */
 	public boolean updateParkingStaionPrices(String worker_id,String occasional, String advanced, String subscribed){
 		Socket socket;
 		boolean res = false;
@@ -739,6 +876,12 @@ public class Client {
 		return res;
 
 	}
+	
+	/**
+	 * call WorkerController checkWorkerStaion function
+	 * @param worker_id
+	 * @return name of WorkerStaion
+	 */
 	public  String checkWorkerStaion(String worker_id){
 		Socket socket;
 		String res = null;
