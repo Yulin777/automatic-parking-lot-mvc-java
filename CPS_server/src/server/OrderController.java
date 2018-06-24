@@ -13,7 +13,7 @@ public class OrderController {
 
 	public enum OrderType {
 		//todo edit more statuses
-		OCCASIONAL, IN_ADVANCE;
+		OCCASIONAL, IN_ADVANCE, SUBSCRIBED;
 	}
 
 	public enum PaymentMethod {

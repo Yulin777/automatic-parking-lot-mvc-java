@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import server.OrderController.OrderType;
+
 public class WorkerController {
 
 	private static sqlConnection sql = sqlConnection.getInstant();
@@ -125,4 +127,36 @@ public class WorkerController {
 		return return_res;
 	}
 
+	public static boolean updatePrices(String worker_id, double occasional, double advanced, double subscribed){
+		java.sql.PreparedStatement stmt;
+		boolean return_res = false;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT parking_id FROM workers WHERE worker_id = ?");
+			stmt.setString(1, worker_id);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				int parking_id = rs.getInt(1);
+				stmt = sql.conn.prepareStatement("UPDATE order_prices SET order_price_per_hour = " + occasional +
+						" WHERE parking_id = " + parking_id + " AND order_type = \"" + OrderType.OCCASIONAL.toString()+"\"");
+				stmt.executeUpdate();
+				
+				stmt = sql.conn.prepareStatement("UPDATE order_prices SET order_price_per_hour = " + advanced +
+						" WHERE parking_id = " + parking_id + " AND order_type = \"" + OrderType.IN_ADVANCE.toString()+"\"");
+				stmt.executeUpdate();
+				
+				stmt = sql.conn.prepareStatement("UPDATE order_prices SET order_price_per_hour = " + subscribed +
+						" WHERE parking_id = " + parking_id + " AND order_type = \"" + OrderType.SUBSCRIBED.toString()+"\"");
+				stmt.executeUpdate();
+				return_res = true;
+			}
+			rs.close();
+			stmt.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return return_res;
+	}
+	
 }
