@@ -28,4 +28,9 @@ public class OrderControllerTest {
 		int id = OrderController.addInAdvanceOrder("123","2018-07-07 08:05:31","2018-07-07 10:05:31","TelAviv","CREDIT");
 		assertFalse("check addInAdvanceOrdertest should return !=-1",(id==-1));
 	}
+	@Test
+	public void OrderOverlapstest() {
+		boolean res = OrderController.OrderOverlaps("gdf","2018-06-24 11:11:00","2018-06-25 23:00:00","Haifa");
+		assertEquals("check OrderOverlapstest should be overlap",res,true);
+	}
 }
