@@ -98,7 +98,7 @@ public class PersonViewController {
 			Double.parseDouble(in_advanced_price);
 
 		} catch (NumberFormatException ex){
-			err_msg += "prices should be double";
+			err_msg += "prices must be double";
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
@@ -368,20 +368,29 @@ public class PersonViewController {
 
 		if (order_id.isEmpty()) {
 			err_msg += "please provide order id\n";
+			return;
 		}
+		double bill;
+		try {
+			bill = client.cancelOrder(Integer.parseInt(order_id));
+			if(bill != Double.MAX_VALUE) {
+				String succ_msg="Order canceled successfully\n Your bill is: " + new DecimalFormat("##.##").format(bill);
+				createMsg(event, succ_msg, "succ msg");
+			}
+			else {
+				err_msg += "couldnt delete order\n";
+			}
+			if (!err_msg.isEmpty()) {
+				createMsg(event, err_msg, "error msg");
+				return;
+			}
 
-		if (!err_msg.isEmpty()) {
+		} catch (NumberFormatException ex){
+			err_msg += "order id must be int";
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
 
-
-		double bill = client.cancelOrder(Integer.parseInt(order_id));		
-
-		//TODO need to delete order from database. DONE!
-
-		String succ_msg="order was canceled succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		createMsg(event, succ_msg, "succ msg");
 	}
 
 
