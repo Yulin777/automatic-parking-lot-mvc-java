@@ -206,7 +206,6 @@ public class Server {
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
-			OrderController.removeOrder(cmd[2], "ONGOING");
 			currentSocket.close();
 		} 
 		
