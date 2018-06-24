@@ -804,7 +804,7 @@ public class PersonViewController {
 
 		
 		Double bill = client.getPrice(car_number);
-		String succ_msg="order was added succesfully\\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
+		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
 		createMsg(event, succ_msg, "succes msg");
 		return;
 
