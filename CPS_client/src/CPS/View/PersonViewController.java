@@ -717,7 +717,7 @@ public class PersonViewController {
 			err_msg = err_msg + "please provide car number\n";
 		}
 		else if(client.endParking(car_id, pid)) {
-			double bill = client.getPrice(car_id);
+			double bill = client.getEndPrice(car_id);
 			if (bill != Double.MAX_VALUE) {
 				//				createBillMsg(event, String.valueOf(bill));
 				String succ_msg="order ended succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
@@ -803,9 +803,9 @@ public class PersonViewController {
 		c.addNewCar(car_number, id);
 
 		
-		Double bill = client.getPrice(car_number);
-		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		createMsg(event, succ_msg, "succes msg");
+//		Double bill = client.getEndPrice(car_number);
+//		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
+//		createMsg(event, succ_msg, "succes msg");
 		return;
 
 	}
@@ -1268,20 +1268,18 @@ public class PersonViewController {
 
 		client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone);
 		client.addNewCar(car_number, id);
-		if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
-
-			//TODO add success message to gui
+		int orderID = client.addOccasionalOrder(car_number, timestamp, car_park, payMethod);
+		if (orderID != -1) {
+			
+			Double bill = client.getPrice(orderID);
+			String succ_msg="Order was added succesfully\nYour order id is: " + orderID + "\nYour bill is: " + new DecimalFormat("##.##").format(bill);
+			createMsg(event,succ_msg, "succ msg");
 		} else {
-			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
 		
 		
-		Double bill = client.getPrice(car_number);
-		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		
-		createMsg(event, succ_msg, "succ msg");
 	}
 
 	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String
@@ -1522,18 +1520,16 @@ public class PersonViewController {
 
 		client.addNewCustomer(clientID, first_name, last_name, password, Customer.type.ADVANCED, email, phone);
 		client.addNewCar(carID, clientID);
-		if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod)) {
-
-			//TODO add success message to gui
+		int orderID = client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod);
+		if (orderID != -1) {
+			Double bill = client.getPrice(orderID);
+			String succ_msg="Order was added succesfully\nYour order id is: " + orderID + "\nYour bill is: " + new DecimalFormat("##.##").format(bill);
+			createMsg(event,succ_msg, "succ msg");
 		} else {
-			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
 		
-		Double bill = client.getPrice(carID);
-		String succ_msg="order was added succesfully\\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		createMsg(event,succ_msg, "succ msg");
 
 
 	}

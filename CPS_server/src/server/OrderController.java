@@ -104,8 +104,8 @@ public class OrderController {
 	 * @param paymentMethod
 	 * @return true on successful add. false otherwise
 	 */
-	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName, String paymentMethod) {
-		boolean flag = false;
+	public static int addOccasionalOrder(String carID, String endDate, String parkingName, String paymentMethod) {
+		int id = -1;
 		PreparedStatement stmt;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -129,11 +129,11 @@ public class OrderController {
 
 					ResultSet uprs = stmt.getGeneratedKeys();
 					if (uprs.next()) {
-						calcAndUpdatePrice(uprs.getInt(1));
+						id = uprs.getInt(1);
+						calcAndUpdatePrice(id);
 					}
 
 					System.out.println("New order was added successfully");
-					flag = true;
 
 					uprs.close();
 					stmt.close();
@@ -144,7 +144,7 @@ public class OrderController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return flag;
+		return id;
 	}
 
 	/**
@@ -184,8 +184,8 @@ public class OrderController {
 	 * @param paymentMethod
 	 * @return true if add was successful. false otherwise
 	 */
-	public static boolean addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName, String paymentMethod) {
-		boolean flag = false;
+	public static int addInAdvanceOrder(String carID, String startDate, String endDate, String parkingName, String paymentMethod) {
+		int id = -1;
 		PreparedStatement stmt;
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id=?");
@@ -207,19 +207,18 @@ public class OrderController {
 
 				ResultSet uprs = stmt.getGeneratedKeys();
 				if (uprs.next()) {
-					calcAndUpdatePrice(uprs.getInt(1));
+					id = uprs.getInt(1);
+					calcAndUpdatePrice(id);
 				}
 
 				System.out.println("New order was added successfully");
-				flag = true;
-
 				uprs.close();
 				stmt.close();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return flag;
+		return id;
 	}
 
 	/**
@@ -236,11 +235,11 @@ public class OrderController {
 		java.sql.PreparedStatement stmt;
 		try {
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SS");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			java.util.Date start = dateFormat.parse(startDate);
 			Timestamp start_date_timestamp = new java.sql.Timestamp(start.getTime());
 
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SS");
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			java.util.Date end = dateFormat.parse(endDate);
 			Timestamp end_date_timestamp = new java.sql.Timestamp(end.getTime());
 
@@ -439,7 +438,30 @@ public class OrderController {
 		}
 		return price_per_hour;
 	}
-
+	
+	/**
+	 * @param odrer_id
+	 * @return get order price of a specific order
+	 */
+	public static double getPriceById(int odrer_id) {
+		double price = Double.MAX_VALUE;
+		PreparedStatement stmt;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT order_price FROM orders WHERE `orders`.`order_id` = ?");
+			stmt.setInt(1, odrer_id);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				price = rs.getDouble(1);
+			}
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return price;
+	}
+	
 	/**
 	 * calculates payment balance when a client wishes to finish parking
 	 *

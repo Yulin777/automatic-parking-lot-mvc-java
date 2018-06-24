@@ -121,14 +121,14 @@ public class Server {
 
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
-			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);
+			int res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 
 		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
-			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7], cmd[8]);
+			int res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7], cmd[8]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
@@ -193,8 +193,15 @@ public class Server {
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
+		} else if (cmd[0].equals("get") && cmd[1].equals("endPrice")) {
 			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			OrderController.removeOrder(cmd[2], "ONGOING");
+			currentSocket.close();
+		} else if (cmd[0].equals("get") && cmd[1].equals("Price")) {
+			double res = OrderController.getPriceById(Integer.valueOf(cmd[2]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
