@@ -59,6 +59,12 @@ public class CustomerController {
 		return flag;
 	}
 
+	/**
+	 * method returns client object of a given id
+	 *
+	 * @param id
+	 * @return true if add was successful. otherwise false
+	 */
 	public static Customer getClientById(String id) {
 		java.sql.PreparedStatement stmt;
 		Customer return_res = null;

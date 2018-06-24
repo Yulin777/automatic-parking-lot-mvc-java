@@ -58,16 +58,17 @@ public class OrderController {
 	 * @param endDate
 	 * @return result string
 	 */
-	public static String addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
+	public static boolean addNewSubscription(String cliendID, String carID, java.sql.Timestamp startDate,
 											java.sql.Timestamp endDate) {
 		Statement stmt;
+		boolean res=false;
 		try {
 			stmt = sql.conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
 			ResultSet c = stmt.executeQuery("SELECT * FROM clients WHERE client_ID=" + cliendID + ";");
 			if (!c.next()) {
 				System.err.println("no client with such id");
-				return ("no client with such id");
+				return res;
 			}
 			ResultSet client = stmt.executeQuery("SELECT * FROM subscriptions WHERE client_ID=" + cliendID + ";");
 			if (!client.next()) {
@@ -81,17 +82,15 @@ public class OrderController {
 				uprs.insertRow();
 
 				System.out.println("New subscription was added succsfully");
-
+				res=true;
 				uprs.close();
 				stmt.close();
-			} else {
-				return ("client already has subscription");
-			}
+			} 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return ("New subscription was added succsfully");
+		return res;
 	}
 
 	/**

@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -119,7 +120,12 @@ public class Server {
 			osw.writeObject(c.addNewCarToClient());
 			osw.flush();
 			currentSocket.close();
-
+		} else if (cmd[0].equals("add") && cmd[1].equals("subscription")) {
+			boolean res = OrderController.addNewSubscription(cmd[2], cmd[3], Timestamp.valueOf(cmd[4]), Timestamp.valueOf(cmd[5]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
 			int res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);

@@ -237,7 +237,38 @@ public class Client {
 		}
 		return flag;
 	}
+	/**
+	 * add new subscription 
+	 *
+	 * @param cliendID
+	 * @param carID
+	 * @param startDate
+	 * @param endDate
+	 * @return true if add to db succeed
+	 */
+	public boolean addNewSubscription(String cliendID, String carID, String startDate,String endDate) {
+		boolean flag = false;
 
+		try {
+			Socket socket = new Socket(ip, 8080);
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("add subscription " + cliendID + " " + carID + " " + startDate + " " + endDate);
+			pw.flush();
+			InputStream is = socket.getInputStream();
+			ObjectInputStream ois = new ObjectInputStream(is);
+			flag = (boolean) ois.readObject();
+			if (flag) {
+				System.out.println("[response] subscription creation Succeed");
+			} else
+				System.out.println("[response] subscription creation failed");
+
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
 	/**
 	 * call Car addNewCarToClient function
 	 *
