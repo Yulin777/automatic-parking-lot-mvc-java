@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="300.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="CPS.View.PersonViewController">
+   <children>
+      <Button fx:id="reserve_parking_commit_change_btn" layoutX="130.0" layoutY="197.0" mnemonicParsing="false" onAction="#reserve_parking_commit_change_btn" prefHeight="25.0" prefWidth="239.0" text="commit change" />
+      <Button fx:id="reserve_parking_back_btn" layoutX="24.0" layoutY="264.0" mnemonicParsing="false" onAction="#reserve_parking_back" text="&lt;&lt; back" />
+      <TextField fx:id="reserve_parking_column_bar" layoutX="149.0" layoutY="144.0" prefHeight="25.0" prefWidth="107.0" promptText="column:" />
+      <Text layoutX="303.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="set parking as:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <RadioButton fx:id="reserve_parking_broken_btn" layoutX="306.0" layoutY="117.0" mnemonicParsing="false" text="broken">
+         <toggleGroup>
+            <ToggleGroup fx:id="status_parking" />
+         </toggleGroup>
+      </RadioButton>
+      <Text layoutX="76.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="select location:">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="82.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="level:" />
+      <Text layoutX="84.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="row:" />
+      <Text layoutX="85.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="column:" />
+      <RadioButton fx:id="reserve_parking_saved_btn" layoutX="306.0" layoutY="84.0" mnemonicParsing="false" text="saved" toggleGroup="$status_parking" />
+      <SplitMenuButton fx:id="reserve_parking_level_menu" layoutX="151.0" layoutY="54.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="107.0" text="Select Level">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+      </SplitMenuButton>
+      <SplitMenuButton fx:id="reserve_parking_row_menu" layoutX="151.0" layoutY="98.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="107.0" text="Select Row">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Action 1" />
+            <MenuItem mnemonicParsing="false" text="Action 2" />
+         </items>
+      </SplitMenuButton>
+   </children>
+</AnchorPane>

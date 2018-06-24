@@ -21,7 +21,6 @@ import server.Worker;
 
 public class Client {
 	public Client() {
-
 	}
 	static String ip = "localhost";
 	public Customer customerLogin(String id, String password) {
@@ -684,7 +683,38 @@ public class Client {
 		return res;
 
 	}
-	
+	public  String checkWorkerStaion(String worker_id){
+		Socket socket;
+		String res = null;
+		try {
+			socket = new Socket(ip, 8080);
+
+			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
+			PrintWriter pw = new PrintWriter(osw);
+			pw.println("Worker Staion " +worker_id);
+			pw.flush();
+			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+			res = (String) ois.readObject();
+			if (res != null)
+				System.out.println("[response] checkWorkerStaion "+res);
+			else
+				System.out.println("[response] checkWorkerStaion fail");
+
+			socket.close();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return res;
+	}
+
 }
 
 

@@ -100,5 +100,29 @@ public class WorkerController {
 		  System.out.println(sha1("password1"));
 	  }*/
 
+	public static String checkWorkerStaion(String worker_id){
+		java.sql.PreparedStatement stmt;
+		String return_res = null;
+		try {
+			stmt = sql.conn.prepareStatement("SELECT parking_address FROM workers,ParkingStation WHERE workers.parking_id = ParkingStation.parking_id AND worker_id = ?");
+			stmt.setString(1, worker_id);
+			
+			ResultSet rs = stmt.executeQuery();
+			if (!rs.next()) {
+				return null;
+			}
+
+			return_res =  rs.getString(1);
+			
+			rs.close();
+			stmt.close();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return return_res;
+	}
 
 }

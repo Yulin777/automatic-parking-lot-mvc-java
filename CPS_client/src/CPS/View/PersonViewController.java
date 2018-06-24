@@ -56,6 +56,160 @@ public class PersonViewController {
 	
 	
 	
+	
+	//------------Reserve Parking--------------
+	
+	 @FXML
+	    private Button reserve_parking_back_btn;
+
+	    @FXML
+	    private RadioButton reserve_parking_saved_btn;
+
+	    @FXML
+	    private ToggleGroup status_parking;
+
+	    @FXML
+	    private SplitMenuButton reserve_parking_level_menu;
+
+	    @FXML
+	    private Button reserve_parking_commit_change_btn;
+
+	    @FXML
+	    private RadioButton reserve_parking_broken_btn;
+
+	    @FXML
+	    private SplitMenuButton reserve_parking_row_menu;
+
+	    @FXML
+	    private TextField reserve_parking_column_bar;
+
+    @FXML
+    void reserve_parking_commit_change_btn(ActionEvent event) throws IOException 
+    {
+    	String level = reserve_parking_level_menu.getText();
+    	String row = reserve_parking_row_menu.getText();
+    	String column = reserve_parking_column_bar.getText();
+
+    	String err_msg = Reserve_Parking_InputIsValid( level,  row,  column) ;
+    	
+    	if(!err_msg.isEmpty())
+    	{
+    		createMsg(event, err_msg, "error msg");
+    		return;
+    	}
+    	String location = "TelAviv";
+		int location_id = OrderController.getOrderParkingId(location);
+		int level_int = Integer.parseInt(level);
+    	int[][][] c = client.getParkSoltStatus(location_id);
+    	
+    	
+    	int level_Int = Integer.parseInt(level);
+    	int row_int = Integer.parseInt(row);
+    	int column_int = Integer.parseInt(column);
+    	int flag = 0;
+    	if(c[level_Int][row_int].length <= column_int)
+    	{
+    		err_msg +="there is no such parking\n";
+    	}
+    	
+    	else
+    	{
+    	if(reserve_parking_saved_btn.isSelected())
+    	{
+    		client.setResevedSlot( location_id, level_int,row_int, column_int);
+    		flag=1;
+    	}
+    	
+    	if(reserve_parking_broken_btn.isSelected())
+    	{
+    		client.setOutOfOrderSlot(location_id, level_int,row_int, column_int);
+    	}
+    	
+    	
+    	if(flag==0)
+    	{
+    		err_msg +="no button was selected\n";
+    	}
+    	}
+    	
+    	if(!err_msg.isEmpty())
+    	{
+    		createMsg(event, err_msg, "error msg");
+    		return;
+    	}
+    	//get the size of [level][row] - check if in place V
+    	//check all radio buttons and act acordinly        V
+    	//get the city 
+    	
+    	String succ_msg = "change commited succsesfully\n";
+    	createMsg(event, succ_msg, "succ msg");
+    	
+    }
+    
+    private String Reserve_Parking_InputIsValid(String level, String row, String column) 
+    	{
+		String msg = "";
+		if (level.equals("Select Level"))
+			msg = msg + "level is not selected\n";
+		if (row.equals("Select Row"))
+			msg = msg + "row is not selected\n";
+		
+		//TODO check column is an integer
+		if (column.isEmpty())
+			msg = msg + "column is not selected\n";
+		return msg;
+	}
+
+    @FXML
+    void reserve_parking_back(ActionEvent event) throws IOException {
+    	String url = "WorkerView.fxml";
+		switchWindow(url);
+		switchScene(event, "Worker page");
+
+
+    }
+	public void Reserve_Parking_load_car_lots() {
+
+		reserve_parking_level_menu.getItems().clear();
+		reserve_parking_row_menu.getItems().clear();
+		
+		String[] level_arr = {"0", "1", "2"};	
+		String[] row_arr = {"0", "1", "2"};	
+		for (String i : level_arr) {
+			MenuItem mi = new MenuItem(i);
+			mi.setText(i);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					reserve_parking_level_menu.setText(mi.getText());
+				}
+			});
+			reserve_parking_level_menu.getItems().add(mi);
+		}
+		
+		for (String i : row_arr) {
+			MenuItem mi = new MenuItem(i);
+			mi.setText(i);
+			mi.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					reserve_parking_row_menu.setText(mi.getText());
+				}
+			});
+			reserve_parking_row_menu.getItems().add(mi);
+		}
+		
+		
+		
+
+	}
+
+	//-------------^^^^Reserve Parking^^^^^------------
+	
+    
+    
 	//-------------Order detail view -----------------
 	
 	@FXML
@@ -157,7 +311,19 @@ public class PersonViewController {
 	}
 
 
+	
+	
+
 	//------------------^^^^cancel order-^^^^----------------------
+
+
+
+
+
+
+
+
+
 
 
 	//-----------------------add car view -------------------------------
@@ -767,29 +933,26 @@ public class PersonViewController {
 
 
 	//------------------------------WORKER------------------------------------------
-	@FXML // fx:id="worker_log_out_btn"
-	private Button worker_log_out_btn; // Value injected by FXMLLoader
+	@FXML
+    private Button worker_log_out_btn;
 
-	@FXML // fx:id="worker_name_label"
-	private Label worker_name_label; // Value injected by FXMLLoader
+    @FXML
+    private Label worker_name_label;
 
-	@FXML // fx:id="worker_availability_btn"
-	private Button worker_availability_btn; // Value injected by FXMLLoader
+    @FXML
+    private Button worker_availability_btn;
 
-	@FXML // fx:id="worker_report_btn"
-	private Button worker_report_btn; // Value injected by FXMLLoader
-
-	@FXML // fx:id="worker_reserve_parking_btn"
-	private Button worker_reserve_parking_btn; // Value injected by FXMLLoader
+    @FXML
+    private Button worker_reserve_parking_btn;
 
 	@FXML
-	void worker_report(ActionEvent event) {
-		return;
-	}
-
-	@FXML
-	void worker_resreve_parking(ActionEvent event) {
-		return;
+	void worker_resreve_parking(ActionEvent event) throws IOException {
+		
+		String url = "ReserveParking.fxml";
+		switchWindow(url);
+		PersonViewController controller = loader.getController();
+		controller.Reserve_Parking_load_car_lots();
+		switchScene(event, "reserve parking interface");
 	}
 
 	@FXML
@@ -811,6 +974,12 @@ public class PersonViewController {
         window.show();*/
 
 	}
+	
+	
+	
+	
+	
+	
 	//----------------------------^WORKER^--------------------------------
 
 	//------------------------------------------------------------------------------------------------  
