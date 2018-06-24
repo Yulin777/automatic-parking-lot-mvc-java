@@ -102,14 +102,14 @@ public class Client {
 		return stations;
 	}
 
-	public boolean startParking(String carID) {
+	public boolean startParking(String carID, String clientID) {
 		boolean res = false;
 
 		try {
 			Socket socket = new Socket(ip, 8080);
 			OutputStreamWriter osw = new OutputStreamWriter(socket.getOutputStream());
 			PrintWriter pw = new PrintWriter(osw);
-			pw.println("start parking " + carID);
+			pw.println("start parking " + carID + " " + clientID);
 			pw.flush();
 
 			ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());

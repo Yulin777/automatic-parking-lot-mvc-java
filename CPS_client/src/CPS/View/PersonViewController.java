@@ -296,17 +296,25 @@ public class PersonViewController {
 	@FXML
 	void start_parking_start_parking(ActionEvent event) throws IOException {
 		String car_num = start_parking_car_number_bar.getText();
+		String err_msg="";
 		if (car_num.isEmpty()) {
-			String err_msg = "please provide car number\n";
+			err_msg += "please provide car number\n";
+//			createMsg(event, err_msg, "error msg");
+			return;
+		}
+		else if(client.startParking(car_num, pid)) {
+			//TODO check if parking available + if this car number is signed + if customer is late (will pay fine)
+			
+			String succ_msg = "parking started successfully\n";
+			createMsg(event, succ_msg, "succes msg");							
+		}
+		else {
+			err_msg += "cannot start parking\n";
+		}
+		if (!err_msg.isEmpty()) {
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
-
-		//TODO check if parking available + if this car number is signed + if customer is late (will pay fine)
-
-
-		String succ_msg = "still in progress\n";
-		createMsg(event, succ_msg, "succes msg");
 
 	}
 
@@ -1582,8 +1590,7 @@ public class PersonViewController {
 
 
 	void log_out(ActionEvent event) throws IOException {
-		//TODO: call client logout method
-		
+		client.logoutClient(pid);
 		
 		String url = "LoginView.fxml";
 		switchWindow(url);

@@ -284,15 +284,16 @@ public class OrderController {
 		int res = 0;
 		PreparedStatement stmt;
 		try {
-			stmt = sql.conn.prepareStatement("SELECT order_id FROM orders WHERE order_car_id = ?");
+			stmt = sql.conn.prepareStatement("SELECT order_id FROM orders WHERE order_car_id = ? AND order_status = ?");
 			stmt.setString(1, carID);
+			stmt.setString(2, OrderStatus.PENDING.toString());
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				String orderID = rs.getString(1);
+				int orderID = rs.getInt(1);
 
 				stmt = sql.conn.prepareStatement("UPDATE  `Group_1`.`orders` SET  `order_status` =  ? WHERE  `orders`.`order_id` =?;");
 				stmt.setString(1, OrderStatus.ONGOING.toString());
-				stmt.setInt(2, Integer.valueOf(orderID));
+				stmt.setInt(2, orderID);
 				res = stmt.executeUpdate();
 			}
 			if (res == 1) {

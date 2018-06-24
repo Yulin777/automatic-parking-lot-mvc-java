@@ -86,7 +86,10 @@ public class Server {
 			osw.flush();
 			currentSocket.close();
 		} else if (cmd[0].equals("start") && cmd[1].equals("parking")) {
-			boolean res = OrderController.startParking(cmd[2]);
+			boolean res = false;
+			if(Car.getClientId(cmd[2]).equals(cmd[3])) {
+				res = OrderController.startParking(cmd[2]);
+			}
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
