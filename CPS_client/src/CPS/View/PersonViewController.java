@@ -803,12 +803,17 @@ public class PersonViewController {
 			return;
 		}
 		Client c = new Client();
-		if (!c.addNewCustomer(id, firstName, lastName, password, type.SUBSCRIBED, email, phone)) {
-			err_msg = "Somthing went wrong during sign up customer\n";
+		c.addNewCustomer(id, firstName, lastName, password, type.SUBSCRIBED, email, phone);
+		if (!c.addNewCar(car_number, id)) {
+			err_msg = "couldnt add subscription\n";
 			createMsg(event, err_msg, "error msg");
 			return;
 		}
-		c.addNewCar(car_number, id);
+		else {
+			String succ_msg="subscription was added succesfully\n";
+			createMsg(event,succ_msg, "succ msg");
+
+		}
 
 		
 //		Double bill = client.getEndPrice(car_number);
