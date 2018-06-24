@@ -28,9 +28,24 @@ public class lateOrderCheck implements Runnable {
 					uprs.insertRow();
 					System.out.println("[auto] send late message to client " + rs.getString("client_ID"));
 				} else {
-					stmt = sql.conn.prepareStatement("SELECT * FROM orders,cars WHERE order_car_id = car_ID AND order_status = 'PENDING' AND  (TIMESTAMPDIFF(MINUTE,NOW(),start_date))<-29");
+					int response = uprs.getInt("messages_confirmation");
+					String orderId = rs.getString("order_id");
+					if((response==0)||(response==2)) //cancel order
+					{
+						OrderController.cancelOrder(Integer.valueOf(orderId));
+					}
+					else{
 
-					rs = stmt.executeQuery();
+						try {
+							stmt = sql.conn.prepareStatement("UPDATE orders SET order_price = (order_price*1.20) WHERE order_id = ?");
+							stmt.setString(1, orderId);
+							
+							int update_rs = stmt.executeUpdate();
+
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+					}
 				}
 			}
 			stmt.close();
