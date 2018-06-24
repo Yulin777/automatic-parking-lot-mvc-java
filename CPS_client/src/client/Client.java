@@ -26,7 +26,7 @@ public class Client {
 	public Client() {
 	}
 
-	static String ip = "localhost";
+	public static String ip = "localhost";
 
 	/**
 	 * call CustomerController login function

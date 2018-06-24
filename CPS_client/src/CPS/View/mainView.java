@@ -47,8 +47,16 @@ public class mainView extends Application {
     }
 
     public static void main(String[] args) {
+        try
+        {
+          Client.ip = args[0];
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+        	Client.ip = "localhost";
+        }
         launch(args);
-     
+
     }
 
 
