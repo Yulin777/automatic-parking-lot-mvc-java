@@ -21,7 +21,8 @@ public class Server {
 		//run subscriptions End Check every day
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		scheduler.scheduleAtFixedRate(new subscriptionsEndCheck(), 0, 1, TimeUnit.DAYS);
-		scheduler.scheduleAtFixedRate(new lateOrderCheck(), 0, 5, TimeUnit.MINUTES);		ServerSocket socket = null;
+		scheduler.scheduleAtFixedRate(new lateOrderCheck(), 0, 5, TimeUnit.MINUTES);
+		ServerSocket socket = null;
 		try {
 			socket = new ServerSocket(8080);
 			System.out.println("CPS server on ip: " + InetAddress.getLocalHost().getHostAddress().toString() +
