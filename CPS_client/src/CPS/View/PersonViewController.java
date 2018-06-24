@@ -717,7 +717,7 @@ public class PersonViewController {
 			err_msg = err_msg + "please provide car number\n";
 		}
 		else if(client.endParking(car_id, pid)) {
-			double bill = client.getPrice(car_id);
+			double bill = client.getEndPrice(car_id);
 			if (bill != Double.MAX_VALUE) {
 				//				createBillMsg(event, String.valueOf(bill));
 				String succ_msg="order ended succsecfully\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
@@ -803,9 +803,9 @@ public class PersonViewController {
 		c.addNewCar(car_number, id);
 
 		
-		Double bill = client.getPrice(car_number);
-		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		createMsg(event, succ_msg, "succes msg");
+//		Double bill = client.getEndPrice(car_number);
+//		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
+//		createMsg(event, succ_msg, "succes msg");
 		return;
 
 	}
@@ -1268,20 +1268,18 @@ public class PersonViewController {
 
 		client.addNewCustomer(id, first_name, last_name, "Occasional", Customer.type.OCCASIONAL, email, phone);
 		client.addNewCar(car_number, id);
-		if (client.addOccasionalOrder(car_number, timestamp, car_park, payMethod)) {
-
-			//TODO add success message to gui
+		int orderID = client.addOccasionalOrder(car_number, timestamp, car_park, payMethod);
+		if (orderID != -1) {
+			
+			Double bill = client.getPrice(orderID);
+			String succ_msg="Order was added succesfully\nYour order id is: " + orderID + "\nYour bill is: " + new DecimalFormat("##.##").format(bill);
+			createMsg(event,succ_msg, "succ msg");
 		} else {
-			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
 		
 		
-		Double bill = client.getPrice(car_number);
-		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		
-		createMsg(event, succ_msg, "succ msg");
 	}
 
 	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String
@@ -1522,18 +1520,16 @@ public class PersonViewController {
 
 		client.addNewCustomer(clientID, first_name, last_name, password, Customer.type.ADVANCED, email, phone);
 		client.addNewCar(carID, clientID);
-		if (client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod)) {
-
-			//TODO add success message to gui
+		int orderID = client.addInAdvanceOrder(carID, start_timestamp, end_timestamp, car_park, payMethod);
+		if (orderID != -1) {
+			Double bill = client.getPrice(orderID);
+			String succ_msg="Order was added succesfully\nYour order id is: " + orderID + "\nYour bill is: " + new DecimalFormat("##.##").format(bill);
+			createMsg(event,succ_msg, "succ msg");
 		} else {
-			//TODO error msg
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
 		
-		Double bill = client.getPrice(carID);
-		String succ_msg="order was added succesfully\\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
-		createMsg(event,succ_msg, "succ msg");
 
 
 	}
@@ -1670,19 +1666,30 @@ public class PersonViewController {
 	//----------------------------Ceo view-----------------------------
 
 	@FXML
-	private SplitMenuButton Ceo_View_level_menu;
+    private Button Ceo_View_create_parking_station_btn;
 
-	@FXML
-	private Button Ceo_View_back_btn;
+    @FXML
+    private SplitMenuButton Ceo_View_level_menu;
 
-	@FXML
-	private SplitMenuButton Ceo_View_location_menu;
+    @FXML
+    private TextField Ceo_View_create_station_size_bar;
 
-	@FXML
-	private Text Ceo_View_hello_label;
+    @FXML
+    private Button Ceo_View_back_btn;
 
-	@FXML
-	private Button Ceo_View_print_report_btn;
+    @FXML
+    private TextField Ceo_View_create_station_address_bar;
+
+    @FXML
+    private SplitMenuButton Ceo_View_location_menu;
+
+    @FXML
+    private Text Ceo_View_hello_label;
+
+    @FXML
+    private Button Ceo_View_print_report_btn;
+
+    
 
 	@FXML
 	void Ceo_View_back(ActionEvent event) throws IOException {
@@ -1761,11 +1768,49 @@ public class PersonViewController {
 			});
 			Ceo_View_level_menu.getItems().add(mi);
 		}
-
-
 	}
 
+	   @FXML
+	    void Ceo_View_create_parking_station(ActionEvent event) throws IOException 
+	   {
+		   String size = Ceo_View_create_station_size_bar.getText();
+		   String address = Ceo_View_create_station_address_bar.getText();
+		   String err_msg="";
+		   
+		   err_msg =  Ceo_View_create_parking_validate(size,address);
+		   if(!err_msg.isEmpty())
+			{
+				createMsg(event, err_msg, "error msg");
+				return;
+			}	
+		   int size_int = Integer.parseInt(size);
+		   if(!client.addParkingStaion(address, size_int))
+		   {
+			   err_msg+="couldnt create new parking station\n";
+			   createMsg(event, err_msg, "error msg");
+			return;
+		   }
+		   
+		   String succ_msg = "parking station created succsefully\n";
+			createMsg(event, succ_msg, "succ msg");
 
+		   
+	    }
+
+	
+	   String Ceo_View_create_parking_validate(String size,String address)
+	   {
+		   String err_msg="";
+		   if(size.isEmpty())
+			   err_msg+="please write size\n";
+		   if(address.isEmpty())
+			   err_msg+="please write address\n";
+		   
+					 
+		   return err_msg;
+	   }
+	
+	
 	//---------------------^^^^^-Ceo View-^-^^-^^^^^------------------------------------
 
 

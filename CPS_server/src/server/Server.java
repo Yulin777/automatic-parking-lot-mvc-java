@@ -122,14 +122,14 @@ public class Server {
 
 			//orders
 		} else if (cmd[0].equals("add") && cmd[1].equals("occasional")) {
-			boolean res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);
+			int res = OrderController.addOccasionalOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5], cmd[6]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
 
 		} else if (cmd[0].equals("add") && cmd[1].equals("advanced")) {
-			boolean res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7], cmd[8]);
+			int res = OrderController.addInAdvanceOrder(cmd[2], cmd[3] + " " + cmd[4], cmd[5] + " " + cmd[6], cmd[7], cmd[8]);
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
@@ -194,8 +194,15 @@ public class Server {
 			osw.writeObject(res);
 			osw.flush();
 			currentSocket.close();
-		} else if (cmd[0].equals("get") && cmd[1].equals("price")) {
+		} else if (cmd[0].equals("get") && cmd[1].equals("endPrice")) {
 			double res = OrderController.calcPriceOnEndOrder(cmd[2]);
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			OrderController.removeOrder(cmd[2], "ONGOING");
+			currentSocket.close();
+		} else if (cmd[0].equals("get") && cmd[1].equals("Price")) {
+			double res = OrderController.getPriceById(Integer.valueOf(cmd[2]));
 			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
 			osw.writeObject(res);
 			osw.flush();
@@ -253,7 +260,11 @@ public class Server {
 			ParkingStationController.setOutOfOrderSlot(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]),Integer.parseInt(cmd[4]),Integer.parseInt(cmd[5]));
 		}
 		else if (cmd[0].equals("add") && cmd[1].equals("ParkingStaion")) {
-//			ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+			boolean res = ParkingStationController.addParkingStaion(cmd[2],Integer.parseInt(cmd[3]));
+			ObjectOutputStream osw = new ObjectOutputStream(currentSocket.getOutputStream());
+			osw.writeObject(res);
+			osw.flush();
+			currentSocket.close();
 		}
 		else if (cmd[0].equals("response") && cmd[1].equals("Message")) {
 			OrderController.responseToMessage(Integer.parseInt(cmd[2]),Integer.parseInt(cmd[3]));	
