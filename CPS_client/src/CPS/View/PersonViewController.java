@@ -81,45 +81,38 @@ public class PersonViewController {
 	{
 
 		String ocassional_price = update_prices_view_ocassional_price_bar.getText();
-		String subscription_price = update_prices_view_subscription_price_bar.getText();
 		String in_advanced_price = update_prices_view_in_advance_price_bar.getText();
+		String subscription_price = update_prices_view_subscription_price_bar.getText();
 
 		String err_msg = "";
 		err_msg = updated_price_InputIsValid(ocassional_price,subscription_price,in_advanced_price);
-
 		if(!err_msg.isEmpty())
 		{
 			createMsg(event, err_msg, "error msg");
 			return;
-		}
-		
-		
-		Double ocassional_price_double = Double.parseDouble(ocassional_price);
-		Double subscription_price_double = Double.parseDouble(subscription_price);
-		Double in_advanced_price_double = Double.parseDouble(in_advanced_price);
-	
-		
-		int location_id = OrderController.getOrderParkingId(pid);
-		
-		//if(!client.updateParkingStaionPrices(location_id, order_type,  ocassional_price_double))
-		{
-			err_msg+="couldnt update orice\n";
-			createMsg(event, err_msg, "error msg");
-		}
-		/*
-		 * 
-		 * 
-		 * talyyyyya
-		 */
-		
-		
-		
-		String succ_msg = "prices have changed successfully\n";
-		
-		
-		createMsg(event, succ_msg, "succ msg");
+		}	
 
-		
+		try {
+			Double.parseDouble(ocassional_price);
+			Double.parseDouble(subscription_price);
+			Double.parseDouble(in_advanced_price);
+
+		} catch (NumberFormatException ex){
+			err_msg += "prices should be double";
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+
+		if(!client.updateParkingStaionPrices(pid, ocassional_price,  in_advanced_price, subscription_price))
+		{
+			err_msg+="couldnt update price\n";
+			createMsg(event, err_msg, "error msg");
+			return;
+		}
+
+		String succ_msg = "prices have changed successfully\n";
+		createMsg(event, succ_msg, "succ_msg");
+
 	}
 
 
@@ -127,12 +120,8 @@ public class PersonViewController {
 	private String updated_price_InputIsValid(String ocassional_price, String subscription_price, String in_advanced_price) 
 	{
 		String msg = "";
-		if (ocassional_price.isEmpty())
-			msg = msg + "please provide ocassional price\n";
-		if (subscription_price.isEmpty())
-			msg = msg + "please provide subscription price\n";
-		if (in_advanced_price.isEmpty())
-			msg = msg + "please provide in advanced price\n";
+		if (ocassional_price.isEmpty() || subscription_price.isEmpty() || in_advanced_price.isEmpty())
+			msg = msg + "please provide all fields\n";
 		return msg;
 	}
 
@@ -1072,25 +1061,25 @@ public class PersonViewController {
 	//--------------------MANAGER----------------------------------------
 
 	@FXML
-    private Button manager_view_update_price_btn;
+	private Button manager_view_update_price_btn;
 
-    @FXML
-    private Button manager_current_state_btn;
+	@FXML
+	private Button manager_current_state_btn;
 
-    @FXML
-    private Label manager_name_label;
+	@FXML
+	private Label manager_name_label;
 
-    @FXML
-    private Button manager_View_print_report_btn;
+	@FXML
+	private Button manager_View_print_report_btn;
 
-    @FXML
-    private Button manager_log_out_btn;
+	@FXML
+	private Button manager_log_out_btn;
 
-    @FXML
-    private Button manager_performance_report_btn;
+	@FXML
+	private Button manager_performance_report_btn;
 
-    @FXML
-    private SplitMenuButton manager_View_level_menu;
+	@FXML
+	private SplitMenuButton manager_View_level_menu;
 
 
 
@@ -1169,14 +1158,14 @@ public class PersonViewController {
 
 	}
 
-	 	@FXML
-	    void manager_view_update_price(ActionEvent event) throws IOException
-	 	{
-	 		String url = "UpdatePricesView.fxml";
-			switchWindow(url);
-			switchScene(event, "login page");
-	    }
-	
+	@FXML
+	void manager_view_update_price(ActionEvent event) throws IOException
+	{
+		String url = "UpdatePricesView.fxml";
+		switchWindow(url);
+		switchScene(event, "login page");
+	}
+
 
 	//--------------------^MANAGER^----------------------------------------
 
