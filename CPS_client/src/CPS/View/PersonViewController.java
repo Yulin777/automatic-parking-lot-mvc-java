@@ -97,11 +97,19 @@ public class PersonViewController {
 		Double ocassional_price_double = Double.parseDouble(ocassional_price);
 		Double subscription_price_double = Double.parseDouble(subscription_price);
 		Double in_advanced_price_double = Double.parseDouble(in_advanced_price);
+	
+		
+		int location_id = OrderController.getOrderParkingId(pid);
+		
+		//if(!client.updateParkingStaionPrices(location_id, order_type,  ocassional_price_double))
+		{
+			err_msg+="couldnt update orice\n";
+			createMsg(event, err_msg, "error msg");
+		}
 		/*
 		 * 
-		 * send these values to the function...
 		 * 
-		 * 
+		 * talyyyyya
 		 */
 		
 		
