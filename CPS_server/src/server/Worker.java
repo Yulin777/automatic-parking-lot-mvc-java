@@ -23,7 +23,6 @@ public class Worker extends Person {
 		return false;
 	}
 
-	// TODO: return type is Unknown
 	public int checkParkingAvailability() {
 		return 0;
 	}

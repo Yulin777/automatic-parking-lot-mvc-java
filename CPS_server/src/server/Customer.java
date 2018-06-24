@@ -7,44 +7,29 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Customer extends Person implements Serializable {
-    public static enum type {
-        OCCASIONAL, SUBSCRIBED, ADVANCED
-    }
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    //ArrayList<Car> cars;
+	public static enum type {
+		OCCASIONAL, SUBSCRIBED, ADVANCED
+	}
 
-    public Customer(String id, String firstName, String lastName, String password, String type, String email,
-                    String telephone) {
-        super(id, firstName, lastName, password, type, email, telephone);
-    }
 
-    public int orderParking() {
-        return 0;
-    }
+	private static final long serialVersionUID = 1L;
+	//ArrayList<Car> cars;
 
-    public boolean subscribe() {
-        return false;
-    }
-
-    // TODO: return type is Unknown
-    public void trackOrder() {
-
-    }
-
-	/*public ArrayList<Car> getCars() {
-		return cars;
-	}*/
-
-	/*public void addCar(Car car) {
-		cars.add(car);
-	}*/
-
-    public boolean placeOrder() {
-        return false;
-    }
+	/**
+	 * constructor
+	 *
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param password
+	 * @param type
+	 * @param email
+	 * @param telephone
+	 */
+	public Customer(String id, String firstName, String lastName, String password, String type, String email,
+					String telephone) {
+		super(id, firstName, lastName, password, type, email, telephone);
+	}
 
 }

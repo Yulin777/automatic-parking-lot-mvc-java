@@ -193,13 +193,14 @@ public class PersonViewController {
 		{
 			if(reserve_parking_saved_btn.isSelected())
 			{
-				client.setResevedSlot( location_id, level_int,row_int, column_int);
+				client.setResevedSlot( location_id, level_int+1,row_int+1, column_int+1);
 				flag=1;
 			}
 
 			if(reserve_parking_broken_btn.isSelected())
 			{
-				client.setOutOfOrderSlot(location_id, level_int,row_int, column_int);
+				client.setOutOfOrderSlot(location_id, level_int+1,row_int+1, column_int+1);
+				flag=1;
 			}
 
 
@@ -801,7 +802,9 @@ public class PersonViewController {
 		}
 		c.addNewCar(car_number, id);
 
-		String succ_msg = "Sign up succed\n";
+		
+		Double bill = client.getPrice(car_number);
+		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
 		createMsg(event, succ_msg, "succes msg");
 		return;
 
@@ -1273,7 +1276,12 @@ public class PersonViewController {
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
-		createMsg(event, "order complete.", "succ msg");
+		
+		
+		Double bill = client.getPrice(car_number);
+		String succ_msg="order was added succesfully \n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
+		
+		createMsg(event, succ_msg, "succ msg");
 	}
 
 	private String Occasional_Customer_inputIsValid(String id, String car_number, String car_park, String
@@ -1522,8 +1530,10 @@ public class PersonViewController {
 			createMsg(event, "could not add order.", "error msg");
 			return;
 		}
-		String succ = "order was added succesfully\n";
-		createMsg(event,succ, "succ msg");
+		
+		Double bill = client.getPrice(carID);
+		String succ_msg="order was added succesfully\\n " + "your bill is: " + new DecimalFormat("##.##").format(bill);
+		createMsg(event,succ_msg, "succ msg");
 
 
 	}
