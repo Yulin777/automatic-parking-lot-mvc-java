@@ -91,7 +91,7 @@ public class ParkingStationController {
 	 * @param carId
 	 * @return true if there is available Slot
 	 */
-	public static boolean insertCar(int parkId, LocalDateTime endTime, int carId) {
+	public static boolean insertCar(int parkId, LocalDateTime endTime, String carId) {
 		java.sql.PreparedStatement stmt = null, updatestmt = null;
 		int availableSlot = 0, orderSlot = 0;
 		try {
@@ -117,7 +117,7 @@ public class ParkingStationController {
 			//TODO: check for orders
 			if ((availableSlot - orderSlot) > 0) {
 				updatestmt = sql.conn.prepareStatement("UPDATE ParkingStationSlots SET ParkingStationSlot_status = 1, car_ID = ? WHERE parking_id = ? AND ParkingStationSlot_status = 0 LIMIT 1");
-				updatestmt.setInt(1, carId);
+				updatestmt.setString(1, carId);
 				updatestmt.setInt(2, parkId);
 				updatestmt.executeUpdate();
 				return true;

@@ -107,14 +107,14 @@ public class OrderController {
 	public static boolean addOccasionalOrder(String carID, String endDate, String parkingName, String paymentMethod) {
 		boolean flag = false;
 		PreparedStatement stmt;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 
 		try {
 			stmt = sql.conn.prepareStatement("SELECT * FROM orders WHERE order_car_id=?");
 			stmt.setString(1, carID);
 			ResultSet client = stmt.executeQuery();
 			if (!client.next() || (client.next() && !OrderOverlaps(carID, client.getString(7), endDate, parkingName))) {
-				if (ParkingStationController.insertCar(getOrderParkingId(parkingName), LocalDateTime.parse(endDate, formatter), Integer.parseInt(carID)) == true) {
+				if (ParkingStationController.insertCar(getOrderParkingId(parkingName), LocalDateTime.parse(endDate, formatter), carID) == true) {
 
 					stmt = sql.conn.prepareStatement("INSERT INTO orders (order_status,order_car_id,order_type,end_date,order_parking_id,order_payment_method) VALUES (?,?,?,?,?,?)"
 							, Statement.RETURN_GENERATED_KEYS);
@@ -236,11 +236,11 @@ public class OrderController {
 		java.sql.PreparedStatement stmt;
 		try {
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SS");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			java.util.Date start = dateFormat.parse(startDate);
 			Timestamp start_date_timestamp = new java.sql.Timestamp(start.getTime());
 
-			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SS");
+			dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 			java.util.Date end = dateFormat.parse(endDate);
 			Timestamp end_date_timestamp = new java.sql.Timestamp(end.getTime());
 
